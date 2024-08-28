@@ -1,80 +1,151 @@
-
+'use server';
 import { createStudentProps } from '@/components/studentData/types/types';
 import { api } from './axios';
 
+const formatDate = (date: string | Date): string => {
+  const d = new Date(date);
+  if (isNaN(d.getTime())) {
+    return 'Invalid Date';
+  }
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, '0'); 
+  const day = String(d.getDate()).padStart(2, '0');
+
+  return `${year}-${month}-${day}`;
+};
+
+const formatStudentData = (data: any) => {
+  if (Array.isArray(data)) {
+    return data.map((student) => ({
+      ...student,
+      date_of_birth: formatDate(student.date_of_birth),
+      accepted_date: formatDate(student.accepted_date),
+    }));
+  }
+
+  return {
+    ...data,
+    date_of_birth: formatDate(data.date_of_birth),
+    accepted_date: formatDate(data.accepted_date),
+  };
+};
+
 export const getStudent = async () => {
-    try {
-        const respon = await api.get('api/v1/student/');
-        return respon.data;
-    } catch (error) {
-        console.error('API request error', error);
-        throw error;
-    }
+  try {
+    const response = await api.get('api/v1/student/');
+    const data = formatStudentData(response.data.students);
+    return data;
+  } catch (error) {
+    console.error('API request error', error);
+    throw error;
+  }
 };
 
-
-export const getStudentById = async (id : number) => {
-    try {
-        const respon = await api.get('api/v1/student/${id}');
-        return respon.data;
-    } catch (error) {
-        console.error('API request error', error);
-        throw error;
-    }
+export const getStudentById = async (id: string) => {
+  try {
+    const response = await api.get(`api/v1/student/${id}`);
+    const data = formatStudentData(response.data.student);
+    return data;
+  } catch (error) {
+    console.error('API request error', error);
+    throw error;
+  }
 };
 
+export const createStudent = async (props: createStudentProps) => {
+  const {
+    id,
+    name,
+    gender,
+    id_class,
+    place_of_birth,
+    date_of_birth,
+    religion,
+    address,
+    number_phone,
+    email,
+    accepted_date,
+    school_origin,
+    father_name,
+    father_job,
+    father_number_phone,
+    mother_name,
+    mother_job,
+    mother_number_phone,
+  } = props;
 
-export const createStudent = async ( props: createStudentProps ) => {
-    const { NISN, fullName, gender, class: className, POB, DOB, religion, email, acceptedDate, schoolOrigin, fatherName, fatherJob, fatherPhoneNumber, motherName, motherJob, motherPhoneNumber } = props;
-
-    const formData = new FormData();
-    formData.append('NISN',NISN);
-    formData.append('fullName',fullName);
-    formData.append('gender',gender);
-    formData.append('className',className);
-    formData.append('POB',POB);
-    formData.append('DOB',DOB);
-    formData.append('religion',religion);
-    formData.append('email',email);
-    formData.append('acceptedDate',acceptedDate);
-    formData.append('schoolOrigin',schoolOrigin);
-    formData.append('fatherName',fatherName);
-    formData.append('fatherJob',fatherJob);
-    formData.append('fatherPhoneNumber',fatherPhoneNumber);
-    formData.append('motherName',motherName);
-    formData.append('motherJob',motherJob);
-    formData.append('motherPhoneNumber',motherPhoneNumber);
-
-    return api.post('api/v1/create', formData);
+  const data = {
+    id,
+    name,
+    gender,
+    id_class, // Keep as a number
+    place_of_birth,
+    date_of_birth,
+    religion,
+    address,
+    number_phone : number_phone.toString(),
+    email,
+    accepted_date,
+    school_origin,
+    father_name,
+    father_job,
+    father_number_phone : father_number_phone.toString(),
+    mother_name,
+    mother_job,
+    mother_number_phone : mother_number_phone.toString(),
+  };
+  return api.post('api/v1/student/create', data);
 };
 
 export const updateStudent = async (
-    id : number,
-    props: createStudentProps  
+  getid: string,
+  props: createStudentProps
 ) => {
-    const { NISN, fullName, gender, class: className, POB, DOB, religion, email, acceptedDate, schoolOrigin, fatherName, fatherJob, fatherPhoneNumber, motherName, motherJob, motherPhoneNumber } = props;
+  const {
+    id,
+    name,
+    gender,
+    id_class,
+    place_of_birth,
+    date_of_birth,
+    religion,
+    address,
+    number_phone,
+    email,
+    accepted_date,
+    school_origin,
+    father_name,
+    father_job,
+    father_number_phone,
+    mother_name,
+    mother_job,
+    mother_number_phone,
+  } = props;
 
-    const formData = new FormData();
-    formData.append('NISN',NISN);
-    formData.append('fullName',fullName);
-    formData.append('gender',gender);
-    formData.append('className',className);
-    formData.append('POB',POB);
-    formData.append('DOB',DOB);
-    formData.append('religion',religion);
-    formData.append('email',email);
-    formData.append('acceptedDate',acceptedDate);
-    formData.append('schoolOrigin',schoolOrigin);
-    formData.append('fatherName',fatherName);
-    formData.append('fatherJob',fatherJob);
-    formData.append('fatherPhoneNumber',fatherPhoneNumber);
-    formData.append('motherName',motherName);
-    formData.append('motherJob',motherJob);
-    formData.append('motherPhoneNumber',motherPhoneNumber);
+  const data = {
+    name,
+    gender,
+    id_class, 
+    place_of_birth,
+    date_of_birth,
+    religion,
+    address,
+    number_phone : number_phone.toString(),
+    email,
+    accepted_date,
+    school_origin,
+    father_name,
+    father_job,
+    father_number_phone : father_number_phone.toString(),
+    mother_name,
+    mother_job,
+    mother_number_phone : mother_number_phone.toString(),
+  };
 
-    return api.post('api/v1/update/${id}', formData);
+  
+  return api.put(`api/v1/student/update/${getid}`, data);
 };
 
-export const deleteStudent = async ( id : number) => {
-    return api.delete('api/v1/delete/${id}');
-}
+export const deleteStudent = async (id: number) => {
+  return api.delete(`api/v1/delete/${id}`);
+};

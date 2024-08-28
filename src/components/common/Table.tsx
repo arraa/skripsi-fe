@@ -1,9 +1,9 @@
-import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import { DataGrid, GridColDef } from '@mui/x-data-grid';
 
 interface tableProps {
   data: Array<object>;
   columnData: GridColDef[];
-  searchValue: string;
+  searchValue?: string;
 }
 const Table = (props: tableProps) => {
   const { data, columnData, searchValue } = props;
@@ -20,10 +20,13 @@ const Table = (props: tableProps) => {
         items: [],
         quickFilterValues: [searchValue],
       }}
-      sx={{
-        border: "none",
-        boxShadow: "none",
-        color: "#0c427770",
+       sx={{
+        border: 'none',
+        boxShadow: 'none',
+        color: '#0c427770',
+        '& .MuiDataGrid-columnHeaderTitle': {
+          fontWeight: 'bold', // Style for bold headers
+        },
       }}
     />
   );

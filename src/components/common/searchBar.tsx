@@ -49,7 +49,7 @@ function SearchBar(props: SearchBarProps) {
     };
 
     return (
-        <div className='flex shadow-md rounded-xl items-center max-w-72'>
+        <div className='flex max-w-72 items-center rounded-xl shadow-md'>
             <div className="pointer-events-none absolute flex justify-center p-4 align-middle">
                 <Image
                     src="/icon/icon-search.svg"

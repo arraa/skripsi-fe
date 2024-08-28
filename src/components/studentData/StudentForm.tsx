@@ -1,320 +1,335 @@
-import { useState } from "react";
-import { createStudentProps, studentFormPageProps } from "./types/types";
-import { Button } from "../common/button/button";
-import { createStudent } from "@/app/api/student";
+'use client';
 
-const StudentForm = (props: studentFormPageProps) => {
-  const [form, setForm] = useState<createStudentProps>({
-    NISN: "",
-    fullName: "",
-    gender: "",
-    class: "",
-    POB: "",
-    DOB: "",
-    religion: "",
-    email: "",
-    acceptedDate: "",
-    schoolOrigin: "",
-    fatherName: "",
-    fatherJob: "",
-    fatherPhoneNumber: "",
-    motherName: "",
-    motherJob: "",
-    motherPhoneNumber: "",
+import { useEffect, useState } from 'react';
+import { createStudentProps, studentFormPageProps } from './types/types';
+import { Button } from '../common/button/button';
+import {
+  createStudent,
+  getStudentById,
+  updateStudent,
+} from '@/app/api/student';
+import { valibotResolver } from '@hookform/resolvers/valibot';
+import type { InferInput } from 'valibot';
+import { useForm } from 'react-hook-form';
+import { ControllerField } from '../common/form/textField';
+import { ControllerSelectField } from '../common/form/selectField';
+import { minLength, object, pipe, string } from 'valibot';
+
+type ObjectInput = InferInput<typeof ObjectSchema>;
+
+const ObjectSchema = object({
+  id: pipe(string(), minLength(1, 'NISN is required')),
+  name: pipe(string(), minLength(1, 'Full Name is required')),
+  gender: pipe(string(), minLength(1, 'Gender is required')),
+  place_of_birth: pipe(string(), minLength(1, 'Place of Birth is required')),
+  date_of_birth: pipe(string(), minLength(1, 'Date of Birth is required')),
+  religion: pipe(string(), minLength(1, 'Religion is required')),
+  address: pipe(string(), minLength(1, 'Address is required')),
+  number_phone: pipe(string(), minLength(1, 'Phone Number is required')),
+  email: pipe(string(), minLength(1, 'Email is required')),
+  accepted_date: pipe(string(), minLength(1, 'Accepted Date is required')),
+  school_origin: pipe(string(), minLength(1, 'School Origin is required')),
+  id_class: pipe(string(), minLength(1, 'Class is required')),
+  father_name: pipe(string(), minLength(1, 'Father Name is required')),
+  father_job: pipe(string(), minLength(1, 'Father Job is required')),
+  father_number_phone: pipe(
+    string(),
+    minLength(1, 'Father Phone Number is required')
+  ),
+  mother_name: pipe(string(), minLength(1, 'Mother Name is required')),
+  mother_job: pipe(string(), minLength(1, 'Mother Job is required')),
+  mother_number_phone: pipe(
+    string(),
+    minLength(1, 'Mother Phone Number is required')
+  ),
+});
+
+const StudentForm = ({ typePage, id }: studentFormPageProps) => {
+  const [data, setData] = useState<createStudentProps>();
+
+  const {
+    handleSubmit,
+    control,
+    reset,
+    formState: { errors },
+  } = useForm<ObjectInput>({
+    resolver: valibotResolver(ObjectSchema),
+    defaultValues: {
+      id: '',
+      name: '',
+      gender: '',
+      place_of_birth: '',
+      date_of_birth: '',
+      religion: '',
+      address: '',
+      number_phone: '',
+      email: '',
+      accepted_date: '',
+      school_origin: '',
+      id_class: '',
+      father_name: '',
+      father_job: '',
+      father_number_phone: '',
+      mother_name: '',
+      mother_job: '',
+      mother_number_phone: '',
+    },
   });
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
-    setForm({
-      ...form,
-      [e.target.name]: e.target.value,
-    });
-  };
-  const handleSubmit = async (
-    data: createStudentProps,
-    e: React.FormEvent<HTMLFormElement>
-  ) => {
-    e.preventDefault();
-    console.log(data);
+  const fetchData = async () => {
     try {
-      if (!data.fullName && props.typePage === "create") {
-        alert("Full Name is required");
-        throw new Error("Full Name is required");
-      } else if (!data.NISN) {
-        alert("NISN is required");
-        throw new Error("NISN is required");
-      } else if (!data.gender) {
-        alert("Gender is required");
-        throw new Error("Gender is required");
-      } else if (!data.POB) {
-        alert("Place of birth is required");
-        throw new Error("Place of birth is required");
-      } else if (!data.DOB) {
-        alert("Date of birth is required");
-        throw new Error("Date of birth is required");
-      } else if (!data.religion) {
-        alert("Religion is required");
-        throw new Error("Religion is required");
-      } else if (!data.email) {
-        alert("Email is required");
-        throw new Error("Email is required");
-      } else if (!data.class) {
-        alert("Class is required");
-        throw new Error("Class is required");
-      } else if (!data.acceptedDate) {
-        alert("Accepted Date is required");
-        throw new Error("Accepted Date is required");
-      } else if (!data.schoolOrigin) {
-        alert("School Origin is required");
-        throw new Error("School Origin is required");
-      } else if (!data.fatherName) {
-        alert("Father Name is required");
-        throw new Error("Father Name is required");
-      } else if (!data.fatherJob) {
-        alert("Father Job is required");
-        throw new Error("Father Job is required");
-      } else if (!data.fatherPhoneNumber) {
-        alert("Father Phone Number is required");
-        throw new Error("Father Phone Number is required");
-      } else if (!data.motherName) {
-        alert("Mother Name is required");
-        throw new Error("Mother Name is required");
-      } else if (!data.motherJob) {
-        alert("Mother Job is required");
-        throw new Error("Mother Job is required");
-      } else if (!data.motherPhoneNumber) {
-        alert("Mother Phone Number is required");
-        throw new Error("Mother Phone Number is required");
-      }
+      if (id) {
+        const response = await getStudentById(id);
 
-      await createStudent(data);
+        setData(response);
+      }
     } catch (error) {
-      console.error("API request error", error);
-    } finally {
-      if (!Error) {
-        if (props.typePage === "update") {
-          alert("Student updated successfully");
-        } else alert("Student created successfully");
-        setTimeout(() => {
-          window.location.reload();
-        }, 100);
+      console.error('API request error', error);
+    }
+  };
+  useEffect(() => {
+    fetchData();
+  }, [id]);
+
+  console.log('control', control._fields);
+  useEffect(() => {
+    if (data) {
+      reset({
+        id: data.id,
+        name: data.name,
+        gender: data.gender,
+        place_of_birth: data.place_of_birth,
+        date_of_birth: data.date_of_birth,
+        religion: data.religion,
+        address: data.address,
+        number_phone: data.number_phone,
+        email: data.email,
+        accepted_date: data.accepted_date,
+        school_origin: data.school_origin,
+        id_class: data.id_class.toString(),
+        father_name: data.father_name,
+        father_job: data.father_job,
+        father_number_phone: data.father_number_phone,
+        mother_name: data.mother_name,
+        mother_job: data.mother_job,
+        mother_number_phone: data.mother_number_phone,
+      });
+    }
+  }, [data, reset]);
+
+  console.log('Validation errors:', errors);
+
+  const onSubmit = async (data: ObjectInput) => {
+    console.log(data);
+
+    const newData: createStudentProps = {
+      id: data.id,
+      name: data.name,
+      gender: data.gender,
+      place_of_birth: data.place_of_birth,
+      date_of_birth: data.date_of_birth,
+      religion: data.religion,
+      address: data.address,
+      number_phone: data.number_phone,
+      email: data.email,
+      accepted_date: data.accepted_date,
+      school_origin: data.school_origin,
+      id_class: Number(data.id_class),
+      father_name: data.father_name,
+      father_job: data.father_job,
+      father_number_phone: data.father_number_phone,
+      mother_name: data.mother_name,
+      mother_job: data.mother_job,
+      mother_number_phone: data.mother_number_phone,
+    };
+
+    if (typePage === 'update' && id) {
+      try {
+        await updateStudent(id, newData);
+      } catch (error) {
+        console.error('API request error', error);
+      }
+    } else if (typePage === 'create') {
+      try {
+        await createStudent(newData);
+      } catch (error) {
+        console.error('API request error', error);
       }
     }
+
+    alert(
+      typePage === 'update'
+        ? 'Student updated successfully'
+        : 'Student created successfully'
+    );
+    // setTimeout(() => {
+    //   window.location.reload();
+    // }, 100);
   };
   return (
     <div className="w-full">
-      <form
-        onSubmit={(e) => {
-          handleSubmit(form, e);
-        }}
-        className="text-[#353535]"
-      >
-        <h1 className="text-xl my-8 text-[#0C4177]">Student’s Personal Data</h1>
+      <form onSubmit={handleSubmit(onSubmit)} className="text-[#353535]">
+        <h1 className="my-8 text-xl text-[#0C4177]">Student’s Personal Data</h1>
+        <div className="grid grid-cols-2 gap-x-16 gap-y-6">
+          <ControllerField
+            control={control}
+            name="id"
+            label="NISN"
+            placeholder="Please input student’s NISN."
+            errors={errors.id}
+            value={data?.id}
+          />
+          <ControllerField
+            control={control}
+            name="name"
+            label="Full Name"
+            placeholder="Please input student’s Full Name"
+            errors={errors.name}
+            value={data?.name}
+          />
+          <ControllerSelectField
+            control={control}
+            name="gender"
+            label="Gender"
+            options={['Male', 'Female']}
+            placeholder="Please choose student’s gender."
+            errors={errors.gender}
+            value={data?.gender}
+          />
+          <ControllerField
+            control={control}
+            name="place_of_birth"
+            label="Place of Birth"
+            placeholder="Please input student’s Place of Birth"
+            errors={errors.place_of_birth}
+            value={data?.place_of_birth}
+          />
+          <ControllerField
+            control={control}
+            name="date_of_birth"
+            label="Date Of Birth"
+            placeholder="Please input student’s Date Of Birth"
+            type="date"
+            errors={errors.date_of_birth}
+            value={data?.date_of_birth}
+          />
+          <ControllerField
+            control={control}
+            name="religion"
+            label="Religion"
+            placeholder="Please input student’s Religion"
+            errors={errors.religion}
+            value={data?.religion}
+          />
+          <ControllerField
+            control={control}
+            name="address"
+            label="address"
+            placeholder="Please input student’s address"
+            errors={errors.address}
+            value={data?.address}
+          />
+          <ControllerField
+            control={control}
+            name="number_phone"
+            label="Number Phone"
+            placeholder="Please input student’s Number Phone"
+            errors={errors.number_phone}
+            value={data?.number_phone}
+          />
 
-        <div className="grid grid-cols-2 gap-x-16 gap-y-6 ">
-          <div className="flex flex-col gap-2">
-            <label htmlFor="NISN">NISN</label>
-            <input
-              id="NISN"
-              name="NISN"
-              value={form.NISN}
-              placeholder="Please input student’s NISN."
-              className="rounded-md p-4 bg-[#3F79B4]/10 focus:outline-[#2D2D2D]/75"
-              onChange={handleChange}
-            />
-          </div>
-
-          <div className="flex flex-col gap-2">
-            <label htmlFor="fullName">Full Name</label>
-            <input
-              id="fullName"
-              name="fullName"
-              value={form.fullName}
-              placeholder="Please input student’s Full Name"
-              className="rounded-md p-4 bg-[#3F79B4]/10 focus:outline-[#2D2D2D]/75"
-              onChange={handleChange}
-            />
-          </div>
-
-          <div className="flex flex-col gap-2">
-            <label htmlFor="Gender">Gender</label>
-            <select
-              id="gender"
-              name="gender"
-              value={form.gender}
-              onChange={handleChange}
-              className={`rounded-md p-4 bg-[#3F79B4]/10 focus:outline-[#2D2D2D]/75 ${
-                form.gender === "" ? " text-[#353535]/50" : "text-[#353535]"
-              }`}
-            >
-              <option value="">Please choose student’s gender.</option>
-              <option value="Male">Male</option>
-              <option value="Female">Female</option>
-            </select>
-          </div>
-
-          <div className="flex flex-col gap-2">
-            <label htmlFor="POB">Place of Birth</label>
-            <input
-              id="POB"
-              name="POB"
-              value={form.POB}
-              placeholder="Please input student’s Place of Birth "
-              className="rounded-md p-2 bg-[#3F79B4]/10 focus:outline-[#2D2D2D]/75"
-              onChange={handleChange}
-            />
-          </div>
-
-          <div className="flex flex-col gap-2">
-            <label htmlFor="DOB">Date Of Birth</label>
-            <input
-              type="text"
-              onFocus={(e) => (e.currentTarget.type = "date")}
-              onBlur={(e) => (e.currentTarget.type = "text")}
-              id="DOB"
-              name="DOB"
-              value={form.DOB}
-              placeholder="Please input student’s Date Of Birth"
-              className="rounded-md p-2 bg-[#3F79B4]/10 focus:outline-[#2D2D2D]/75"
-              onChange={handleChange}
-            />
-          </div>
-
-          <div className="flex flex-col gap-2">
-            <label htmlFor="religion">Religion</label>
-            <input
-              id="religion"
-              name="religion"
-              value={form.religion}
-              placeholder="Please input student’s Religion"
-              className="rounded-md p-2 bg-[#3F79B4]/10 focus:outline-[#2D2D2D]/75"
-              onChange={handleChange}
-            />
-          </div>
-
-          <div className="flex flex-col gap-2">
-            <label htmlFor="email">Email</label>
-            <input
-              id="email"
-              name="email"
-              value={form.email}
-              placeholder="Please input student’s email"
-              className="rounded-md p-2 bg-[#3F79B4]/10 focus:outline-[#2D2D2D]/75"
-              onChange={handleChange}
-            />
-          </div>
-
-          <div className="flex flex-col gap-2">
-            <label htmlFor="acceptedDate">Accepted Date</label>
-            <input
-              type="text"
-              onFocus={(e) => (e.currentTarget.type = "date")}
-              onBlur={(e) => (e.currentTarget.type = "text")}
-              id="acceptedDate"
-              name="acceptedDate"
-              value={form.acceptedDate}
-              placeholder="accepted Date"
-              className="rounded-md p-2 bg-[#3F79B4]/10 focus:outline-[#2D2D2D]/75"
-              onChange={handleChange}
-            />
-          </div>
-          <div className="flex flex-col gap-2">
-            <label htmlFor="schoolOrigin">School Origin</label>
-            <input
-              id="schoolOrigin"
-              name="schoolOrigin"
-              value={form.schoolOrigin}
-              placeholder="Please input student’s school Origin"
-              className="rounded-md p-2 bg-[#3F79B4]/10 focus:outline-[#2D2D2D]/75"
-              onChange={handleChange}
-            />
-          </div>
-          <div className="flex flex-col gap-2">
-            <label htmlFor="class">Class</label>
-            <input
-              id="class"
-              name="class"
-              value={form.class}
-              placeholder="Please input student’s Class"
-              className="rounded-md p-2 bg-[#3F79B4]/10 focus:outline-[#2D2D2D]/75"
-              onChange={handleChange}
-            />
-          </div>
+          <ControllerField
+            control={control}
+            name="email"
+            label="Email"
+            placeholder="Please input student’s Email"
+            errors={errors.email}
+            value={data?.email}
+          />
+          <ControllerField
+            control={control}
+            name="accepted_date"
+            label="Accepted Date"
+            placeholder="Please input student’s Accepted Date"
+            type="date"
+            errors={errors.accepted_date}
+            value={data?.accepted_date}
+          />
+          <ControllerField
+            control={control}
+            name="school_origin"
+            label="School Origin"
+            placeholder="Please input student’s School Origin"
+            errors={errors.school_origin}
+            value={data?.school_origin}
+          />
+          <ControllerField
+            control={control}
+            name="id_class"
+            label="Class"
+            placeholder="Please input student’s Class"
+            errors={errors.id_class}
+            value={data?.id_class}
+          />
         </div>
-        <h1 className="text-xl my-8 text-[#0C4177]">Student Parents’ Data</h1>
-
-        <div className="grid grid-cols-2 gap-x-16 gap-y-6 ">
-          <div className="flex flex-col gap-2">
-            <label htmlFor="fatherName">Father Name</label>
-            <input
-              id="fatherName"
-              name="fatherName"
-              value={form.fatherName}
-              placeholder="Please input Father Name"
-              className="rounded-md p-2 bg-[#3F79B4]/10 focus:outline-[#2D2D2D]/75"
-              onChange={handleChange}
-            />
-          </div>
-          <div className="flex flex-col gap-2">
-            <label htmlFor="motherName">Mother Name</label>
-            <input
-              id="motherName"
-              name="motherName"
-              value={form.motherName}
-              placeholder="Please input Mother Name"
-              className="rounded-md p-2 bg-[#3F79B4]/10 focus:outline-[#2D2D2D]/75"
-              onChange={handleChange}
-            />
-          </div>
-          <div className="flex flex-col gap-2">
-            <label htmlFor="fatherJob">Father Job</label>
-            <input
-              id="fatherJob"
-              name="fatherJob"
-              value={form.fatherJob}
-              placeholder="Please input Father Job"
-              className="rounded-md p-2 bg-[#3F79B4]/10 focus:outline-[#2D2D2D]/75"
-              onChange={handleChange}
-            />
-          </div>
-          <div className="flex flex-col gap-2">
-            <label htmlFor="motherJob">Mother Job</label>
-            <input
-              id="motherJob"
-              name="motherJob"
-              value={form.motherJob}
-              placeholder="Please input Mother Job"
-              className="rounded-md p-2 bg-[#3F79B4]/10 focus:outline-[#2D2D2D]/75"
-              onChange={handleChange}
-            />
-          </div>
-          <div className="flex flex-col gap-2">
-            <label htmlFor="fatherPhoneNumber">Father Phone Number</label>
-            <input
-              id="fatherPhoneNumber"
-              name="fatherPhoneNumber"
-              value={form.fatherPhoneNumber}
-              placeholder="Please input Father Phone Number"
-              className="rounded-md p-2 bg-[#3F79B4]/10 focus:outline-[#2D2D2D]/75"
-              onChange={handleChange}
-            />
-          </div>
-          <div className="flex flex-col gap-2">
-            <label htmlFor="motherPhoneNumber">Mother Phone Number</label>
-            <input
-              id="motherPhoneNumber"
-              name="motherPhoneNumber"
-              value={form.motherPhoneNumber}
-              placeholder="Please input Mother Phone Number"
-              className="rounded-md p-2 bg-[#3F79B4]/10 focus:outline-[#2D2D2D]/75"
-              onChange={handleChange}
-            />
-          </div>
+        <h1 className="my-8 text-xl text-[#0C4177]">Student Parents’ Data</h1>
+        <div className="grid grid-cols-2 gap-x-16 gap-y-6">
+          <ControllerField
+            control={control}
+            name="father_name"
+            label="Father Name"
+            placeholder="Please input Father Name"
+            errors={errors.father_name}
+            value={data?.father_name}
+          />
+          <ControllerField
+            control={control}
+            name="mother_name"
+            label="Mother Name"
+            placeholder="Please input Mother Name"
+            errors={errors.mother_name}
+            value={data?.mother_name}
+          />
+          <ControllerField
+            control={control}
+            name="father_job"
+            label="Father Job"
+            placeholder="Please input Father Job"
+            errors={errors.father_job}
+            value={data?.father_job}
+          />
+          <ControllerField
+            control={control}
+            name="mother_job"
+            label="Mother Job"
+            placeholder="Please input Mother Job"
+            errors={errors.mother_job}
+            value={data?.mother_job}
+          />
+          <ControllerField
+            control={control}
+            name="father_number_phone"
+            label="Father Phone Number"
+            placeholder="Please input Father Phone Number"
+            errors={errors.father_number_phone}
+            value={data?.father_number_phone}
+          />
+          <ControllerField
+            control={control}
+            name="mother_number_phone"
+            label="Mother Phone Number"
+            placeholder="Please input Mother Phone Number"
+            errors={errors.mother_number_phone}
+            value={data?.mother_number_phone}
+          />
         </div>
 
-        <div className="flex justify-end mt-10 mb-4">
-          <Button type="submit" size={"submit"}>
+        <div className="mb-4 mt-10 flex justify-end">
+          <Button
+            onSubmit={handleSubmit(onSubmit)}
+            type="submit"
+            size={'submit'}
+          >
             Submit
           </Button>
         </div>

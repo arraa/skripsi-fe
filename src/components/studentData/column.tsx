@@ -1,31 +1,31 @@
-import { Box } from "@mui/material";
+import { Box } from '@mui/material';
 import {
   GridActionsCellItem,
   GridColDef,
   GridRenderCellParams,
-} from "@mui/x-data-grid";
-import Image from "next/image";
-import Link from "next/link";
+} from '@mui/x-data-grid';
+import Image from 'next/image';
+import Link from 'next/link';
 
 export const columnData: GridColDef[] = [
   {
-    field: "actions",
-    type: "actions",
-    headerName: "Actions",
+    field: 'actions',
+    type: 'actions',
+    headerName: 'Actions',
     width: 150,
-    cellClassName: "actions",
+    cellClassName: 'actions',
     renderCell: (params: GridRenderCellParams) => (
       <Box
         display="flex"
         flexDirection="row"
-        alignItems={"center"}
-        justifyContent={"center"}
+        alignItems={'center'}
+        justifyContent={'center'}
         gap={2}
       >
-        <Link href={`/personalData/student/update/${params.id}`}>
+        <Link href={`/personal-data/student/update/${params.id}`}>
           <GridActionsCellItem
-            sx={{ boxShadow: 3, borderRadius: 1, padding: "5px" }}
-            key={"edit"}
+            sx={{ boxShadow: 3, borderRadius: 1, padding: '5px' }}
+            key={'edit'}
             icon={
               <Image
                 src="/icon/icon-edit.svg"
@@ -38,8 +38,8 @@ export const columnData: GridColDef[] = [
           />
         </Link>
         <GridActionsCellItem
-          sx={{ boxShadow: 3, borderRadius: 1, padding: "5px" }}
-          key={"delete"}
+          sx={{ boxShadow: 3, borderRadius: 1, padding: '5px' }}
+          key={'delete'}
           icon={
             <Image
               src="/icon/icon-delete.svg"
@@ -49,75 +49,73 @@ export const columnData: GridColDef[] = [
             />
           }
           label="Delete"
-          onClick={(e) => {
-            // handleDelete(params.id as number);
-          }}
+          onClick={(e) => {}}
         />
       </Box>
     ),
   },
   {
-    field: "fullName",
-    headerName: "Full Name",
+    field: 'name',
+    headerName: 'Full Name',
     width: 150,
   },
   {
-    field: "sex",
-    headerName: "Sex",
+    field: 'gender',
+    headerName: 'Sex',
     width: 100,
   },
   {
-    field: "class",
-    headerName: "Class",
+    field: 'class',
+    headerName: 'Class',
     width: 100,
   },
   {
-    field: "POB",
-    headerName: "Place & Date of Birth",
+    field: 'place_of_birth',
+    headerName: 'Place & Date of Birth',
     width: 180,
   },
   {
-    field: "email",
-    headerName: "Email",
-    width: 100,
+    field: 'email',
+    headerName: 'Email',
+    width: 200,
   },
   {
-    field: "acceptedDate",
-    headerName: "Accepted Date",
+    field: 'accepted_date',
+    headerName: 'Accepted Date',
     width: 150,
   },
   {
-    field: "schoolOrigin",
-    headerName: "School Origin",
+    field: 'school_origin',
+    headerName: 'School Origin',
     width: 120,
   },
   {
-    field: "fatherName",
+    field: 'father_name',
     headerName: "Father's Name",
     width: 150,
   },
   {
-    field: "fatherJob",
+    field: 'father_job',
     headerName: "Father's Job",
     width: 150,
   },
   {
-    field: "fatherPhoneNumber",
+    field: 'father_number_phone',
     headerName: "Father's Phone Number",
     width: 180,
   },
   {
-    field: "motherName",
+    field: 'mother_name',
     headerName: "Mother's Name",
     width: 150,
   },
   {
-    field: "motherJob",
+    field: 'mother_job',
     headerName: "Mother's Job",
     width: 150,
   },
   {
-    field: "motherPhoneNumber",
+    field: 'mother_number_phone',
     headerName: "Mother's Phone Number",
     width: 180,
   },
