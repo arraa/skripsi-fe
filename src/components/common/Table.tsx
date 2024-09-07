@@ -25,7 +25,7 @@ const Table = (props: tableProps) => {
         boxShadow: 'none',
         color: '#0c427770',
         '& .MuiDataGrid-columnHeaderTitle': {
-          fontWeight: 'bold', // Style for bold headers
+          fontWeight: 'bold',
         },
       }}
     />

@@ -7,7 +7,8 @@ import {
 import Image from 'next/image';
 import Link from 'next/link';
 
-export const columnData: GridColDef[] = [
+
+export const columnData = (handleClickOpen: (id: number) => void): GridColDef[] =>  [
   {
     field: 'actions',
     type: 'actions',
@@ -49,7 +50,7 @@ export const columnData: GridColDef[] = [
             />
           }
           label="Delete"
-          onClick={(e) => {}}
+          onClick={() => handleClickOpen(Number(params.id))}
         />
       </Box>
     ),
@@ -65,7 +66,7 @@ export const columnData: GridColDef[] = [
     width: 100,
   },
   {
-    field: 'class',
+    field: 'id_class',
     headerName: 'Class',
     width: 100,
   },

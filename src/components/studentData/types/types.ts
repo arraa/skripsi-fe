@@ -1,4 +1,4 @@
-export interface createStudentProps {
+export interface StudentDataProps {
     id: string,
     name: string
     gender: string
@@ -22,4 +22,10 @@ export interface createStudentProps {
 export interface studentFormPageProps {
     typePage: string;
     id?: string;
+}
+
+export interface classDataProps {
+    id: number
+    name: string,
+    grade: string
 }

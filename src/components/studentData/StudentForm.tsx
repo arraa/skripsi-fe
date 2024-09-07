@@ -1,7 +1,11 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { createStudentProps, studentFormPageProps } from './types/types';
+import {
+  classDataProps,
+  StudentDataProps,
+  studentFormPageProps,
+} from './types/types';
 import { Button } from '../common/button/button';
 import {
   createStudent,
@@ -14,6 +18,7 @@ import { useForm } from 'react-hook-form';
 import { ControllerField } from '../common/form/textField';
 import { ControllerSelectField } from '../common/form/selectField';
 import { minLength, object, pipe, string } from 'valibot';
+import { getClass } from '@/app/api/class';
 
 type ObjectInput = InferInput<typeof ObjectSchema>;
 
@@ -45,7 +50,8 @@ const ObjectSchema = object({
 });
 
 const StudentForm = ({ typePage, id }: studentFormPageProps) => {
-  const [data, setData] = useState<createStudentProps>();
+  const [data, setData] = useState<StudentDataProps>();
+  const [classData, setClassData] = useState<classDataProps[]>([]);
 
   const {
     handleSubmit,
@@ -91,7 +97,24 @@ const StudentForm = ({ typePage, id }: studentFormPageProps) => {
     fetchData();
   }, [id]);
 
-  console.log('control', control._fields);
+  
+  console.log('data class', classData);
+  
+  useEffect(() => {
+    const fetchDataClass = async () => {
+      try {
+        const result = await getClass();
+        console.log('data class', result);
+  
+        setClassData(result);
+      } catch (error) {
+        console.error('API request error', error);
+      }
+    };
+
+    fetchDataClass();
+  }, [id]);
+
   useEffect(() => {
     if (data) {
       reset({
@@ -117,12 +140,10 @@ const StudentForm = ({ typePage, id }: studentFormPageProps) => {
     }
   }, [data, reset]);
 
-  console.log('Validation errors:', errors);
-
   const onSubmit = async (data: ObjectInput) => {
     console.log(data);
 
-    const newData: createStudentProps = {
+    const newData: StudentDataProps = {
       id: data.id,
       name: data.name,
       gender: data.gender,
@@ -142,6 +163,8 @@ const StudentForm = ({ typePage, id }: studentFormPageProps) => {
       mother_job: data.mother_job,
       mother_number_phone: data.mother_number_phone,
     };
+
+    console.log(newData);
 
     if (typePage === 'update' && id) {
       try {
@@ -191,8 +214,8 @@ const StudentForm = ({ typePage, id }: studentFormPageProps) => {
             control={control}
             name="gender"
             label="Gender"
-            options={['Male', 'Female']}
-            placeholder="Please choose student’s gender."
+            options={['Male', 'Female'].map(value => ({ label: value }))}
+            placeholder={'Please choose student’s gender.'}
             errors={errors.gender}
             value={data?.gender}
           />
@@ -213,11 +236,19 @@ const StudentForm = ({ typePage, id }: studentFormPageProps) => {
             errors={errors.date_of_birth}
             value={data?.date_of_birth}
           />
-          <ControllerField
+          <ControllerSelectField
             control={control}
             name="religion"
             label="Religion"
-            placeholder="Please input student’s Religion"
+            options={[
+              'Islam',
+              'Kristen Protestan',
+              'Kristen Katolik',
+              'Hindu',
+              'Buddha',
+              'Konghucu',
+            ].map(value => ({ label: value }))}
+            placeholder="Please choose student’s Religion."
             errors={errors.religion}
             value={data?.religion}
           />
@@ -263,11 +294,13 @@ const StudentForm = ({ typePage, id }: studentFormPageProps) => {
             errors={errors.school_origin}
             value={data?.school_origin}
           />
-          <ControllerField
+          <ControllerSelectField
             control={control}
             name="id_class"
             label="Class"
-            placeholder="Please input student’s Class"
+            // eslint-disable-next-line quotes
+            options={classData.map((item: classDataProps) => ({ value: item.id, label: `${item.grade}${item.name}`}))}
+            placeholder="Please choose student’s Class."
             errors={errors.id_class}
             value={data?.id_class}
           />

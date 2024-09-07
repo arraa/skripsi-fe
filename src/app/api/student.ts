@@ -1,5 +1,5 @@
 'use server';
-import { createStudentProps } from '@/components/studentData/types/types';
+import { StudentDataProps } from '@/components/studentData/types/types';
 import { api } from './axios';
 
 const formatDate = (date: string | Date): string => {
@@ -52,7 +52,7 @@ export const getStudentById = async (id: string) => {
   }
 };
 
-export const createStudent = async (props: createStudentProps) => {
+export const createStudent = async (props: StudentDataProps) => {
   const {
     id,
     name,
@@ -78,7 +78,7 @@ export const createStudent = async (props: createStudentProps) => {
     id,
     name,
     gender,
-    id_class, // Keep as a number
+    id_class,
     place_of_birth,
     date_of_birth,
     religion,
@@ -99,7 +99,7 @@ export const createStudent = async (props: createStudentProps) => {
 
 export const updateStudent = async (
   getid: string,
-  props: createStudentProps
+  props: StudentDataProps
 ) => {
   const {
     id,
