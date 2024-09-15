@@ -54,7 +54,7 @@ export const getStudentById = async (id: string) => {
 
 export const createStudent = async (props: StudentDataProps) => {
   const {
-    id,
+    studentID,
     name,
     gender,
     id_class,
@@ -75,7 +75,7 @@ export const createStudent = async (props: StudentDataProps) => {
   } = props;
 
   const data = {
-    id,
+    studentID,
     name,
     gender,
     id_class,
@@ -102,7 +102,7 @@ export const updateStudent = async (
   props: StudentDataProps
 ) => {
   const {
-    id,
+    studentID,
     name,
     gender,
     id_class,
@@ -146,6 +146,8 @@ export const updateStudent = async (
   return api.put(`api/v1/student/update/${getid}`, data);
 };
 
-export const deleteStudent = async (id: number) => {
-  return api.delete(`api/v1/delete/${id}`);
+export const deleteStudent = async (id: string | null) => {
+ if(id) {
+  return api.delete(`api/v1/student/delete/${id}`);
+ }
 };

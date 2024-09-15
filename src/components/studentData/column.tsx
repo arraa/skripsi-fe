@@ -23,7 +23,7 @@ export const columnData = (handleClickOpen: (id: number) => void): GridColDef[] 
         justifyContent={'center'}
         gap={2}
       >
-        <Link href={`/personal-data/student/update/${params.id}`}>
+        <Link href={`/personal-data/student/update/${params.row.StudentID}`}>
           <GridActionsCellItem
             sx={{ boxShadow: 3, borderRadius: 1, padding: '5px' }}
             key={'edit'}
@@ -50,7 +50,7 @@ export const columnData = (handleClickOpen: (id: number) => void): GridColDef[] 
             />
           }
           label="Delete"
-          onClick={() => handleClickOpen(Number(params.id))}
+          onClick={() => handleClickOpen(Number(params.row.StudentID))}
         />
       </Box>
     ),
