@@ -1,5 +1,5 @@
 export interface StudentDataProps {
-    studentID: string,
+    studentID?: string,
     name: string
     gender: string
     place_of_birth: string

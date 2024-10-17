@@ -53,6 +53,11 @@ export const getStudentById = async (id: string) => {
 };
 
 export const createStudent = async (props: StudentDataProps) => {
+  // Validation
+  if (!props.name || !props.gender || !props.date_of_birth) {
+    throw new Error('Missing required fields');
+  }
+
   const {
     studentID,
     name,
@@ -94,7 +99,16 @@ export const createStudent = async (props: StudentDataProps) => {
     mother_job,
     mother_number_phone : mother_number_phone.toString(),
   };
-  return api.post('api/v1/student/create', data);
+
+
+  try {
+    const response = await api.post('api/v1/student/create', data);
+    console.log('Update response:', response.data); // Log the response
+    return response.data; // Ensure to return the response data
+  } catch (error) {
+    console.error('Update error:', error); // Log the error
+    throw error; // Rethrow the error for handling in the calling function
+  }
 };
 
 export const updateStudent = async (
@@ -143,7 +157,14 @@ export const updateStudent = async (
   };
 
   
-  return api.put(`api/v1/student/update/${getid}`, data);
+  try {
+    const response = await api.put(`api/v1/student/update/${getid}`, data);
+    console.log('Update response:', response.data); // Log the response
+    return response.data; // Ensure to return the response data
+  } catch (error) {
+    console.error('Update error:', error); // Log the error
+    throw error; // Rethrow the error for handling in the calling function
+  }
 };
 
 export const deleteStudent = async (id: string | null) => {

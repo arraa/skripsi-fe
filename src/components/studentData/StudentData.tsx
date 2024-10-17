@@ -100,10 +100,11 @@ const StudentData = () => {
   };
 
   return (
-    <Box sx={{ padding: 3 }}>
+    <Box sx={{ padding: 3, width: '87vw' }}>
+      
         <Delete setOpen={handleClose} name={'Student'} onDelete={deletedStudent} open={open}/>
       <h1 className="my-8 text-3xl font-bold text-[#0C4177]">Personal Data</h1>
-      <div className="min-h-screen w-full rounded-3xl bg-white p-5 text-[#0c427770] shadow-md">
+      <div className="min-h-screen   rounded-3xl bg-white p-5 text-[#0c427770] shadow-md">
         <div className="mb-2 flex items-center justify-between">
           <div className="flex gap-4">
             <SearchBar

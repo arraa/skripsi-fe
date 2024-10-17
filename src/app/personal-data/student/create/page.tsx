@@ -11,6 +11,7 @@ export default function personalData() {
         <h1 className="my-8 text-3xl font-bold text-[#0C4177]">
           Add New Student
         </h1>
+        
         <div className="min-h-screen w-full rounded-3xl bg-white p-5 text-[#0c427770] shadow-md">
           <StudentForm typePage={'create'}/>
         </div>

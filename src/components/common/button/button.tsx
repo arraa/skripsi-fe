@@ -4,15 +4,18 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import * as React from 'react';
 
 const buttonVariants = cva(
-  'inline-flex items-center justify-center rounded-[12px] text-[10px] font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 sm:text-sm',
+  'inline-flex items-center justify-center rounded-[5px] text-[10px] font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 sm:text-sm',
   {
     variants: {
       variant: {
         default: 'bg-[#31426E] text-white',
+        white: 'border border-[#31426E] bg-[#ffff] text-[#31426E]',
+
       },
       size: {
-        default: 'px-5 py-3 sm:h-10 sm:px-8 sm:py-[26px]',
+        default: 'px-5 py-3 sm:h-3 sm:px-8 sm:py-[18px]',
         submit: 'rounded-md px-8 py-2 sm:px-9',
+        full: 'w-full rounded-md px-8 py-2 sm:px-9',
       },
     },
     defaultVariants: {
