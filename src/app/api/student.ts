@@ -8,7 +8,7 @@ const formatDate = (date: string | Date): string => {
     return 'Invalid Date';
   }
   const year = d.getFullYear();
-  const month = String(d.getMonth() + 1).padStart(2, '0'); 
+  const month = String(d.getMonth() + 1).padStart(2, '0');
   const day = String(d.getDate()).padStart(2, '0');
 
   return `${year}-${month}-${day}`;
@@ -53,8 +53,13 @@ export const getStudentById = async (id: string) => {
 };
 
 export const createStudent = async (props: StudentDataProps) => {
+  // Validation
+  if (!props.name || !props.gender || !props.date_of_birth) {
+    throw new Error('Missing required fields');
+  }
+
   const {
-    studentID,
+    nisn,
     name,
     gender,
     id_class,
@@ -75,7 +80,7 @@ export const createStudent = async (props: StudentDataProps) => {
   } = props;
 
   const data = {
-    studentID,
+    nisn,
     name,
     gender,
     id_class,
@@ -83,26 +88,49 @@ export const createStudent = async (props: StudentDataProps) => {
     date_of_birth,
     religion,
     address,
-    number_phone : number_phone.toString(),
+    number_phone: number_phone.toString(),
     email,
     accepted_date,
     school_origin,
     father_name,
     father_job,
-    father_number_phone : father_number_phone.toString(),
+    father_number_phone: father_number_phone.toString(),
     mother_name,
     mother_job,
-    mother_number_phone : mother_number_phone.toString(),
+    mother_number_phone: mother_number_phone.toString(),
   };
-  return api.post('api/v1/student/create', data);
+
+  try {
+    const response = await api.post('api/v1/student/create', data);
+    console.log('Update response:', response.data); // Log the response
+    return response.data; // Ensure to return the response data
+  } catch (error) {
+    console.error('Update error:', error); // Log the error
+    throw error; // Rethrow the error for handling in the calling function
+  }
 };
 
-export const updateStudent = async (
-  getid: string,
-  props: StudentDataProps
-) => {
+export const createStudentbyExcel = async (props: StudentDataProps[]) => {
+ 
+  const data = {
+    'student-data': props
+  }
+
+  try {
+    const response = await api.post('/api/v1/student/create-all', data);
+    console.log('create excel response:', response.data); 
+
+    return response.data; 
+  } catch (error : any) {
+    console.log('create excel error:', error.response.data.error); // Log the error
+    // return error.response.data.error
+    throw error;
+  }
+};
+
+export const updateStudent = async (getid: string, props: StudentDataProps) => {
   const {
-    studentID,
+    StudentID,
     name,
     gender,
     id_class,
@@ -125,29 +153,35 @@ export const updateStudent = async (
   const data = {
     name,
     gender,
-    id_class, 
+    id_class,
     place_of_birth,
     date_of_birth,
     religion,
     address,
-    number_phone : number_phone.toString(),
+    number_phone: number_phone.toString(),
     email,
     accepted_date,
     school_origin,
     father_name,
     father_job,
-    father_number_phone : father_number_phone.toString(),
+    father_number_phone: father_number_phone.toString(),
     mother_name,
     mother_job,
-    mother_number_phone : mother_number_phone.toString(),
+    mother_number_phone: mother_number_phone.toString(),
   };
 
-  
-  return api.put(`api/v1/student/update/${getid}`, data);
+  try {
+    const response = await api.put(`api/v1/student/update/${getid}`, data);
+    console.log('Update response:', response.data); // Log the response
+    return response.data; // Ensure to return the response data
+  } catch (error) {
+    console.error('Update error:', error); // Log the error
+    throw error; // Rethrow the error for handling in the calling function
+  }
 };
 
 export const deleteStudent = async (id: string | null) => {
- if(id) {
-  return api.delete(`api/v1/student/delete/${id}`);
- }
+  if (id) {
+    return api.delete(`api/v1/student/delete/${id}`);
+  }
 };

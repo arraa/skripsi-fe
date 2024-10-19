@@ -13,6 +13,7 @@ import { Box } from '@mui/material';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import Delete from '../common/dialog/Delete';
+import { useRouter } from 'next/navigation';
 
 const StudentData = () => {
   const [data, setData] = useState<StudentDataProps[]>([]);
@@ -20,7 +21,10 @@ const StudentData = () => {
   const [searchValue, setSearchValue] = useState('');
   const [selectedClass, setSelectedClass] = useState<number>();
   const [open, setOpen] = useState(false);
-  const [selectedStudentId, setSelectedStudentId] = useState<string | null>(null);
+  const [selectedStudentId, setSelectedStudentId] = useState<string | null>(
+    null
+  );
+  const router = useRouter();
 
   const handleClickOpen = (studentId: number) => {
     setSelectedStudentId(studentId.toString());
@@ -28,7 +32,15 @@ const StudentData = () => {
     setOpen(true);
   };
 
-  const columns = columnData(handleClickOpen);
+  const handleAddStudent = () => {
+    router.push('/personal-data/student/student-form?action=create');
+  };
+
+  const handleUpdate = (id: string) => {
+    router.push(`/personal-data/student/student-form?action=update&student=${id}`);
+  };
+
+  const columns = columnData(handleClickOpen, handleUpdate);
 
   const handleClose = () => {
     setOpen(false);
@@ -57,53 +69,60 @@ const StudentData = () => {
     };
     fetchData();
   }, []);
-  
+
   const filteredData = data
-    .filter((student) => {
-      return (
-        !selectedClass ||
-        selectedClass === 0 ||
-        student.id_class === selectedClass
-      );
-    })
-    .map((student: StudentDataProps, index) => {
-      const findClass = classData.find(
-        (classItem: classDataProps) => classItem.id === student.id_class
-      );
+    ? data
+        .filter((student) => {
+          return (
+            !selectedClass ||
+            selectedClass === 0 ||
+            student.id_class === selectedClass
+          );
+        })
+        .map((student: StudentDataProps, index) => {
+          const findClass = classData.find(
+            (classItem: classDataProps) => classItem.id === student.id_class
+          );
 
-      if (findClass) {
-        return {
-          ...student,
-          id: index, 
-          id_class: findClass.grade + ' ' + findClass.name,
-        };
-      }
+          if (findClass) {
+            return {
+              ...student,
+              id: index,
+              id_class: findClass.grade + ' ' + findClass.name,
+            };
+          }
 
-      return {
-        ...student,
-        id: index, 
-      };
-    });
+          return {
+            ...student,
+            id: index,
+          };
+        })
+    : [];
 
-  const deletedStudent = async  () => {
+  const deletedStudent = async () => {
     console.log('deletedStudent clicked', selectedStudentId);
     if (selectedStudentId) {
-     try {
+      try {
         const deleted = await deleteStudent(selectedStudentId);
         setSelectedStudentId(null);
-       console.log('deleted student', selectedStudentId);
-       return deleted
-     } catch (error) {
+        console.log('deleted student', selectedStudentId);
+        return deleted;
+      } catch (error) {
         console.error('API request error', error);
-     }
+      }
     }
   };
 
   return (
-    <Box sx={{ padding: 3 }}>
-        <Delete setOpen={handleClose} name={'Student'} onDelete={deletedStudent} open={open}/>
+    <Box sx={{ padding: 3, width: '87vw' }}>
+      <Delete
+        setOpen={handleClose}
+        name={'Student'}
+        onDelete={deletedStudent}
+        open={open}
+      />
       <h1 className="my-8 text-3xl font-bold text-[#0C4177]">Personal Data</h1>
-      <div className="min-h-screen w-full rounded-3xl bg-white p-5 text-[#0c427770] shadow-md">
+      <div className="min-h-screen   rounded-3xl bg-white p-5 text-[#0c427770] shadow-md">
         <div className="mb-2 flex items-center justify-between">
           <div className="flex gap-4">
             <SearchBar
@@ -126,14 +145,18 @@ const StudentData = () => {
             </div>
           </div>
 
-          <Link
-            href={'/personal-data/student/create'}
+          <div
+            onClick={handleAddStudent}
             className="flex bg-[#31426E] px-5 pb-2 pt-3 text-white sm:rounded-md"
           >
             &#43; <span className="hidden pl-3 sm:flex">Add Student</span>
-          </Link>
+          </div>
         </div>
-        <Table data={filteredData} columnData={columns} searchValue={searchValue} />
+        <Table
+          data={filteredData}
+          columnData={columns}
+          searchValue={searchValue}
+        />
       </div>
     </Box>
   );

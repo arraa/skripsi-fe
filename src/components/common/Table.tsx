@@ -21,6 +21,7 @@ const Table = (props: tableProps) => {
         quickFilterValues: [searchValue],
       }}
        sx={{
+        maxWidth:'80vw',
         border: 'none',
         boxShadow: 'none',
         color: '#0c427770',

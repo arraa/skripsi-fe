@@ -27,7 +27,7 @@ export default function Delete(props: DeleteProps) {
   };
 
   const handleDelete = async () => {
-    console.log('handleDelete clicked');  // Add this for debugging
+    console.log('handleDelete clicked');  
     try {
       onDelete()
       setDeleted(true);
