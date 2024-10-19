@@ -6,9 +6,13 @@ import {
 } from '@mui/x-data-grid';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 
-export const columnData = (handleClickOpen: (id: number) => void): GridColDef[] =>  [
+export const columnData = (
+  handleClickOpen: (id: number) => void,
+  handleUpdate: (id: string) => void
+): GridColDef[] => [
   {
     field: 'actions',
     type: 'actions',
@@ -23,7 +27,7 @@ export const columnData = (handleClickOpen: (id: number) => void): GridColDef[] 
         justifyContent={'center'}
         gap={2}
       >
-        <Link href={`/personal-data/student/update/${params.row.StudentID}`}>
+        <div onClick={ () => handleUpdate(params.row.StudentID)}>
           <GridActionsCellItem
             sx={{ boxShadow: 3, borderRadius: 1, padding: '5px' }}
             key={'edit'}
@@ -37,7 +41,7 @@ export const columnData = (handleClickOpen: (id: number) => void): GridColDef[] 
             }
             label="edit"
           />
-        </Link>
+        </div>
         <GridActionsCellItem
           sx={{ boxShadow: 3, borderRadius: 1, padding: '5px' }}
           key={'delete'}
