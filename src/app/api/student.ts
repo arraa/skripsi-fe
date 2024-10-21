@@ -11,45 +11,49 @@ const formatDate = (date: string | Date): string => {
   const month = String(d.getMonth() + 1).padStart(2, '0');
   const day = String(d.getDate()).padStart(2, '0');
 
-  return `${year}-${month}-${day}`;
+    return `${year}-${month}-${day}`;
 };
 
 const formatStudentData = (data: any) => {
-  if (Array.isArray(data)) {
-    return data.map((student) => ({
-      ...student,
-      date_of_birth: formatDate(student.date_of_birth),
-      accepted_date: formatDate(student.accepted_date),
-    }));
-  }
+    if (Array.isArray(data)) {
+        return data.map((student) => ({
+            ...student,
+            date_of_birth: formatDate(student.date_of_birth),
+            accepted_date: formatDate(student.accepted_date),
+        }));
+    }
 
-  return {
-    ...data,
-    date_of_birth: formatDate(data.date_of_birth),
-    accepted_date: formatDate(data.accepted_date),
-  };
+    return {
+        ...data,
+        date_of_birth: formatDate(data.date_of_birth),
+        accepted_date: formatDate(data.accepted_date),
+    };
 };
 
-export const getStudent = async () => {
-  try {
-    const response = await api.get('api/v1/student/');
-    const data = formatStudentData(response.data.students);
-    return data;
-  } catch (error) {
-    console.error('API request error', error);
-    throw error;
-  }
+export const getStudent = async (accessToken: string) => {
+    try {
+        const response = await api.get('api/v1/student/', {
+            headers: {
+                'Authorization': `Bearer ${accessToken}`,
+            },
+        });
+        const data = formatStudentData(response.data.students);
+        return data;
+    } catch (error) {
+        console.error('API request error', error);
+        throw error;
+    }
 };
 
 export const getStudentById = async (id: string) => {
-  try {
-    const response = await api.get(`api/v1/student/${id}`);
-    const data = formatStudentData(response.data.student);
-    return data;
-  } catch (error) {
-    console.error('API request error', error);
-    throw error;
-  }
+    try {
+        const response = await api.get(`api/v1/student/${id}`);
+        const data = formatStudentData(response.data.student);
+        return data;
+    } catch (error) {
+        console.error('API request error', error);
+        throw error;
+    }
 };
 
 export const createStudent = async (props: StudentDataProps) => {

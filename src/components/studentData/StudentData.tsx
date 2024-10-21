@@ -6,8 +6,8 @@ import Table from '@/components/common/Table';
 import SearchBar from '@/components/common/searchBar';
 import { columnData } from '@/components/studentData/column';
 import {
-  classDataProps,
-  StudentDataProps,
+    classDataProps,
+    StudentDataProps,
 } from '@/components/studentData/types/types';
 import { Box } from '@mui/material';
 import Link from 'next/link';
@@ -55,11 +55,15 @@ const StudentData = () => {
     setSelectedClass(value);
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const result = await getStudent();
-        const resultClass = await getClass();
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const accessToken = await localStorage.getItem('access_token');
+                if (!accessToken) {
+                    throw new Error('Access token not found');
+                }
+                const result = await getStudent(accessToken);
+                const resultClass = await getClass();
 
         setClassData(resultClass);
         setData(result);
@@ -114,51 +118,59 @@ const StudentData = () => {
   };
 
   return (
-    <Box sx={{ padding: 3, width: '87vw' }}>
-      <Delete
-        setOpen={handleClose}
-        name={'Student'}
-        onDelete={deletedStudent}
-        open={open}
-      />
-      <h1 className="my-8 text-3xl font-bold text-[#0C4177]">Personal Data</h1>
-      <div className="min-h-screen   rounded-3xl bg-white p-5 text-[#0c427770] shadow-md">
-        <div className="mb-2 flex items-center justify-between">
-          <div className="flex gap-4">
-            <SearchBar
-              setSearchValue={handleSearchChange}
-              SearchName={'Student'}
-            />
-            <div>
-              <select
-                className="rounded-md shadow-sm focus:border-[#0C4177] focus:ring focus:ring-[#0C4177]/50"
-                value={selectedClass}
-                onChange={(e) => handleClassChange(Number(e.target.value))}
-              >
-                <option value={0}>All Classes</option>
-                {classData.map((classItem) => (
-                  <option key={classItem.id} value={classItem.id}>
-                    {classItem.grade} {classItem.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
+      <Box sx={{ padding: 3, width: '87vw' }}>
+          <Delete
+              setOpen={handleClose}
+              name={'Student'}
+              onDelete={deletedStudent}
+              open={open}
+          />
+          <h1 className='my-8 text-3xl font-bold text-[#0C4177]'>
+              Personal Data
+          </h1>
+          <div className='min-h-screen   rounded-3xl bg-white p-5 text-[#0c427770] shadow-md'>
+              <div className='mb-2 flex items-center justify-between'>
+                  <div className='flex gap-4'>
+                      <SearchBar
+                          setSearchValue={handleSearchChange}
+                          SearchName={'Student'}
+                      />
+                      <div>
+                          <select
+                              className='rounded-md shadow-sm focus:border-[#0C4177] focus:ring focus:ring-[#0C4177]/50'
+                              value={selectedClass}
+                              onChange={(e) =>
+                                  handleClassChange(Number(e.target.value))
+                              }
+                          >
+                              <option value={0}>All Classes</option>
+                              {classData.map((classItem) => (
+                                  <option
+                                      key={classItem.id}
+                                      value={classItem.id}
+                                  >
+                                      {classItem.grade} {classItem.name}
+                                  </option>
+                              ))}
+                          </select>
+                      </div>
+                  </div>
 
-          <div
-            onClick={handleAddStudent}
-            className="flex bg-[#31426E] px-5 pb-2 pt-3 text-white sm:rounded-md"
-          >
-            &#43; <span className="hidden pl-3 sm:flex">Add Student</span>
+                  <div
+                      onClick={handleAddStudent}
+                      className='flex bg-[#31426E] px-5 pb-2 pt-3 text-white sm:rounded-md'
+                  >
+                      &#43;{' '}
+                      <span className='hidden pl-3 sm:flex'>Add Student</span>
+                  </div>
+              </div>
+              <Table
+                  data={filteredData}
+                  columnData={columns}
+                  searchValue={searchValue}
+              />
           </div>
-        </div>
-        <Table
-          data={filteredData}
-          columnData={columns}
-          searchValue={searchValue}
-        />
-      </div>
-    </Box>
+      </Box>
   );
 };
 
