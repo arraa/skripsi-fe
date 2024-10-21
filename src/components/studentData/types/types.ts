@@ -25,7 +25,10 @@ export interface studentFormPageProps {
 }
 
 export interface classDataProps {
-    id: number
-    name: string,
-    grade: string
+    id: number;
+    name: string;
+    Grade: {
+        id: number;
+        grade: number;
+    };
 }
