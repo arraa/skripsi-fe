@@ -20,6 +20,7 @@ export const columnData = (
     width: 150,
     cellClassName: 'actions',
     renderCell: (params: GridRenderCellParams) => (
+      console.log(params),
       <Box
         display="flex"
         flexDirection="row"
@@ -60,11 +61,6 @@ export const columnData = (
     ),
   },
   {
-    field: 'id_class',
-    headerName: 'ID',
-    width: 100,
-  },
-  {
     field: 'name',
     headerName: 'Full Name',
     width: 150,
@@ -80,17 +76,12 @@ export const columnData = (
     width: 180,
   },
   {
-    field: 'school_origin',
-    headerName: 'Religion',
-    width: 100,
-  },
-  {
     field: 'accepted_date',
     headerName: 'Address',
     width: 200,
   },
   {
-    field: 'father_number_phone',
+    field: 'num_phone',
     headerName: 'Phone Number',
     width: 150,
   },
@@ -98,15 +89,5 @@ export const columnData = (
     field: 'email',
     headerName: 'Email',
     width: 200,
-  },
-  {
-    field: 'father_job',
-    headerName: 'Subject',
-    width: 200,
-  },
-  {
-    field: 'mother_name',
-    headerName: 'Homeroom Teacher',
-    width: 150,
   },
 ];

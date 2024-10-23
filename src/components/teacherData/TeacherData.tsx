@@ -14,10 +14,11 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import Delete from '../common/dialog/Delete';
 import { useRouter } from 'next/navigation';
+import { TeacherDataProps } from './types/types';
+import { getTeacher } from '@/app/api/teacher';
 
 const TeacherData = () => {
-  const [data, setData] = useState<StudentDataProps[]>([]);
-  const [classData, setClassData] = useState<classDataProps[]>([]);
+  const [data, setData] = useState<TeacherDataProps[]>([]);
   const [searchValue, setSearchValue] = useState('');
   const [selectedClass, setSelectedClass] = useState<number>();
   const [open, setOpen] = useState(false);
@@ -58,11 +59,15 @@ const TeacherData = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const result = await getStudent();
-        const resultClass = await getClass();
-
-        setClassData(resultClass);
-        setData(result);
+        const result = await getTeacher();
+        console.log(result)
+        
+        const rowsWithId = result.map((row: any) => ({
+          ...row,
+          id: row.TeacherID,  // Map StudentID to id
+        }));
+      
+        setData(rowsWithId);
       } catch (error) {
         console.error('API request error', error);
       }
@@ -70,35 +75,7 @@ const TeacherData = () => {
     fetchData();
   }, []);
 
-  const filteredData = data
-    ? data
-        .filter((student) => {
-          return (
-            !selectedClass ||
-            selectedClass === 0 ||
-            student.id_class === selectedClass
-          );
-        })
-        .map((student: StudentDataProps, index) => {
-          const findClass = classData.find(
-            (classItem: classDataProps) => classItem.id === student.id_class
-          );
-
-          if (findClass) {
-            return {
-              ...student,
-              id: index,
-              id_class: findClass.grade + ' ' + findClass.name,
-            };
-          }
-
-          return {
-            ...student,
-            id: index,
-          };
-        })
-    : [];
-
+  
   const deletedStudent = async () => {
     console.log('deletedStudent clicked', selectedStudentId);
     if (selectedStudentId) {
@@ -130,7 +107,7 @@ const TeacherData = () => {
               SearchName={'Student'}
             />
             <div>
-              <select
+              {/* <select
                 className="rounded-md shadow-sm focus:border-[#0C4177] focus:ring focus:ring-[#0C4177]/50"
                 value={selectedClass}
                 onChange={(e) => handleClassChange(Number(e.target.value))}
@@ -141,7 +118,7 @@ const TeacherData = () => {
                     {classItem.grade} {classItem.name}
                   </option>
                 ))}
-              </select>
+              </select> */}
             </div>
           </div>
 
@@ -153,7 +130,7 @@ const TeacherData = () => {
           </div>
         </div>
         <Table
-          data={filteredData}
+          data={data}
           columnData={columns}
           searchValue={searchValue}
         />

@@ -1,24 +1,20 @@
-export interface StudentDataProps {
-  StudentID?: string;
-  nisn: string;
+export interface UserDataProps {
+  UserID?: string;
   name: string;
   gender: string;
   place_of_birth: string;
   date_of_birth: string;
-  religion: string;
   address: string;
-  number_phone: string;
+  num_phone: string;
   email: string;
-  accepted_date: string;
-  school_origin: string;
-  id_class: number;
-  father_name: string;
-  father_job: string;
-  father_number_phone: string;
-  mother_name: string;
-  mother_job: string;
-  mother_number_phone: string;
 }
+
+export interface TeacherDataProps {
+  TeacherID?: string;
+  id_user?: string;
+  teaching_hour: string;
+  user: UserDataProps;
+} 
 
 export interface studentFormPageProps {
   typePage: string;
