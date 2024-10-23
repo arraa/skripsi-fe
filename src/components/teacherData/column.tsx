@@ -1,4 +1,4 @@
-import { Box } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import {
   GridActionsCellItem,
   GridColDef,
@@ -63,31 +63,66 @@ export const columnData = (
   {
     field: 'name',
     headerName: 'Full Name',
-    width: 150,
+    width: 250,
+    renderCell: (params: GridRenderCellParams) => (
+      <Typography >
+        {params.row.User.name}
+      </Typography>
+    ),
   },
   {
     field: 'gender',
     headerName: 'Sex',
     width: 100,
+    renderCell: (params: GridRenderCellParams) => (
+      <Typography >
+        {params.row.User.gender}
+      </Typography>
+    ),
   },
   {
     field: 'place_of_birth',
     headerName: 'Place & Date of Birth',
     width: 180,
+     renderCell: (params: GridRenderCellParams) => (
+      <Typography >
+        {params.row.User.place_of_birth}
+      </Typography>
+    ),
   },
   {
-    field: 'accepted_date',
+    field: 'address',
     headerName: 'Address',
-    width: 200,
+    width: 300,
+     renderCell: (params: GridRenderCellParams) => (
+      <Typography >
+        {params.row.User.address}
+      </Typography>
+    ),
   },
   {
     field: 'num_phone',
     headerName: 'Phone Number',
-    width: 150,
+    width: 200,
+     renderCell: (params: GridRenderCellParams) => (
+      <Typography >
+        {params.row.User.num_phone}
+      </Typography>
+    ),
   },
   {
     field: 'email',
     headerName: 'Email',
     width: 200,
+     renderCell: (params: GridRenderCellParams) => (
+      <Typography >
+        {params.row.User.email}
+      </Typography>
+    ),
+  },
+  {
+    field: 'teaching_hour',
+    headerName: 'Teaching Hour',
+    width: 160,
   },
 ];
