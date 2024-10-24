@@ -6,8 +6,13 @@ export const login = async (credentials: {
 }) => {
     try {
         const response = await api.post('/api/v1/auth/login', credentials);
-
-        return response.data;
+        if (response.status === 200) {
+            return response.status;
+        } else if (response.status === 401) {
+            throw new Error('Invalid credentials');
+        } else {
+            throw new Error('Login failed');
+        }
     } catch (error) {
         console.error('Login error:', error);
         throw error;

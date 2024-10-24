@@ -2,17 +2,18 @@
 import { StudentDataProps } from '@/components/studentData/types/types';
 import { api } from './axios';
 import { TeacherDataProps } from '@/components/teacherData/types/types';
+import { getAccessToken } from './token';
 
 const formatDate = (date: string | Date): string => {
-  const d = new Date(date);
-  if (isNaN(d.getTime())) {
-    return 'Invalid Date';
-  }
-  const year = d.getFullYear();
-  const month = String(d.getMonth() + 1).padStart(2, '0');
-  const day = String(d.getDate()).padStart(2, '0');
+    const d = new Date(date);
+    if (isNaN(d.getTime())) {
+        return 'Invalid Date';
+    }
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
 
-  return `${year}-${month}-${day}`;
+    return `${year}-${month}-${day}`;
 };
 
 // const formatStudentData = (data: any) => {
@@ -32,15 +33,19 @@ const formatDate = (date: string | Date): string => {
 // };
 
 export const getTeacher = async () => {
-  try {
-    const response = await api.get('api/v1/teacher/');
-    console.log(response)
-    // const data = formatTeacherData(response.data.teachers);
-    return response.data.teachers;
-  } catch (error) {
-    console.error('API request error', error);
-    throw error;
-  }
+    try {
+        const response = await api.get('api/v1/teacher/', {
+            headers: {
+                'Authorization': `Bearer ${await getAccessToken()}`,
+            },
+        });
+        console.log(response);
+        // const data = formatTeacherData(response.data.teachers);
+        return response.data.teachers;
+    } catch (error) {
+        console.error('API request error', error);
+        throw error;
+    }
 };
 
 // export const getStudentById = async (id: string) => {
@@ -55,53 +60,54 @@ export const getTeacher = async () => {
 // };
 
 export const createTeacher = async (props: TeacherDataProps) => {
+    const { teaching_hour } = props;
 
-  const {
-    teaching_hour,
-  } = props;
+    const {
+        name,
+        gender,
+        place_of_birth,
+        date_of_birth,
+        address,
+        num_phone,
+        email,
+    } = props.user;
 
-  const {
-    name,
-    gender,
-    place_of_birth,
-    date_of_birth,
-    address,
-    num_phone,
-    email,
-  } = props.user
+    const data = {
+        name,
+        gender,
+        place_of_birth,
+        date_of_birth,
+        address,
+        num_phone: num_phone.toString(),
+        email,
+        teaching_hour,
+    };
 
-  const data = {
-    name,
-    gender,
-    place_of_birth,
-    date_of_birth,
-    address,
-    num_phone: num_phone.toString(),
-    email,
-    teaching_hour,
-  };
-
-  try {
-    const response = await api.post('api/v1/teacher/create', data);
-    console.log('Update response:', response.data); // Log the response
-    return response.data; // Ensure to return the response data
-  } catch (error) {
-    console.error('Update error:', error); // Log the error
-    throw error; // Rethrow the error for handling in the calling function
-  }
+    try {
+        const response = await api.post('api/v1/teacher/create', data, {
+            headers: {
+                'Authorization': `Bearer ${await getAccessToken()}`,
+            },
+        });
+        console.log('Update response:', response.data); // Log the response
+        return response.data; // Ensure to return the response data
+    } catch (error) {
+        console.error('Update error:', error); // Log the error
+        throw error; // Rethrow the error for handling in the calling function
+    }
 };
 
 // export const createStudentbyExcel = async (props: StudentDataProps[]) => {
- 
+
 //   const data = {
 //     'student-data': props
 //   }
 
 //   try {
 //     const response = await api.post('/api/v1/student/create-all', data);
-//     console.log('create excel response:', response.data); 
+//     console.log('create excel response:', response.data);
 
-//     return response.data; 
+//     return response.data;
 //   } catch (error : any) {
 //     console.log('create excel error:', error.response.data.error); // Log the error
 //     // return error.response.data.error
