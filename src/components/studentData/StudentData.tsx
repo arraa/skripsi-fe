@@ -8,6 +8,8 @@ import { columnData } from '@/components/studentData/column';
 import {
     classDataProps,
     StudentDataProps,
+    classDataProps,
+    StudentDataProps,
 } from '@/components/studentData/types/types';
 import { Box } from '@mui/material';
 import Link from 'next/link';
@@ -26,11 +28,11 @@ const StudentData = () => {
   );
   const router = useRouter();
 
-  const handleClickOpen = (studentId: number) => {
-    setSelectedStudentId(studentId.toString());
-    console.log('handleClickOpen clicked', studentId);
-    setOpen(true);
-  };
+    const handleClickOpen = (studentId: number) => {
+        setSelectedStudentId(studentId.toString());
+        console.log('handleClickOpen clicked', studentId);
+        setOpen(true);
+    };
 
   const handleAddStudent = () => {
     router.push('/personal-data/student/student-form?action=create');
@@ -42,19 +44,28 @@ const StudentData = () => {
 
   const columns = columnData(handleClickOpen, handleUpdate);
 
-  const handleClose = () => {
-    setOpen(false);
-    setSelectedStudentId(null);
-  };
+    const handleClose = () => {
+        setOpen(false);
+        setSelectedStudentId(null);
+    };
 
-  const handleSearchChange = (value: string) => {
-    setSearchValue(value);
-  };
+    const handleSearchChange = (value: string) => {
+        setSearchValue(value);
+    };
 
-  const handleClassChange = (value: number) => {
-    setSelectedClass(value);
-  };
+    const handleClassChange = (value: number) => {
+        setSelectedClass(value);
+    };
 
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const accessToken = await localStorage.getItem('access_token');
+                if (!accessToken) {
+                    throw new Error('Access token not found');
+                }
+                const result = await getStudent(accessToken);
+                const resultClass = await getClass();
     useEffect(() => {
         const fetchData = async () => {
             try {
