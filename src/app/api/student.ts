@@ -33,7 +33,7 @@ const formatStudentData = (data: any) => {
 
 export const getStudent = async () => {
     try {
-        const response = await api.get('api/v1/student/', {
+        const response = await api.get('/student/', {
             headers: {
                 'Authorization': `Bearer ${await getAccessToken()}`,
             },
@@ -48,7 +48,7 @@ export const getStudent = async () => {
 
 export const getStudentById = async (id: string) => {
     try {
-        const response = await api.get(`api/v1/student/${id}`, {
+        const response = await api.get(`/student/${id}`, {
             headers: {
                 'Authorization': `Bearer ${await getAccessToken()}`,
             },
@@ -110,7 +110,7 @@ export const createStudent = async (props: StudentDataProps) => {
     };
 
     try {
-        const response = await api.post('api/v1/student/create', data, {
+        const response = await api.post('/student/create', data, {
             headers: {
                 'Authorization': `Bearer ${await getAccessToken()}`,
             },
@@ -129,7 +129,7 @@ export const createStudentbyExcel = async (props: StudentDataProps[]) => {
     };
 
     try {
-        const response = await api.post('/api/v1/student/create-all', data, {
+        const response = await api.post('//student/create-all', data, {
             headers: {
                 'Authorization': `Bearer ${await getAccessToken()}`,
             },
@@ -187,7 +187,7 @@ export const updateStudent = async (getid: string, props: StudentDataProps) => {
     };
 
     try {
-        const response = await api.put(`api/v1/student/update/${getid}`, data, {
+        const response = await api.put(`/student/update/${getid}`, data, {
             headers: {
                 'Authorization': `Bearer ${await getAccessToken()}`,
             },
@@ -202,7 +202,7 @@ export const updateStudent = async (getid: string, props: StudentDataProps) => {
 
 export const deleteStudent = async (id: string | null) => {
     if (id) {
-        return api.delete(`api/v1/student/delete/${id}`, {
+        return api.delete(`/student/delete/${id}`, {
             headers: {
                 'Authorization': `Bearer ${await getAccessToken()}`,
             },

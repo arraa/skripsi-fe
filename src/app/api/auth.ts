@@ -5,7 +5,7 @@ export const login = async (credentials: {
     password: string;
 }) => {
     try {
-        const response = await api.post('/api/v1/auth/login', credentials);
+        const response = await api.post('/auth/login', credentials);
         if (response.status === 200) {
             return response.status;
         } else if (response.status === 401) {

@@ -4,7 +4,7 @@ import { getAccessToken } from './token';
 
 export const getClass = async () => {
     try {
-        const response = await api.get('api/v1/class/', {
+        const response = await api.get('/class/', {
             headers: {
                 'Authorization': `Bearer ${await getAccessToken()}`,
             },

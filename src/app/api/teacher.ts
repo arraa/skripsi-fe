@@ -34,7 +34,7 @@ const formatDate = (date: string | Date): string => {
 
 export const getTeacher = async () => {
     try {
-        const response = await api.get('api/v1/teacher/', {
+        const response = await api.get('/teacher/', {
             headers: {
                 'Authorization': `Bearer ${await getAccessToken()}`,
             },
@@ -50,7 +50,7 @@ export const getTeacher = async () => {
 
 // export const getStudentById = async (id: string) => {
 //   try {
-//     const response = await api.get(`api/v1/student/${id}`);
+//     const response = await api.get(`/student/${id}`);
 //     const data = formatStudentData(response.data.student);
 //     return data;
 //   } catch (error) {
@@ -84,7 +84,7 @@ export const createTeacher = async (props: TeacherDataProps) => {
     };
 
     try {
-        const response = await api.post('api/v1/teacher/create', data, {
+        const response = await api.post('/teacher/create', data, {
             headers: {
                 'Authorization': `Bearer ${await getAccessToken()}`,
             },
@@ -104,7 +104,7 @@ export const createTeacher = async (props: TeacherDataProps) => {
 //   }
 
 //   try {
-//     const response = await api.post('/api/v1/student/create-all', data);
+//     const response = await api.post('//student/create-all', data);
 //     console.log('create excel response:', response.data);
 
 //     return response.data;
@@ -158,7 +158,7 @@ export const createTeacher = async (props: TeacherDataProps) => {
 //   };
 
 //   try {
-//     const response = await api.put(`api/v1/student/update/${getid}`, data);
+//     const response = await api.put(`/student/update/${getid}`, data);
 //     console.log('Update response:', response.data); // Log the response
 //     return response.data; // Ensure to return the response data
 //   } catch (error) {
@@ -169,6 +169,6 @@ export const createTeacher = async (props: TeacherDataProps) => {
 
 // export const deleteStudent = async (id: string | null) => {
 //   if (id) {
-//     return api.delete(`api/v1/student/delete/${id}`);
+//     return api.delete(`/student/delete/${id}`);
 //   }
 // };
