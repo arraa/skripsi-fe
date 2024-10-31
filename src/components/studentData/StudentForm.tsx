@@ -22,8 +22,6 @@ import { ControllerSelectField } from '../common/form/selectField';
 import { minLength, number, object, pipe, string } from 'valibot';
 import { getClass } from '@/app/api/class';
 import ImportData from '../common/dialog/ImportData';
-import { AxiosResponse } from 'axios';
-import { StringDecoder } from 'string_decoder';
 import { useSearchParams } from 'next/navigation';
 import { Box } from '@mui/material';
 

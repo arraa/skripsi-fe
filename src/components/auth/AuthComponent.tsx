@@ -1,7 +1,7 @@
 'use client';
 
-import { forgetPassword, login } from '@/app/api/auth';
-import { FormEvent, useState } from 'react';
+import { forgetPassword, getNewAccessToken, login } from '@/app/api/auth';
+import { FormEvent, useEffect, useState } from 'react';
 
 
 export function LoginForm() {
@@ -27,6 +27,20 @@ export function LoginForm() {
             setIsLoading(false);
         }
     };
+
+    // const handleSubmitTest = async (e: FormEvent<HTMLFormElement>) => {
+    //     e.preventDefault();
+    //     setIsLoading(true);
+    //     setError('');
+
+    //     try {
+    //         const response = await getNewAccessToken('refreshToken');
+    //         console.log('response', response);
+    //     } catch (err) {
+    //         console.error('Refresh token error:', err);
+    //         setError('Refresh token failed');
+    //     }
+    // }
 
     return (
         <>
@@ -79,6 +93,10 @@ export function LoginForm() {
                     </button>
                 </div>
             </form>
+
+            {/* <form onSubmit={handleSubmitTest}>
+                <button type='submit'>Test</button>
+            </form> */}
         </>
     );
 }

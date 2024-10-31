@@ -31,4 +31,38 @@ export const forgetPassword = async (email: string) => {
         console.error('Forget password error:', error);
         throw error;
     }
-}
+};
+
+export const validateAccesToken = async () => {
+    try {
+        const response = await api.get('/auth/validate-token');
+
+        return response;
+    } catch (error: any) {
+        console.error('Token validation error:', error.response.status);
+        return error.response;
+    }
+};
+
+export const getNewAccessToken = async () => {
+    try {
+        const response = await api.get('/auth/refresh-token');
+
+        return response;
+    } catch (error: any) {
+        console.error('Refresh token error:', error.response);
+        return error.response;
+    }
+};
+
+
+// TODO: refactor like this function
+export const getStudent = async () => {
+    try {
+        const response = await api.get('/student/');
+        return response;
+    } catch (error: any) {
+        console.error('API request error', error);
+        return error.response;
+    }
+};

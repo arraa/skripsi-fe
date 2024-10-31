@@ -31,21 +31,6 @@ const formatStudentData = (data: any) => {
     };
 };
 
-export const getStudent = async () => {
-    try {
-        const response = await api.get('/student/', {
-            headers: {
-                'Authorization': `Bearer ${await getAccessToken()}`,
-            },
-        });
-        const data = formatStudentData(response.data.students);
-        return data;
-    } catch (error: any) {
-        console.error('API request error', error);
-        throw error;
-    }
-};
-
 export const getStudentById = async (id: string) => {
     try {
         const response = await api.get(`/student/${id}`, {

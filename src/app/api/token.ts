@@ -1,14 +1,21 @@
 import { cookies } from 'next/headers';
 
-export const getAccessToken = async () => {
+const getToken = async (name: string) => {
     try {
-        const accessToken = cookies().get('access_token');
-        if (!accessToken) {
+        const token = cookies().get(name);
+        if (!token) {
             return null;
         }
-        return accessToken.value;
+        return token.value;
     } catch (error: any) {
         console.error('Get cookies error:', error);
         throw error;
     }
-};
+}
+export const getAccessToken = async () => {
+    return await getToken('access_token');
+}
+
+export const getRefreshToken = async () => {
+    return await getToken('token');
+}

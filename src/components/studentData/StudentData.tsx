@@ -1,7 +1,7 @@
 'use client';
 
 import { getClass } from '@/app/api/class';
-import { deleteStudent, getStudent } from '@/app/api/student';
+import { deleteStudent } from '@/app/api/student';
 import Table from '@/components/common/Table';
 import SearchBar from '@/components/common/searchBar';
 import { columnData } from '@/components/studentData/column';
@@ -13,6 +13,35 @@ import { Box } from '@mui/material';
 import { useEffect, useState } from 'react';
 import Delete from '../common/dialog/Delete';
 import { useRouter } from 'next/navigation';
+import { getStudent } from '@/app/api/auth';
+
+const formatDate = (date: string | Date): string => {
+    const d = new Date(date);
+    if (isNaN(d.getTime())) {
+        return 'Invalid Date';
+    }
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+
+    return `${year}-${month}-${day}`;
+};
+
+const formatStudentData = (data: any) => {
+    if (Array.isArray(data)) {
+        return data.map((student) => ({
+            ...student,
+            date_of_birth: formatDate(student.date_of_birth),
+            accepted_date: formatDate(student.accepted_date),
+        }));
+    }
+
+    return {
+        ...data,
+        date_of_birth: formatDate(data.date_of_birth),
+        accepted_date: formatDate(data.accepted_date),
+    };
+};
 
 const StudentData = () => {
     const [data, setData] = useState<StudentDataProps[]>([]);
@@ -61,7 +90,8 @@ const StudentData = () => {
             try {
                 const result = await getStudent();
 
-                setData(result);
+                const data = formatStudentData(result.data.students);
+                setData(data);
             } catch (error: any) {
                 console.error('API request error', error);
             }
@@ -70,34 +100,34 @@ const StudentData = () => {
     }, []);
 
     const filteredData = data
-    ? data
-            .filter((student) => {
-                return (
-                    !selectedClass ||
-                    selectedClass === 0 ||
-                    student.id_class === selectedClass
-                );
-            })
-            .map((student: StudentDataProps, index) => {
-                const findClass = classData.find(
-                    (classItem: classDataProps) =>
-                        classItem.id === student.id_class
-                );
+        ? data
+              .filter((student) => {
+                  return (
+                      !selectedClass ||
+                      selectedClass === 0 ||
+                      student.id_class === selectedClass
+                  );
+              })
+              .map((student: StudentDataProps, index) => {
+                  const findClass = classData.find(
+                      (classItem: classDataProps) =>
+                          classItem.id === student.id_class
+                  );
 
-                if (findClass) {
-                    return {
-                        ...student,
-                        id: index,
-                        id_class: findClass.grade + ' ' + findClass.name,
-                    };
-                }
+                  if (findClass) {
+                      return {
+                          ...student,
+                          id: index,
+                          id_class: findClass.grade + ' ' + findClass.name,
+                      };
+                  }
 
-                return {
-                    ...student,
-                    id: index,
-                };
-            })
-    : [];
+                  return {
+                      ...student,
+                      id: index,
+                  };
+              })
+        : [];
 
     const deletedStudent = async () => {
         console.log('deletedStudent clicked', selectedStudentId);

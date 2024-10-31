@@ -1,16 +1,10 @@
 import StudentData from '@/components/studentData/StudentData';
-import { redirect } from 'next/navigation';
-import { getAccessToken } from '../../api/token';
-
+import { AuthProvider } from '@/app/context/provider';
 
 export default async function PersonalData() {
-    const accessToken = await getAccessToken();
-    if (!accessToken) {
-        redirect('/auth/login');
-    }
     return (
-        <>
-            <StudentData/>
-        </>
+        <AuthProvider>
+            <StudentData />
+        </AuthProvider>
     );
 }
