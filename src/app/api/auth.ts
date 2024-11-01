@@ -33,6 +33,25 @@ export const forgetPassword = async (email: string) => {
     }
 };
 
+export const resetPassword = async (data: {
+    token: string;
+    email: string;
+    password: string;
+    password_confirmation: string;
+}) => {
+    try {
+        const response = await api.post('/auth/reset-password', data);
+        if (response.status === 200) {
+            return response.status;
+        } else {
+            throw new Error('Reset password failed');
+        }
+    } catch (error) {
+        console.error('Reset password error:', error);
+        throw error;
+    }
+}
+
 export const validateAccesToken = async () => {
     try {
         const response = await api.get('/auth/validate-token');

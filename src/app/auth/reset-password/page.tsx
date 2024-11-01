@@ -1,3 +1,4 @@
+import { ResetPasswordForm } from '@/components/auth/AuthComponent';
 import { redirect } from 'next/navigation';
 
 export default async function ResetPasswordPage({
@@ -7,7 +8,7 @@ export default async function ResetPasswordPage({
 }) {
     const filters = (await searchParams) as {
         token: string;
-        email: string
+        email: string;
     };
     if (filters === undefined) {
         redirect('/auth/login');
@@ -19,10 +20,5 @@ export default async function ResetPasswordPage({
         redirect('/auth/login');
     }
 
-    return (
-        <>
-            <p className='text-indigo-600'>{token}</p>
-            <p className='text-indigo-600'>{email}</p>
-        </>
-    );
+    return <ResetPasswordForm token={token} email={email} />;
 }
