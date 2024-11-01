@@ -13,35 +13,8 @@ import { Box } from '@mui/material';
 import { useEffect, useState } from 'react';
 import Delete from '../common/dialog/Delete';
 import { useRouter } from 'next/navigation';
-import { getStudent } from '@/app/api/auth';
-
-const formatDate = (date: string | Date): string => {
-    const d = new Date(date);
-    if (isNaN(d.getTime())) {
-        return 'Invalid Date';
-    }
-    const year = d.getFullYear();
-    const month = String(d.getMonth() + 1).padStart(2, '0');
-    const day = String(d.getDate()).padStart(2, '0');
-
-    return `${year}-${month}-${day}`;
-};
-
-const formatStudentData = (data: any) => {
-    if (Array.isArray(data)) {
-        return data.map((student) => ({
-            ...student,
-            date_of_birth: formatDate(student.date_of_birth),
-            accepted_date: formatDate(student.accepted_date),
-        }));
-    }
-
-    return {
-        ...data,
-        date_of_birth: formatDate(data.date_of_birth),
-        accepted_date: formatDate(data.accepted_date),
-    };
-};
+import { getStudent } from '@/app/api/student';
+import { formatStudentData } from '@/lib/formatData';
 
 const StudentData = () => {
     const [data, setData] = useState<StudentDataProps[]>([]);
@@ -118,7 +91,7 @@ const StudentData = () => {
                       return {
                           ...student,
                           id: index,
-                          id_class: findClass.grade + ' ' + findClass.name,
+                          id_class: findClass.Grade.grade + ' ' + findClass.name,
                       };
                   }
 
@@ -175,7 +148,7 @@ const StudentData = () => {
                                         key={classItem.id}
                                         value={classItem.id}
                                     >
-                                        {classItem.grade} {classItem.name}
+                                        {classItem.Grade.grade} {classItem.name}
                                     </option>
                                 ))}
                             </select>

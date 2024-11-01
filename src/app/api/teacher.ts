@@ -2,7 +2,6 @@
 import { StudentDataProps } from '@/components/studentData/types/types';
 import { api } from './axios';
 import { TeacherDataProps } from '@/components/teacherData/types/types';
-import { getAccessToken } from './token';
 
 const formatDate = (date: string | Date): string => {
     const d = new Date(date);
@@ -34,11 +33,7 @@ const formatDate = (date: string | Date): string => {
 
 export const getTeacher = async () => {
     try {
-        const response = await api.get('/teacher/', {
-            headers: {
-                'Authorization': `Bearer ${await getAccessToken()}`,
-            },
-        });
+        const response = await api.get('/teacher/');
         console.log(response);
         // const data = formatTeacherData(response.data.teachers);
         return response.data.teachers;
@@ -84,11 +79,7 @@ export const createTeacher = async (props: TeacherDataProps) => {
     };
 
     try {
-        const response = await api.post('/teacher/create', data, {
-            headers: {
-                'Authorization': `Bearer ${await getAccessToken()}`,
-            },
-        });
+        const response = await api.post('/teacher/create', data);
         console.log('Update response:', response.data); // Log the response
         return response.data; // Ensure to return the response data
     } catch (error) {

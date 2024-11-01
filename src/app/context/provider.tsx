@@ -17,7 +17,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
                         window.location.reload();
                     }
                 } catch (err) {
-                    console.error('Refresh token error:', err);
+                    console.error('error:', err);
                     window.location.href = '/auth/login';
                     return;
                 }

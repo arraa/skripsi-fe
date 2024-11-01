@@ -1,11 +1,12 @@
 'use client';
 
+import { AuthProvider } from '@/app/context/provider';
 import StudentForm from '@/components/studentData/StudentForm';
 
 export default function personalData() {
-  return (
-    <>
-      <StudentForm />
-    </>
-  );
+    return (
+        <AuthProvider>
+            <StudentForm />
+        </AuthProvider>
+    );
 }

@@ -39,7 +39,6 @@ export const validateAccesToken = async () => {
 
         return response;
     } catch (error: any) {
-        console.error('Token validation error:', error.response.status);
         return error.response;
     }
 };
@@ -50,19 +49,7 @@ export const getNewAccessToken = async () => {
 
         return response;
     } catch (error: any) {
-        console.error('Refresh token error:', error.response);
-        return error.response;
-    }
-};
-
-
-// TODO: refactor like this function
-export const getStudent = async () => {
-    try {
-        const response = await api.get('/student/');
-        return response;
-    } catch (error: any) {
-        console.error('API request error', error);
+        console.error('error:', error.response);
         return error.response;
     }
 };
