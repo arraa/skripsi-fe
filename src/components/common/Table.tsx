@@ -11,10 +11,8 @@ const Table = (props: tableProps) => {
     <DataGrid
       rows={data}
       columns={columnData}
-      initialState={{
-        pagination: { paginationModel: { pageSize: 25 } },
-      }}
-      pageSizeOptions={[25, 50, 75]}
+     
+      autoPageSize
       disableRowSelectionOnClick
       filterModel={{
         items: [],

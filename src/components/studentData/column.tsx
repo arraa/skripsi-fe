@@ -5,8 +5,6 @@ import {
   GridRenderCellParams,
 } from '@mui/x-data-grid';
 import Image from 'next/image';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 
 
 export const columnData = (
@@ -20,6 +18,8 @@ export const columnData = (
     width: 150,
     cellClassName: 'actions',
     renderCell: (params: GridRenderCellParams) => (
+      console.log('params', params),
+
       <Box
         display="flex"
         flexDirection="row"
@@ -60,9 +60,12 @@ export const columnData = (
     ),
   },
   {
+    // base on your types
     field: 'name',
+    // what you want to display for table
     headerName: 'Full Name',
     width: 150,
+    valueGetter: (params: GridRenderCellParams) => params.row.name,
   },
   {
     field: 'gender',

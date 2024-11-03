@@ -72,7 +72,7 @@ export default function Sidebar() {
   };
 
   return (
-    <Box sx={{ display: 'flex', marginLeft: '30px' }}>
+    <Box sx={{ display: 'flex', marginLeft: '50px' }}>
       <Drawer
         sx={{
           width: drawerWidth,
