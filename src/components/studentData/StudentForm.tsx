@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import {
     classDataProps,
     StudentDataProps,
-    studentFormPageProps,
 } from './types/types';
 import * as XLSX from 'xlsx';
 import { Button } from '../common/button/button';
