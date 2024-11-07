@@ -1,6 +1,5 @@
 'use client';
 
-import { getClass } from '@/app/api/class';
 import { deleteStudent } from '@/app/api/student';
 import Table from '@/components/common/Table';
 import SearchBar from '@/components/common/searchBar';
@@ -74,32 +73,12 @@ const StudentData = () => {
 
     const filteredData = data
         ? data
-              .filter((student) => {
-                  return (
-                      !selectedClass ||
-                      selectedClass === 0 ||
-                      student.id_class === selectedClass
-                  );
-              })
-              .map((student: StudentDataProps, index) => {
-                  const findClass = classData.find(
-                      (classItem: classDataProps) =>
-                          classItem.id === student.id_class
-                  );
-
-                  if (findClass) {
-                      return {
-                          ...student,
-                          id: index,
-                          id_class: findClass.Grade.grade + ' ' + findClass.name,
-                      };
-                  }
-
-                  return {
-                      ...student,
-                      id: index,
-                  };
-              })
+            .map((student: StudentDataProps, index) => {
+                return {
+                    ...student,
+                    id: index,
+                };
+            })
         : [];
 
     const deletedStudent = async () => {

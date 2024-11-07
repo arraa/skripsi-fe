@@ -11,13 +11,19 @@ export interface StudentDataProps {
     email: string;
     accepted_date: string;
     school_origin: string;
-    id_class: number;
+    id_class: string;
     father_name: string;
     father_job: string;
     father_number_phone: string;
     mother_name: string;
     mother_job: string;
     mother_number_phone: string;
+    ClassName: {
+        name: string;
+        Grade: {
+            grade: string;
+        };
+    };
 }
 
 export interface studentFormPageProps {
