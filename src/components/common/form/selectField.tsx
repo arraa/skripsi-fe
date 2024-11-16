@@ -19,12 +19,14 @@ export const ControllerSelectField = ({
   options,
   placeholder,
   errors,
+  value
 }: ControllerSelectFieldProps) => (
   <div className="flex flex-col gap-2">
     <label htmlFor={name}>{label}</label>
     <Controller
       name={name}
       control={control}
+      defaultValue={value}
       render={({ field }) => (
         <select
           key={id}

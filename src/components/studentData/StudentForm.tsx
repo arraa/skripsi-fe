@@ -1,10 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import {
-    classDataProps,
-    StudentDataProps,
-} from './types/types';
+import { classDataProps, StudentDataProps } from './types/types';
 import * as XLSX from 'xlsx';
 import { Button } from '../common/button/button';
 import {
@@ -102,7 +99,10 @@ const StudentForm = () => {
                 if (id) {
                     const response = await getStudentById(id);
 
-                    const data = formatStudentData(response.data.student);
+                    const data = formatStudentData(
+                        response.data.student,
+                        false
+                    );
                     setData(data);
                 }
             } catch (error) {
@@ -153,8 +153,6 @@ const StudentForm = () => {
     }, [data, reset]);
 
     const onSubmit = async (data: ObjectInput) => {
-        console.log(data);
-
         const newData: StudentDataProps = {
             // studentID: data.studentID,
             nisn: data.nisn,
@@ -175,14 +173,18 @@ const StudentForm = () => {
             mother_name: data.mother_name,
             mother_job: data.mother_job,
             mother_number_phone: data.mother_number_phone,
+            ClassName: {
+                name: '',
+                Grade: {
+                    grade: '',
+                },
+            },
         };
 
         try {
             if (actionType === 'update' && id) {
-                console.log('Updating student with ID:', id);
                 await updateStudent(id, newData);
             } else if (actionType === 'create') {
-                console.log('Creating new student');
                 await createStudent(newData);
             }
             alert(
@@ -193,22 +195,15 @@ const StudentForm = () => {
         } catch (error) {
             console.error('API request error', error);
         }
-        // finally {
-        //   setTimeout(() => {
-        //     window.location.replace('/personal-data/student');
-        //   }, 100);
-        // }
     };
 
     const formatPhoneNumber = (number: string) => {
         if (!number) return '';
 
         if (!number.startsWith('62')) {
-            console.log('number', `+62${number}`);
 
             return `+62${number}`;
         }
-        console.log('number', `+${number}`);
 
         return `+${number}`;
     };
@@ -235,7 +230,6 @@ const StudentForm = () => {
 
             const [, ...studentData] = jsonData;
             if (studentData.length > 0) {
-                console.log('studentData', jsonData);
                 const newDataArray: StudentDataProps[] = [];
                 for (const student of studentData) {
                     const [
@@ -271,7 +265,7 @@ const StudentForm = () => {
                         email: email || '',
                         accepted_date: formatDate(accepted_date) || '',
                         school_origin: school_origin || '',
-                        id_class: Number(id_class) || 0,
+                        id_class: id_class || 0,
                         father_name: father_name || '',
                         father_job: father_job || '',
                         father_number_phone:
@@ -280,13 +274,18 @@ const StudentForm = () => {
                         mother_job: mother_job || '',
                         mother_number_phone:
                             formatPhoneNumber(mother_number_phone),
+                        ClassName: {
+                            name: '',
+                            Grade: {
+                                grade: '',
+                            },
+                        },
                     };
                     newDataArray.push(newData);
                 }
                 try {
                     const respone = await createStudentbyExcel(newDataArray);
 
-                    console.log('respone', respone);
                 } catch (error: any) {
                     console.log('API request error', error.response);
                     throw error;
@@ -440,7 +439,6 @@ const StudentForm = () => {
                             control={control}
                             name='id_class'
                             label='Class'
-                            // eslint-disable-next-line quotes
                             options={classData.map((item: classDataProps) => ({
                                 value: item.id,
                                 label: `${item.Grade.grade}${item.name}`,

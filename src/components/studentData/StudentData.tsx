@@ -114,7 +114,9 @@ const StudentData = () => {
                             SearchName={'Student'}
                         />
                         <div>
+                            <label htmlFor="class-select" className="sr-only">Select Class</label>
                             <select
+                                id="class-select"
                                 className='rounded-md shadow-sm focus:border-[#0C4177] focus:ring focus:ring-[#0C4177]/50'
                                 value={selectedClass}
                                 onChange={(e) =>

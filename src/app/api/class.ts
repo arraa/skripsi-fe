@@ -1,13 +1,11 @@
 import { api } from './axios';
-import { getAccessToken } from './token';
 
 export const getClass = async () => {
     try {
         const response = await api.get('/class/');
-
         return response;
-    } catch (error) {
+    } catch (error: any) {
         console.error('API request error', error);
-        throw error;
+        return error.response;
     }
 };

@@ -1,7 +1,8 @@
 export interface StudentDataProps {
     StudentID?: string;
-    nisn: string;
+    id_class: number;
     name: string;
+    nisn: string;
     gender: string;
     place_of_birth: string;
     date_of_birth: string;
@@ -11,7 +12,6 @@ export interface StudentDataProps {
     email: string;
     accepted_date: string;
     school_origin: string;
-    id_class: string;
     father_name: string;
     father_job: string;
     father_number_phone: string;
