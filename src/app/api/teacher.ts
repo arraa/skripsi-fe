@@ -1,7 +1,7 @@
-'use server';
-import { StudentDataProps } from '@/components/studentData/types/types';
 import { api } from './axios';
 import { TeacherDataProps } from '@/components/teacherData/types/types';
+
+const routeTeacher = '/teacher';
 
 const formatDate = (date: string | Date): string => {
     const d = new Date(date);
@@ -34,28 +34,24 @@ const formatDate = (date: string | Date): string => {
 export const getTeacher = async () => {
     try {
         const response = await api.get('/teacher/');
-        console.log(response);
-        // const data = formatTeacherData(response.data.teachers);
-        return response.data.teachers;
-    } catch (error) {
+        return response;
+    } catch (error: any) {
         console.error('API request error', error);
-        throw error;
+        return error.response;
     }
 };
 
-// export const getStudentById = async (id: string) => {
-//   try {
-//     const response = await api.get(`/student/${id}`);
-//     const data = formatStudentData(response.data.student);
-//     return data;
-//   } catch (error) {
-//     console.error('API request error', error);
-//     throw error;
-//   }
-// };
+export const getTeacherById = async (id: string) => {
+    try {
+        const response = await api.get(`${routeTeacher}/${id}`);
+        return response;
+    } catch (error: any) {
+        console.error('API request error', error);
+        return error.response;
+    }
+};
 
 export const createTeacher = async (props: TeacherDataProps) => {
-    const { teaching_hour } = props;
 
     const {
         name,
@@ -75,16 +71,15 @@ export const createTeacher = async (props: TeacherDataProps) => {
         address,
         num_phone: num_phone.toString(),
         email,
-        teaching_hour,
     };
 
     try {
-        const response = await api.post('/teacher/create', data);
+        const response = await api.post(`${routeTeacher}/create`, data);
         console.log('Update response:', response.data); // Log the response
         return response.data; // Ensure to return the response data
-    } catch (error) {
-        console.error('Update error:', error); // Log the error
-        throw error; // Rethrow the error for handling in the calling function
+    } catch (error: any) {
+        console.error('Update error:', error);
+        return error.response;
     }
 };
 

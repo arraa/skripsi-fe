@@ -1,9 +1,10 @@
 export interface UserDataProps {
-  UserID?: string;
+  id?: string;
   name: string;
   gender: string;
   place_of_birth: string;
   date_of_birth: string;
+  religion: string;
   address: string;
   num_phone: string;
   email: string;
@@ -12,7 +13,6 @@ export interface UserDataProps {
 export interface TeacherDataProps {
   TeacherID?: string;
   id_user?: string;
-  teaching_hour: string;
   user: UserDataProps;
 } 
 
