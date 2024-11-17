@@ -1,28 +1,32 @@
 {
-  "extends": ["next/core-web-vitals", "prettier", "plugin:tailwindcss/recommended"],
-  "plugins": ["tailwindcss", "@typescript-eslint", "import"],
-  "parser": "@typescript-eslint/parser",
-  "rules": {
-      "indent": [
-          "off",
-          4,
-          {
-              "SwitchCase": 1,
-              // Ignore decorators
-              "ignoredNodes": [
-                  "FunctionExpression > .params[decorators.length > 0]",
-                  "FunctionExpression > .params > :matches(Decorator, :not(:first-child))",
-                  "ClassBody.body > PropertyDefinition[decorators.length > 0] > .key"
-              ]
-          }
-      ],
-      "quotes": [
-          "error",
-          "single",
-          {
-              // Allows to use other quotes when necessary
-              "avoidEscape": true
-          }
-      ]
-  }
+    "extends": [
+        "next/core-web-vitals",
+        "prettier",
+        "plugin:tailwindcss/recommended"
+    ],
+    "plugins": ["tailwindcss", "@typescript-eslint", "import"],
+    "parser": "@typescript-eslint/parser",
+    "rules": {
+        "indent": [
+            "off",
+            4,
+            {
+                "SwitchCase": 1,
+                // Ignore decorators
+                "ignoredNodes": [
+                    "FunctionExpression > .params[decorators.length > 0]",
+                    "FunctionExpression > .params > :matches(Decorator, :not(:first-child))",
+                    "ClassBody.body > PropertyDefinition[decorators.length > 0] > .key"
+                ]
+            }
+        ],
+        "quotes": [
+            "error",
+            "single",
+            {
+                // Allows to use other quotes when necessary
+                "avoidEscape": true
+            }
+        ]
+    }
 }
