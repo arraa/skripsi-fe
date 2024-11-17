@@ -224,7 +224,7 @@ const TeacherForm = () => {
                                 'Kristen Katolik',
                                 'Hindu',
                                 'Buddha',
-                                'Konghucu',
+                                'Khonghucu',
                             ].map((value) => ({ label: value }))}
                             placeholder='Please choose student’s Religion.'
                             errors={errors.religion}
@@ -258,10 +258,7 @@ const TeacherForm = () => {
                     </div>
 
                     <div className='mb-4 mt-10 flex justify-end'>
-                        <Button
-                            type='submit'
-                            size={'submit'}
-                        >
+                        <Button type='submit' size={'submit'}>
                             Submit
                         </Button>
                     </div>

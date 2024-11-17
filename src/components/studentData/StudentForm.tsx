@@ -387,7 +387,7 @@ const StudentForm = () => {
                                 'Kristen Katolik',
                                 'Hindu',
                                 'Buddha',
-                                'Konghucu',
+                                'Khonghucu',
                             ].map((value) => ({ label: value }))}
                             placeholder='Please choose student’s Religion.'
                             errors={errors.religion}
