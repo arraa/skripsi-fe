@@ -19,9 +19,9 @@ export const getStudentById = async (id: string) => {
             throw new Error('Error fetching student data');
         }
         return response;
-    } catch (error) {
+    } catch (error: any) {
         console.error('API request error', error);
-        throw error;
+        return error.response;
     }
 };
 
@@ -43,9 +43,9 @@ export const createStudent = async (props: StudentDataProps) => {
         const response = await api.post('/student/create', data);
         console.log('Response:', response.data);
         return response.data;
-    } catch (error) {
+    } catch (error:any) {
         console.error('Error:', error);
-        throw error;
+        return error.response;
     }
 };
 
@@ -60,9 +60,8 @@ export const createStudentbyExcel = async (props: StudentDataProps[]) => {
 
         return response.data;
     } catch (error: any) {
-        console.log('create excel error:', error.response.data.error); // Log the error
-        // return error.response.data.error
-        throw error;
+        console.log('create excel error:', error.response.data.error);
+        return error.response;
     }
 };
 
@@ -84,9 +83,9 @@ export const updateStudent = async (getid: string, props: StudentDataProps) => {
         const response = await api.put(`/student/update/${getid}`, data);
         console.log('Update response:', response.data); // Log the response
         return response.data; // Ensure to return the response data
-    } catch (error) {
+    } catch (error:any) {
         console.error('Update error:', error); // Log the error
-        throw error; // Rethrow the error for handling in the calling function
+        return error.response;
     }
 };
 
