@@ -30,11 +30,3 @@ export interface gradeDataProps {
   grade: string;
 }
 
-export interface classDataProps {
-  id: number;
-  id_grade: string;
-  id_teacher: string;
-  name: string;
-  Grade: gradeDataProps;
-
-}

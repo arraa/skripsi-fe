@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react';
 import {
-  classDataProps,
   StudentDataProps,
   studentFormPageProps,
 } from './types/types';
@@ -24,6 +23,7 @@ import { getClass } from '@/app/api/class';
 import ImportData from '../common/dialog/ImportData';
 import { useSearchParams } from 'next/navigation';
 import { Box } from '@mui/material';
+import { classDataProps } from '../classGenerator/types/types';
 
 type ObjectInput = InferInput<typeof ObjectSchema>;
 
@@ -108,7 +108,7 @@ const StudentForm = () => {
       if (id) {
         const response = await getStudentById(id);
 
-        setData(response);
+        setData(response.data);
       }
     } catch (error) {
       console.error('API request error', error);
@@ -462,7 +462,7 @@ const StudentForm = () => {
                 classData
                   ? classData.map((item: classDataProps) => ({
                       value: item.id,
-                      label: `${item.Grade.grade}${item.name}`,
+                      label: `${item.Grade?.grade}${item.name}`,
                     }))
                   : []
               }

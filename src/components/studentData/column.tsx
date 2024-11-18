@@ -65,7 +65,6 @@ export const columnData = (
     // what you want to display for table
     headerName: 'Full Name',
     width: 150,
-    valueGetter: (params: GridRenderCellParams) => params.row.name,
   },
   {
     field: 'gender',
