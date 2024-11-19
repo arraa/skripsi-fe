@@ -71,11 +71,11 @@ const StudentData = () => {
 
     const filteredData = data
         ? data.map((student: StudentDataProps, index) => {
-			return {
-				...student,
-				id: index,
-			};
-		})
+            return {
+                ...student,
+                id: index,
+            };
+        })
         : [];
 
     const deletedStudent = async () => {
