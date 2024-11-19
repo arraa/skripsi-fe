@@ -35,7 +35,7 @@ export default function ImportData(props: ImportData) {
     } catch (error) {
       console.error('Failed to submit', error);
     }
-    // handleClose();
+    handleClose();
   };
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {

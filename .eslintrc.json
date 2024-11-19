@@ -8,7 +8,7 @@
     "parser": "@typescript-eslint/parser",
     "rules": {
         "indent": [
-            "off",
+            "error",
             4,
             {
                 "SwitchCase": 1,

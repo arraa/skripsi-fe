@@ -1,6 +1,6 @@
 export interface StudentDataProps {
     StudentID?: string;
-    id_class: number;
+    class_id: number;
     name: string;
     nisn: string;
     gender: string;

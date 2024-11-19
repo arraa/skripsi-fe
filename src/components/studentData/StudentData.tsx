@@ -4,16 +4,14 @@ import { deleteStudent } from '@/app/api/student';
 import Table from '@/components/common/Table';
 import SearchBar from '@/components/common/searchBar';
 import { columnData } from '@/components/studentData/column';
-import {
-    classDataProps,
-    StudentDataProps,
-} from '@/components/studentData/types/types';
+import { StudentDataProps } from '@/components/studentData/types/types';
 import { Box } from '@mui/material';
 import { useEffect, useState } from 'react';
 import Delete from '../common/dialog/Delete';
 import { useRouter } from 'next/navigation';
 import { getStudent } from '@/app/api/student';
 import { formatStudentData } from '@/lib/formatData';
+import { classDataProps } from '../classGenerator/types/types';
 
 const StudentData = () => {
     const [data, setData] = useState<StudentDataProps[]>([]);
@@ -72,13 +70,12 @@ const StudentData = () => {
     }, []);
 
     const filteredData = data
-        ? data
-            .map((student: StudentDataProps, index) => {
-                return {
-                    ...student,
-                    id: index,
-                };
-            })
+        ? data.map((student: StudentDataProps, index) => {
+            return {
+                ...student,
+                id: index,
+            };
+        })
         : [];
 
     const deletedStudent = async () => {
@@ -114,9 +111,11 @@ const StudentData = () => {
                             SearchName={'Student'}
                         />
                         <div>
-                            <label htmlFor="class-select" className="sr-only">Select Class</label>
+                            <label htmlFor='class-select' className='sr-only'>
+                                Select Class
+                            </label>
                             <select
-                                id="class-select"
+                                id='class-select'
                                 className='rounded-md shadow-sm focus:border-[#0C4177] focus:ring focus:ring-[#0C4177]/50'
                                 value={selectedClass}
                                 onChange={(e) =>
@@ -129,7 +128,8 @@ const StudentData = () => {
                                         key={classItem.id}
                                         value={classItem.id}
                                     >
-                                        {classItem.Grade.grade} {classItem.name}
+                                        {classItem.Grade?.grade}{' '}
+                                        {classItem.name}
                                     </option>
                                 ))}
                             </select>
@@ -144,11 +144,13 @@ const StudentData = () => {
                         <span className='hidden pl-3 sm:flex'>Add Student</span>
                     </div>
                 </div>
-                <Table
-                    data={filteredData}
-                    columnData={columns}
-                    searchValue={searchValue}
-                />
+                <div className='flex h-full items-center justify-between'>
+                    <Table
+                        data={filteredData}
+                        columnData={columns}
+                        searchValue={searchValue}
+                    />
+                </div>
             </div>
         </Box>
     );

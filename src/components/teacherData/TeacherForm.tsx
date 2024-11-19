@@ -2,10 +2,10 @@
 
 import { useEffect, useState } from 'react';
 import {
-  classDataProps,
-  UserDataProps,
-  TeacherDataProps,
-  studentFormPageProps,
+    classDataProps,
+    UserDataProps,
+    TeacherDataProps,
+    studentFormPageProps,
 } from './types/types';
 import * as XLSX from 'xlsx';
 import { Button } from '../common/button/button';
@@ -224,7 +224,7 @@ const TeacherForm = () => {
                                 'Kristen Katolik',
                                 'Hindu',
                                 'Buddha',
-                                'Khonghucu',
+                                'Konghucu',
                             ].map((value) => ({ label: value }))}
                             placeholder='Please choose student’s Religion.'
                             errors={errors.religion}

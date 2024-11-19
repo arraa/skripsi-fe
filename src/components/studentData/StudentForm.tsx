@@ -36,7 +36,7 @@ const ObjectSchema = object({
     email: pipe(string(), minLength(1, 'Email is required')),
     accepted_date: pipe(string(), minLength(1, 'Accepted Date is required')),
     school_origin: pipe(string(), minLength(1, 'School Origin is required')),
-    id_class: pipe(string(), minLength(1, 'Class is required')),
+    class_id: pipe(string(), minLength(1, 'Class is required')),
     father_name: pipe(string(), minLength(1, 'Father Name is required')),
     father_job: pipe(string(), minLength(1, 'Father Job is required')),
     father_number_phone: pipe(
@@ -79,7 +79,7 @@ const StudentForm = () => {
             email: '',
             accepted_date: '',
             school_origin: '',
-            id_class: '',
+            class_id: '',
             father_name: '',
             father_job: '',
             father_number_phone: '',
@@ -141,7 +141,7 @@ const StudentForm = () => {
                 email: data.email || '',
                 accepted_date: data.accepted_date || '',
                 school_origin: data.school_origin || '',
-                id_class: data.id_class?.toString() || '',
+                class_id: data.class_id?.toString() || '',
                 father_name: data.father_name || '',
                 father_job: data.father_job || '',
                 father_number_phone: data.father_number_phone || '',
@@ -166,7 +166,7 @@ const StudentForm = () => {
             email: data.email,
             accepted_date: data.accepted_date,
             school_origin: data.school_origin,
-            id_class: Number(data.id_class),
+            class_id: Number(data.class_id),
             father_name: data.father_name,
             father_job: data.father_job,
             father_number_phone: data.father_number_phone,
@@ -182,18 +182,24 @@ const StudentForm = () => {
         };
 
         try {
+            let response;
             if (actionType === 'update' && id) {
-                await updateStudent(id, newData);
+                response = await updateStudent(id, newData);
             } else if (actionType === 'create') {
-                await createStudent(newData);
+                response = await createStudent(newData);
             }
-            alert(
-                actionType === 'update'
-                    ? 'Student updated successfully'
-                    : 'Student created successfully'
-            );
+			if (response?.status === 200) {
+				alert(
+					actionType === 'update'
+						? 'Student updated successfully'
+						: 'Student created successfully'
+				);
+			} else {
+				alert('Failed to create student');
+			}
         } catch (error) {
             console.error('API request error', error);
+			alert('Failed to create student');
         }
     };
 
@@ -201,7 +207,6 @@ const StudentForm = () => {
         if (!number) return '';
 
         if (!number.startsWith('62')) {
-
             return `+62${number}`;
         }
 
@@ -244,7 +249,7 @@ const StudentForm = () => {
                         email,
                         accepted_date,
                         school_origin,
-                        id_class,
+                        class_id,
                         father_name,
                         father_job,
                         father_number_phone,
@@ -265,7 +270,7 @@ const StudentForm = () => {
                         email: email || '',
                         accepted_date: formatDate(accepted_date) || '',
                         school_origin: school_origin || '',
-                        id_class: id_class || 0,
+                        class_id: class_id || 0,
                         father_name: father_name || '',
                         father_job: father_job || '',
                         father_number_phone:
@@ -285,7 +290,6 @@ const StudentForm = () => {
                 }
                 try {
                     const respone = await createStudentbyExcel(newDataArray);
-
                 } catch (error: any) {
                     console.log('API request error', error.response);
                     throw error;
@@ -387,7 +391,7 @@ const StudentForm = () => {
                                 'Kristen Katolik',
                                 'Hindu',
                                 'Buddha',
-                                'Khonghucu',
+                                'Konghucu',
                             ].map((value) => ({ label: value }))}
                             placeholder='Please choose student’s Religion.'
                             errors={errors.religion}
@@ -437,15 +441,15 @@ const StudentForm = () => {
                         />
                         <ControllerSelectField
                             control={control}
-                            name='id_class'
+                            name='class_id'
                             label='Class'
                             options={classData.map((item: classDataProps) => ({
                                 value: item.id,
                                 label: `${item.Grade.grade}${item.name}`,
                             }))}
                             placeholder='Please choose student’s Class.'
-                            errors={errors.id_class}
-                            value={data?.id_class}
+                            errors={errors.class_id}
+                            value={data?.class_id}
                         />
                     </div>
                     <h1 className='my-8 text-xl text-[#0C4177]'>

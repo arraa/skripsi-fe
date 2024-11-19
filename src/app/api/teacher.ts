@@ -52,7 +52,6 @@ export const getTeacherById = async (id: string) => {
 };
 
 export const createTeacher = async (props: TeacherDataProps) => {
-
     const {
         name,
         gender,
