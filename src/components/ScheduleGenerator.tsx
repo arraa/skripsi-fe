@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import { useState } from 'react';
 
 type SubjectTeacher = {
@@ -7,16 +7,16 @@ type SubjectTeacher = {
 };
 
 const subjectsTeachers: SubjectTeacher[] = [
-  { subject: "Matematika", teachers: ["Guru A", "Guru B"] },
-  { subject: "Bahasa Inggris", teachers: ["Guru C", "Guru D", "Guru E"] },
-  { subject: "Biologi", teachers: ["Guru F", "Guru G", "Guru H"] },
-  { subject: "Fisika", teachers: ["Guru I", "Guru J", "Guru K"] },
-  { subject: "Kimia", teachers: ["Guru L", "Guru M", "Guru N"] },
-  { subject: "Sejarah", teachers: ["Guru O", "Guru P", "Guru Q", "Guru R"] }
+  { subject: 'Matematika', teachers: ['Guru A', 'Guru B'] },
+  { subject: 'Bahasa Inggris', teachers: ['Guru C', 'Guru D', 'Guru E'] },
+  { subject: 'Biologi', teachers: ['Guru F', 'Guru G', 'Guru H'] },
+  { subject: 'Fisika', teachers: ['Guru I', 'Guru J', 'Guru K'] },
+  { subject: 'Kimia', teachers: ['Guru L', 'Guru M', 'Guru N'] },
+  { subject: 'Sejarah', teachers: ['Guru O', 'Guru P', 'Guru Q', 'Guru R'] }
 ];
 
 const generateSchedule = (): Schedule => {
-  const days: string[] = ["Senin", "Selasa", "Rabu", "Kamis", "Jumat"];
+  const days: string[] = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat'];
   const schedule: Schedule = {};
 
   days.forEach(day => {

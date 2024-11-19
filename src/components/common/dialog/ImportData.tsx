@@ -84,7 +84,8 @@ export default function ImportData(props: ImportData) {
                 className="absolute w-full opacity-0"
                 accept=".xlsx, .xls"
                 type="file"
-                onChange={handleFileChange} 
+                onChange={handleFileChange}
+                title="Choose a file to import"
               />
               {selectedFile ? 're-Choose File' : 'Choose File'}
             </Button>

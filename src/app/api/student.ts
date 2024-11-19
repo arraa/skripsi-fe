@@ -1,17 +1,18 @@
 import { StudentDataProps } from '@/components/studentData/types/types';
 import { api } from './axios';
+import { AxiosResponse } from 'axios';
 
-export const getStudent = async () => {
+export const getStudent = async (): Promise<AxiosResponse> => {
     try {
         const response = await api.get('/student/');
         return response;
-    } catch (error: any) {
+    } catch (error) {
         console.error('API request error', error);
-        return error.response;
+        return Promise.reject(error);
     }
 };
 
-export const getStudentById = async (id: string) => {
+export const getStudentById = async (id: string): Promise<AxiosResponse> => {
     try {
         const response = await api.get(`/student/${id}`);
 
@@ -21,11 +22,11 @@ export const getStudentById = async (id: string) => {
         return response;
     } catch (error) {
         console.error('API request error', error);
-        throw error;
+        return Promise.reject(error);
     }
 };
 
-export const createStudent = async (props: StudentDataProps) => {
+export const createStudent = async (props: StudentDataProps): Promise<AxiosResponse> => {
     const { name, gender, date_of_birth } = props;
 
     if (!name || !gender || !date_of_birth) {
@@ -41,32 +42,29 @@ export const createStudent = async (props: StudentDataProps) => {
 
     try {
         const response = await api.post('/student/create', data);
-        console.log('Response:', response.data);
-        return response.data;
+        return response;
     } catch (error) {
         console.error('Error:', error);
-        throw error;
+        return Promise.reject(error);
     }
 };
 
-export const createStudentbyExcel = async (props: StudentDataProps[]) => {
+export const createStudentbyExcel = async (props: StudentDataProps[]): Promise<AxiosResponse> => {
     const data = {
         'student-data': props,
     };
 
     try {
         const response = await api.post('//student/create-all', data);
-        console.log('create excel response:', response.data);
 
-        return response.data;
-    } catch (error: any) {
-        console.log('create excel error:', error.response.data.error); // Log the error
-        // return error.response.data.error
-        throw error;
+        return response;
+    } catch (error) {
+        console.log('create excel error:', error);
+        return Promise.reject(error);
     }
 };
 
-export const updateStudent = async (getid: string, props: StudentDataProps) => {
+export const updateStudent = async (getid: string, props: StudentDataProps): Promise<AxiosResponse> => {
     const { name, gender, date_of_birth } = props;
 
     if (!name || !gender || !date_of_birth) {
@@ -82,16 +80,22 @@ export const updateStudent = async (getid: string, props: StudentDataProps) => {
 
     try {
         const response = await api.put(`/student/update/${getid}`, data);
-        console.log('Update response:', response.data); // Log the response
-        return response.data; // Ensure to return the response data
+        return response; // Ensure to return the response data
     } catch (error) {
         console.error('Update error:', error); // Log the error
-        throw error; // Rethrow the error for handling in the calling function
+        return Promise.reject(error);
     }
 };
 
-export const deleteStudent = async (id: string | null) => {
+export const deleteStudent = async (id: string | null): Promise<AxiosResponse> => {
     if (id) {
-        return api.delete(`/student/delete/${id}`);
+        try {
+            const response = await api.delete(`/student/delete/${id}`);
+            return response;
+        } catch (error) {
+            console.error('API request error', error);
+            return Promise.reject(error);
+        }
     }
+    return Promise.reject(new Error('No student id provided'));
 };
