@@ -4,19 +4,18 @@ export interface AttandanceProps {
     hadir: number;
     sakit: number;
     alfa: number;
-  }
+}
 
-  export interface AttandanceFormProps {
+export interface AttandanceFormProps {
     id: number;
     student_id: string;
     date: Date;
     reason: string;
     sex?: string;
-  }
+}
 
-
-  export type AttendanceFormData = {
+export type AttendanceFormData = {
     [key: string]: {
-      reason: string;
+        reason: string;
     };
-  };
+};

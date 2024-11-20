@@ -6,12 +6,12 @@ import { Box } from '@mui/material';
 import { getClass } from '@/app/api/class';
 import { useEffect, useState } from 'react';
 import { Button } from '../common/button/button';
-import Delete from '../common/dialog/Delete';
 import { AttandanceProps } from './type/types';
-import { classDataProps } from '../classGenerator/types/types';
+import { classDataProps } from '../studentData/types/types';
 import { columnData } from './column';
 import { useRouter } from 'next/navigation';
 import { getAttendanceByMonth } from '@/app/api/attendance';
+import { formatDateAttendance } from './interface/dateInterface';
 
 const AttandanceToday = () => {
     const attandanceData = [
@@ -54,7 +54,6 @@ const AttandanceToday = () => {
 
     const grade = [7, 8, 9];
     const [classData, setClassData] = useState<classDataProps[]>([]);
-
     const [attandance, setAttandance] =
         useState<AttandanceProps[]>(attandanceData);
     const [NewClass, setNewClass] = useState<string>('');
@@ -82,17 +81,28 @@ const AttandanceToday = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const result = await getAttendanceByMonth(selectedClass, new Date('2024-08-01'));
+                const result = await getAttendanceByMonth(
+                    selectedClass,
+                    new Date('2024-08-01')
+                );
 
-                console.log('result data', result);
+                setAttandance(
+                    result.attendance.map((item, index: number) => ({
+                        id: index,
+                        date: formatDateAttendance(item.date),
+                        hadir: item.present_total,
+                        sakit: item.sick_total,
+                        alfa: item.absent_total,
+                    }))
+                );
             } catch (error) {
                 console.error('API request error', error);
             }
-        }
+        };
         if (selectedClass !== 0) {
             fetchData();
         }
-    } , [classData, selectedClass]);
+    }, [classData, selectedClass]);
     const handleEditAttandance = (id: number) => {
         router.push('/attendance/attendance-form?action=edit&');
     };
@@ -133,10 +143,10 @@ const AttandanceToday = () => {
                         }
                     >
                         {classData &&
-                            classData.map((classItem) => (
-                                <option key={classItem.id} value={classItem.id}>
-                                    Class&ensp; {classItem.Grade?.grade}
-                                    {classItem.name}
+                            classData.map((item: classDataProps) => (
+                                <option key={item.id} value={item.id}>
+                                    Class&ensp; {item.Grade?.grade}
+                                    {item.name}
                                 </option>
                             ))}
                     </select>
