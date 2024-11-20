@@ -82,7 +82,7 @@ const AttandanceToday = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const result = await getAttendanceByMonth(selectedClass, new Date("2024-08-01"));
+                const result = await getAttendanceByMonth(selectedClass, new Date('2024-08-01'));
 
                 console.log('result data', result);
             } catch (error) {

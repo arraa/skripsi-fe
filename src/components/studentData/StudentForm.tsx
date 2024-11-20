@@ -21,6 +21,7 @@ import { useSearchParams } from 'next/navigation';
 import { Box } from '@mui/material';
 import { getStudentById } from '@/app/api/student';
 import { formatStudentData } from '@/lib/formatData';
+import { religionList } from '@/constant/religionList';
 
 type ObjectInput = InferInput<typeof ObjectSchema>;
 
@@ -188,18 +189,18 @@ const StudentForm = () => {
             } else if (actionType === 'create') {
                 response = await createStudent(newData);
             }
-			if (response?.status === 200) {
-				alert(
-					actionType === 'update'
-						? 'Student updated successfully'
-						: 'Student created successfully'
-				);
-			} else {
-				alert('Failed to create student');
-			}
+            if (response?.status === 200) {
+                alert(
+                    actionType === 'update'
+                        ? 'Student updated successfully'
+                        : 'Student created successfully'
+                );
+            } else {
+                alert('Failed to create student');
+            }
         } catch (error) {
             console.error('API request error', error);
-			alert('Failed to create student');
+            alert('Failed to create student');
         }
     };
 
@@ -385,14 +386,9 @@ const StudentForm = () => {
                             control={control}
                             name='religion'
                             label='Religion'
-                            options={[
-                                'Islam',
-                                'Kristen Protestan',
-                                'Kristen Katolik',
-                                'Hindu',
-                                'Buddha',
-                                'Konghucu',
-                            ].map((value) => ({ label: value }))}
+                            options={religionList.map((value) => ({
+                                label: value,
+                            }))}
                             placeholder='Please choose student’s Religion.'
                             errors={errors.religion}
                             value={data?.religion}

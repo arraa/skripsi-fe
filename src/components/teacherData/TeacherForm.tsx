@@ -24,6 +24,7 @@ import { minLength, number, object, pipe, string } from 'valibot';
 import { AxiosResponse } from 'axios';
 import { useSearchParams } from 'next/navigation';
 import { Box } from '@mui/material';
+import { religionList } from '@/constant/religionList';
 
 type ObjectInput = InferInput<typeof ObjectSchema>;
 
@@ -218,14 +219,7 @@ const TeacherForm = () => {
                             control={control}
                             name='religion'
                             label='Religion'
-                            options={[
-                                'Islam',
-                                'Kristen Protestan',
-                                'Kristen Katolik',
-                                'Hindu',
-                                'Buddha',
-                                'Konghucu',
-                            ].map((value) => ({ label: value }))}
+                            options={religionList.map((value) => ({ label: value }))}
                             placeholder='Please choose student’s Religion.'
                             errors={errors.religion}
                             value={data?.user.religion}
