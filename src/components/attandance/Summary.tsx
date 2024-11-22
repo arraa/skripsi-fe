@@ -3,7 +3,7 @@
 import Table from '@/components/common/Table';
 
 import { Box } from '@mui/material';
-import { deleteClass, getClass } from '@/app/api/class';
+import { getClass } from '@/app/api/class';
 import { useEffect, useState } from 'react';
 import { Button } from '../common/button/button';
 import Delete from '../common/dialog/Delete';
@@ -70,7 +70,7 @@ const AttandanceSummary = () => {
 
                 console.log(resultClass);
 
-                setClassData(resultClass);
+                setClassData(resultClass.data.ClassName);
             } catch (error) {
                 console.error('API request error', error);
             }
@@ -85,7 +85,11 @@ const AttandanceSummary = () => {
                     Attendance
                 </h1>
                 <div className='flex cursor-pointer bg-[#31426E]  text-white sm:rounded-md'>
+                    <label htmlFor='select-class' className='sr-only'>
+                        Select Class
+                    </label>
                     <select
+                        id='select-class'
                         className='mx-2 w-full bg-transparent px-6 py-3 text-lg'
                         value={selectedClass}
                         onChange={(e) =>

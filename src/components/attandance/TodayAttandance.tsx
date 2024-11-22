@@ -14,48 +14,10 @@ import { getAttendanceByMonth } from '@/app/api/attendance';
 import { formatDateAttendance } from './interface/dateInterface';
 
 const AttandanceToday = () => {
-    const attandanceData = [
-        {
-            id: 1,
-            date: '2024-11-01',
-            hadir: 20,
-            sakit: 2,
-            alfa: 1,
-        },
-        {
-            id: 2,
-            date: '2024-11-02',
-            hadir: 18,
-            sakit: 3,
-            alfa: 2,
-        },
-        {
-            id: 3,
-            date: '2024-11-03',
-            hadir: 22,
-            sakit: 1,
-            alfa: 0,
-        },
-        {
-            id: 4,
-            date: '2024-11-04',
-            hadir: 19,
-            sakit: 4,
-            alfa: 1,
-        },
-        {
-            id: 5,
-            date: '2024-11-05',
-            hadir: 21,
-            sakit: 2,
-            alfa: 2,
-        },
-    ];
-
     const grade = [7, 8, 9];
     const [classData, setClassData] = useState<classDataProps[]>([]);
     const [attandance, setAttandance] =
-        useState<AttandanceProps[]>(attandanceData);
+        useState<AttandanceProps[]>([]);
     const [NewClass, setNewClass] = useState<string>('');
     const [open, setOpen] = useState(false);
     const [selectedClass, setSelectedClass] = useState<number>(0);
@@ -135,7 +97,11 @@ const AttandanceToday = () => {
                     Attendance
                 </h1>
                 <div className='flex cursor-pointer bg-[#31426E]  text-white sm:rounded-md'>
+                    <label htmlFor='class-select' className='sr-only'>
+                        Select Class
+                    </label>
                     <select
+                        id='class-select'
                         className='mx-2 w-full bg-transparent px-6 py-3 text-lg'
                         value={selectedClass}
                         onChange={(e) =>
@@ -160,7 +126,11 @@ const AttandanceToday = () => {
                     </Button>
 
                     <div className='flex cursor-pointer bg-[#31426E]  text-white sm:rounded-md'>
+                        <label htmlFor='select-class-add-attendance' className='sr-only'>
+                            Select Class
+                        </label>
                         <select
+                            id='select-class-add-attendance'
                             className='mx-2  bg-transparent px-6 py-2 text-lg'
                             value={selectedClass}
                             onChange={(e) =>
