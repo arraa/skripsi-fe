@@ -1,4 +1,4 @@
-export interface AttandanceProps {
+export interface AttendanceProps {
     id?: number;
     date: string;
     hadir: number;
@@ -6,7 +6,7 @@ export interface AttandanceProps {
     alfa: number;
 }
 
-export interface AttandanceFormProps {
+export interface AttendanceFormProps {
     id: number;
     student_id: string;
     date: Date;

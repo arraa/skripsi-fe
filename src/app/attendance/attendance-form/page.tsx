@@ -1,5 +1,10 @@
-import AttandanceForm from '@/components/attandance/FormAttandance';
+import { AuthProvider } from '@/app/context/provider';
+import AttendanceForm from '@/components/attendance/FormAttendance';
 
 export default function formAttendance() {
-    return <AttandanceForm />;
+    return (
+        <AuthProvider>
+            <AttendanceForm />
+        </AuthProvider>
+    );
 }

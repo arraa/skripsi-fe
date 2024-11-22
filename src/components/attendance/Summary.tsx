@@ -7,13 +7,13 @@ import { getClass } from '@/app/api/class';
 import { useEffect, useState } from 'react';
 import { Button } from '../common/button/button';
 import Delete from '../common/dialog/Delete';
-import { AttandanceProps } from './type/types';
+import { AttendanceProps } from './type/types';
 import { classDataProps } from '../classGenerator/types/types';
 import { columnData, columnDataSummary } from './column';
 import { useRouter } from 'next/navigation';
 
-const AttandanceSummary = () => {
-    const attandanceData = [
+const AttendanceSummary = () => {
+    const attendanceData = [
         {
             'id': 1,
             'name': 'John Doe',
@@ -108,10 +108,10 @@ const AttandanceSummary = () => {
             </div>
             {/* <div className=' h-[80vh] bg-white'> */}
             <div className='flex h-[80vh] flex-col gap-4 rounded-3xl bg-white p-5 text-[#0c427770] shadow-md'>
-                <Table data={attandanceData} columnData={columnDataSummary()} />
+                <Table data={attendanceData} columnData={columnDataSummary()} />
             </div>
         </Box>
     );
 };
 
-export default AttandanceSummary;
+export default AttendanceSummary;

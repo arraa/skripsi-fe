@@ -6,18 +6,18 @@ import { Box } from '@mui/material';
 import { getClass } from '@/app/api/class';
 import { useEffect, useState } from 'react';
 import { Button } from '../common/button/button';
-import { AttandanceProps } from './type/types';
+import { AttendanceProps } from './type/types';
 import { classDataProps } from '../studentData/types/types';
 import { columnData } from './column';
 import { useRouter } from 'next/navigation';
 import { getAttendanceByMonth } from '@/app/api/attendance';
 import { formatDateAttendance } from './interface/dateInterface';
 
-const AttandanceToday = () => {
+const AttendanceToday = () => {
     const grade = [7, 8, 9];
     const [classData, setClassData] = useState<classDataProps[]>([]);
-    const [attandance, setAttandance] =
-        useState<AttandanceProps[]>([]);
+    const [attendance, setAttendance] =
+        useState<AttendanceProps[]>([]);
     const [NewClass, setNewClass] = useState<string>('');
     const [open, setOpen] = useState(false);
     const [selectedClass, setSelectedClass] = useState<number>(0);
@@ -48,7 +48,7 @@ const AttandanceToday = () => {
                     new Date('2024-08-01')
                 );
 
-                setAttandance(
+                setAttendance(
                     result.attendance.map((item, index: number) => ({
                         id: index,
                         date: formatDateAttendance(item.date),
@@ -65,14 +65,14 @@ const AttandanceToday = () => {
             fetchData();
         }
     }, [classData, selectedClass]);
-    const handleEditAttandance = (id: number) => {
+    const handleEditAttendance = (id: number) => {
         router.push('/attendance/attendance-form?action=edit&');
     };
 
-    const rows = columnData(handleEditAttandance);
+    const rows = columnData(handleEditAttendance);
     const router = useRouter();
 
-    const handleAddAttandance = () => {
+    const handleAddAttendance = () => {
         router.push('/attendance/attendance-form?action=create');
     };
 
@@ -121,8 +121,8 @@ const AttandanceToday = () => {
             {/* <div className=' h-[80vh] bg-white'> */}
             <div className='flex h-[80vh] flex-col gap-4 rounded-3xl bg-white p-5 text-[#0c427770] shadow-md'>
                 <div className='flex items-center justify-between'>
-                    <Button onClick={handleAddAttandance} size={'default'}>
-                        add Attandance
+                    <Button onClick={handleAddAttendance} size={'default'}>
+                        add Attendance
                     </Button>
 
                     <div className='flex cursor-pointer bg-[#31426E]  text-white sm:rounded-md'>
@@ -150,10 +150,10 @@ const AttandanceToday = () => {
                         </select>
                     </div>
                 </div>
-                <Table data={attandance} columnData={rows} />
+                <Table data={attendance} columnData={rows} />
             </div>
         </Box>
     );
 };
 
-export default AttandanceToday;
+export default AttendanceToday;
