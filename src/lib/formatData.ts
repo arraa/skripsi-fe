@@ -1,4 +1,5 @@
 import { StudentDataProps } from '@/components/studentData/types/types';
+import * as XLSX from 'xlsx';
 
 export const formatDate = (date: string | Date): string => {
     const d = new Date(date);
@@ -10,6 +11,13 @@ export const formatDate = (date: string | Date): string => {
     const day = String(d.getDate()).padStart(2, '0');
 
     return `${year}-${month}-${day}`;
+};
+
+export const formatDateForm = (date: number) => {
+    const dateFormated = XLSX.SSF.parse_date_code(date);
+    return new Date(dateFormated.y, dateFormated.m - 1, dateFormated.d)
+        .toISOString()
+        .split('T')[0];
 };
 
 export const formatStudentData = (data: any, includedIdClass = true) => {

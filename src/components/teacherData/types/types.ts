@@ -9,7 +9,11 @@ export interface TeacherDataProps {
     address: string;
     num_phone: string;
     email: string;
-    teaching_hours: number;
+    teaching_hour: string;
+}
+
+export interface GetTeacherByIDApiProps {
+    teacher: TeacherDataProps;
 }
 
 export interface studentFormPageProps {

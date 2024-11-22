@@ -20,7 +20,7 @@ import ImportData from '../common/dialog/ImportData';
 import { useSearchParams } from 'next/navigation';
 import { Box } from '@mui/material';
 import { getStudentById } from '@/app/api/student';
-import { formatStudentData } from '@/lib/formatData';
+import { formatDateForm, formatStudentData } from '@/lib/formatData';
 import { religionList } from '@/constant/religionList';
 
 type ObjectInput = InferInput<typeof ObjectSchema>;
@@ -214,13 +214,6 @@ const StudentForm = () => {
         return `+${number}`;
     };
 
-    const formatDate = (date: number) => {
-        const dateFormated = XLSX.SSF.parse_date_code(date);
-        return new Date(dateFormated.y, dateFormated.m - 1, dateFormated.d)
-            .toISOString()
-            .split('T')[0];
-    };
-
     const handleFileUpload = async (file: File | null) => {
         if (!file) return;
 
@@ -264,12 +257,12 @@ const StudentForm = () => {
                         name: name || '',
                         gender: gender || '',
                         place_of_birth: place_of_birth || '',
-                        date_of_birth: formatDate(date_of_birth) || '',
+                        date_of_birth: formatDateForm(date_of_birth) || '',
                         religion: religion || '',
                         address: address || '',
                         number_phone: formatPhoneNumber(number_phone),
                         email: email || '',
-                        accepted_date: formatDate(accepted_date) || '',
+                        accepted_date: formatDateForm(accepted_date) || '',
                         school_origin: school_origin || '',
                         class_id: class_id || 0,
                         father_name: father_name || '',

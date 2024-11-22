@@ -1,13 +1,14 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { classDataProps, TeacherDataProps } from './types/types';
+import { GetTeacherByIDApiProps, TeacherDataProps } from './types/types';
 import * as XLSX from 'xlsx';
 import { Button } from '../common/button/button';
 import {
     createTeacher,
     // createTeacherbyExcel,
     getTeacherById,
+    updateTeacher,
     // updateTeacher,
 } from '@/app/api/teacher';
 import { valibotResolver } from '@hookform/resolvers/valibot';
@@ -19,6 +20,7 @@ import { minLength, number, object, pipe, string } from 'valibot';
 import { AxiosResponse } from 'axios';
 import { useSearchParams } from 'next/navigation';
 import { Box } from '@mui/material';
+import { formatDate } from '../../lib/formatData';
 
 type ObjectInput = InferInput<typeof ObjectSchema>;
 
@@ -31,6 +33,7 @@ const ObjectSchema = object({
     address: pipe(string(), minLength(1, 'Address is required')),
     num_phone: pipe(string(), minLength(1, 'Phone Number is required')),
     email: pipe(string(), minLength(1, 'Email is required')),
+    teaching_hour: pipe(string(), minLength(1, 'Teaching Hour is required')),
 });
 
 const TeacherForm = () => {
@@ -39,7 +42,6 @@ const TeacherForm = () => {
     const id = searchParams.get('teacher');
 
     const [data, setData] = useState<TeacherDataProps>();
-    const [classData, setClassData] = useState<classDataProps[]>([]);
     const [open, setOpen] = useState(false);
 
     const {
@@ -58,6 +60,7 @@ const TeacherForm = () => {
             address: '',
             num_phone: '',
             email: '',
+            teaching_hour: '0',
         },
     });
 
@@ -67,6 +70,7 @@ const TeacherForm = () => {
 
     useEffect(() => {
         if (data) {
+            console.log('data', data);
             reset({
                 name: data.name || '',
                 gender: data.gender || '',
@@ -76,6 +80,7 @@ const TeacherForm = () => {
                 address: data.address || '',
                 num_phone: data.num_phone || '',
                 email: data.email || '',
+                teaching_hour: data.teaching_hour || '0',
             });
         }
     }, [data, reset]);
@@ -83,9 +88,12 @@ const TeacherForm = () => {
     useEffect(() => {
         if (id) {
             getTeacherById(id)
-                .then((response: AxiosResponse) => {
+                .then((response: AxiosResponse<GetTeacherByIDApiProps>) => {
                     if (response.status === 200) {
-                        setData(response.data);
+                        response.data.teacher.date_of_birth = formatDate(
+                            response.data.teacher.date_of_birth
+                        );
+                        setData(response.data.teacher);
                     }
                 })
                 .catch((error) => {
@@ -95,9 +103,7 @@ const TeacherForm = () => {
     }, [actionType, id]);
 
     const onSubmit = async (data: ObjectInput) => {
-        console.log(data);
-
-        const teacherData: TeacherDataProps = {
+        const newTeacherData: TeacherDataProps = {
             name: data.name || '',
             gender: data.gender || '',
             place_of_birth: data.place_of_birth || '',
@@ -106,16 +112,15 @@ const TeacherForm = () => {
             address: data.address || '',
             num_phone: data.num_phone || '',
             email: data.email || '',
-            teaching_hours: 0, // or any default value
+            teaching_hour: data.teaching_hour || '0', // or any default value
         };
 
         try {
             if (actionType === 'update' && id) {
-                console.log('Updating Teacher with ID:', id);
-                // await updateTeacher(id, newData);
+                await updateTeacher(id, newTeacherData);
             } else if (actionType === 'create') {
                 console.log('Creating new teacher');
-                await createTeacher(teacherData);
+                await createTeacher(newTeacherData);
             }
             alert(
                 actionType === 'update'
@@ -138,13 +143,6 @@ const TeacherForm = () => {
         console.log('number', `+${number}`);
 
         return `+${number}`;
-    };
-
-    const formatDate = (date: number) => {
-        const dateFormated = XLSX.SSF.parse_date_code(date);
-        return new Date(dateFormated.y, dateFormated.m - 1, dateFormated.d)
-            .toISOString()
-            .split('T')[0];
     };
 
     return (
@@ -260,6 +258,15 @@ const TeacherForm = () => {
                             placeholder='Please input teacher’s Email'
                             errors={errors.email}
                             value={data?.email}
+                        />
+
+                        <ControllerField
+                            control={control}
+                            name='teaching_hour'
+                            label='Teaching Hours'
+                            placeholder='Please teaching hour'
+                            errors={errors.teaching_hour}
+                            value={Number(data?.teaching_hour)}
                         />
                     </div>
 

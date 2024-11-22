@@ -1,7 +1,7 @@
 import { AxiosResponse } from 'axios';
 import { api } from './axios';
-import { TeacherDataProps } from '@/components/teacherData/types/types';
-import { teacher } from '../../components/classGenerator/types/types';
+import { GetTeacherByIDApiProps, TeacherDataProps } from '@/components/teacherData/types/types';
+import { date } from 'valibot';
 
 const routeTeacher = '/teacher';
 
@@ -45,7 +45,7 @@ export const getTeacher = async () => {
 
 export const getTeacherById = async (
     id: string
-): Promise<AxiosResponse<TeacherDataProps>> => {
+): Promise<AxiosResponse<GetTeacherByIDApiProps>> => {
     try {
         const response = await api.get(`${routeTeacher}/${id}`);
         return response;
@@ -56,7 +56,6 @@ export const getTeacherById = async (
 };
 
 export const createTeacher = async (props: TeacherDataProps) => {
-
     const data = {
         teacher_id: props.teacher_id,
         user_id: props.user_id,
@@ -68,7 +67,7 @@ export const createTeacher = async (props: TeacherDataProps) => {
         address: props.address,
         num_phone: props.num_phone,
         email: props.email,
-        teaching_hours: props.teaching_hours
+        teaching_hours: props.teaching_hour,
     };
 
     try {
@@ -78,6 +77,34 @@ export const createTeacher = async (props: TeacherDataProps) => {
     } catch (error: any) {
         console.error('Update error:', error);
         return error.response;
+    }
+};
+
+export const updateTeacher = async (
+    getid: string,
+    props: TeacherDataProps
+): Promise<AxiosResponse> => {
+    const { name, gender, date_of_birth } = props;
+
+    if (!name || !gender || !date_of_birth) {
+        throw new Error('Missing required fields');
+    }
+
+    const data = {
+        ...props,
+        number_phone: props.num_phone.toString(),
+        teaching_hour: Number(props.teaching_hour),
+    };
+
+    try {
+        const response = await api.put(
+            `${routeTeacher}/update/${getid}`,
+            data
+        );
+        return response;
+    } catch (error) {
+        console.error('Update error:', error);
+        return Promise.reject(error);
     }
 };
 
