@@ -7,6 +7,7 @@ import {
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { TeacherDataProps } from './types/types';
 
 export const columnData = (
     handleClickOpen: (id: number) => void,
@@ -18,53 +19,55 @@ export const columnData = (
         headerName: 'Actions',
         width: 150,
         cellClassName: 'actions',
-        renderCell: (params: GridRenderCellParams) => (
-            console.log(params),
-            (
-                <Box
-                    display='flex'
-                    flexDirection='row'
-                    alignItems={'center'}
-                    justifyContent={'center'}
-                    gap={2}
+        renderCell: (params: GridRenderCellParams<TeacherDataProps>) => (
+            <Box
+                display='flex'
+                flexDirection='row'
+                alignItems={'center'}
+                justifyContent={'center'}
+                gap={2}
+            >
+                <div
+                    onClick={() =>
+                        params.row.TeacherID &&
+                        handleUpdate(params.row.TeacherID)
+                    }
                 >
-                    <div onClick={() => handleUpdate(params.row.StudentID)}>
-                        <GridActionsCellItem
-                            sx={{
-                                boxShadow: 3,
-                                borderRadius: 1,
-                                padding: '5px',
-                            }}
-                            key={'edit'}
-                            icon={
-                                <Image
-                                    src='/icon/icon-edit.svg'
-                                    alt='edit icon'
-                                    width={18}
-                                    height={18}
-                                />
-                            }
-                            label='edit'
-                        />
-                    </div>
                     <GridActionsCellItem
-                        sx={{ boxShadow: 3, borderRadius: 1, padding: '5px' }}
-                        key={'delete'}
+                        sx={{
+                            boxShadow: 3,
+                            borderRadius: 1,
+                            padding: '5px',
+                        }}
+                        key={'edit'}
                         icon={
                             <Image
-                                src='/icon/icon-delete.svg'
-                                alt='delete icon'
+                                src='/icon/icon-edit.svg'
+                                alt='edit icon'
                                 width={18}
                                 height={18}
                             />
                         }
-                        label='Delete'
-                        onClick={() =>
-                            handleClickOpen(Number(params.row.StudentID))
-                        }
+                        label='edit'
                     />
-                </Box>
-            )
+                </div>
+                <GridActionsCellItem
+                    sx={{ boxShadow: 3, borderRadius: 1, padding: '5px' }}
+                    key={'delete'}
+                    icon={
+                        <Image
+                            src='/icon/icon-delete.svg'
+                            alt='delete icon'
+                            width={18}
+                            height={18}
+                        />
+                    }
+                    label='Delete'
+                    onClick={() =>
+                        handleClickOpen(Number(params.row.TeacherID))
+                    }
+                />
+            </Box>
         ),
     },
     {

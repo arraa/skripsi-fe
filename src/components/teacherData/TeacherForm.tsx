@@ -1,12 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import {
-    classDataProps,
-    UserDataProps,
-    TeacherDataProps,
-    studentFormPageProps,
-} from './types/types';
+import { classDataProps, UserDataProps, TeacherDataProps } from './types/types';
 import * as XLSX from 'xlsx';
 import { Button } from '../common/button/button';
 import {
@@ -24,7 +19,6 @@ import { minLength, number, object, pipe, string } from 'valibot';
 import { AxiosResponse } from 'axios';
 import { useSearchParams } from 'next/navigation';
 import { Box } from '@mui/material';
-import { religionList } from '@/constant/religionList';
 
 type ObjectInput = InferInput<typeof ObjectSchema>;
 
@@ -42,7 +36,7 @@ const ObjectSchema = object({
 const TeacherForm = () => {
     const searchParams = useSearchParams();
     const actionType = searchParams.get('action');
-    const id = searchParams.get('student');
+    const id = searchParams.get('teacher');
 
     const [data, setData] = useState<TeacherDataProps>();
     const [classData, setClassData] = useState<classDataProps[]>([]);
@@ -86,6 +80,20 @@ const TeacherForm = () => {
         }
     }, [data, reset]);
 
+    useEffect(() => {
+        if (id) {
+            getTeacherById(id)
+                .then((response: AxiosResponse) => {
+                    if (response.status === 200) {
+                        setData(response.data);
+                    }
+                })
+                .catch((error) => {
+                    console.error('API request error', error);
+                });
+        }
+    }, [actionType, id]);
+
     const onSubmit = async (data: ObjectInput) => {
         console.log(data);
 
@@ -106,16 +114,16 @@ const TeacherForm = () => {
 
         try {
             if (actionType === 'update' && id) {
-                console.log('Updating student with ID:', id);
-                // await updateStudent(id, newData);
+                console.log('Updating Teacher with ID:', id);
+                // await updateTeacher(id, newData);
             } else if (actionType === 'create') {
                 console.log('Creating new teacher');
                 await createTeacher(teacherData);
             }
             alert(
                 actionType === 'update'
-                    ? 'Student updated successfully'
-                    : 'Student created successfully'
+                    ? 'Teacher updated successfully'
+                    : 'Teacher created successfully'
             );
         } catch (error) {
             console.error('API request error', error);
@@ -219,8 +227,15 @@ const TeacherForm = () => {
                             control={control}
                             name='religion'
                             label='Religion'
-                            options={religionList.map((value) => ({ label: value }))}
-                            placeholder='Please choose student’s Religion.'
+                            options={[
+                                'Islam',
+                                'Kristen Protestan',
+                                'Kristen Katolik',
+                                'Hindu',
+                                'Buddha',
+                                'Khonghucu',
+                            ].map((value) => ({ label: value }))}
+                            placeholder='Please choose Teacher’s Religion.'
                             errors={errors.religion}
                             value={data?.user.religion}
                         />
