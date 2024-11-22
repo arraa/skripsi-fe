@@ -1,5 +1,7 @@
+import { AxiosResponse } from 'axios';
 import { api } from './axios';
 import { TeacherDataProps } from '@/components/teacherData/types/types';
+import { teacher } from '../../components/classGenerator/types/types';
 
 const routeTeacher = '/teacher';
 
@@ -41,7 +43,9 @@ export const getTeacher = async () => {
     }
 };
 
-export const getTeacherById = async (id: string) => {
+export const getTeacherById = async (
+    id: string
+): Promise<AxiosResponse<TeacherDataProps>> => {
     try {
         const response = await api.get(`${routeTeacher}/${id}`);
         return response;
@@ -52,26 +56,19 @@ export const getTeacherById = async (id: string) => {
 };
 
 export const createTeacher = async (props: TeacherDataProps) => {
-    const {
-        name,
-        gender,
-        place_of_birth,
-        date_of_birth,
-        religion,
-        address,
-        num_phone,
-        email,
-    } = props.user;
 
     const data = {
-        name,
-        gender,
-        place_of_birth,
-        date_of_birth,
-        religion,
-        address,
-        num_phone: num_phone.toString(),
-        email,
+        teacher_id: props.teacher_id,
+        user_id: props.user_id,
+        name: props.name,
+        gender: props.gender,
+        place_of_birth: props.place_of_birth,
+        date_of_birth: props.date_of_birth,
+        religion: props.religion,
+        address: props.address,
+        num_phone: props.num_phone,
+        email: props.email,
+        teaching_hours: props.teaching_hours
     };
 
     try {

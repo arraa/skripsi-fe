@@ -1,5 +1,6 @@
-export interface UserDataProps {
-    id?: string;
+export interface TeacherDataProps {
+    teacher_id?: number;
+    user_id?: number;
     name: string;
     gender: string;
     place_of_birth: string;
@@ -8,12 +9,7 @@ export interface UserDataProps {
     address: string;
     num_phone: string;
     email: string;
-}
-
-export interface TeacherDataProps {
-    TeacherID?: string;
-    id_user?: string;
-    user: UserDataProps;
+    teaching_hours: number;
 }
 
 export interface studentFormPageProps {

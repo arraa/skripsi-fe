@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { classDataProps, UserDataProps, TeacherDataProps } from './types/types';
+import { classDataProps, TeacherDataProps } from './types/types';
 import * as XLSX from 'xlsx';
 import { Button } from '../common/button/button';
 import {
@@ -68,14 +68,14 @@ const TeacherForm = () => {
     useEffect(() => {
         if (data) {
             reset({
-                name: data.user.name || '',
-                gender: data.user.gender || '',
-                place_of_birth: data.user.place_of_birth || '',
-                date_of_birth: data.user.date_of_birth || '',
-                religion: data.user.religion || '',
-                address: data.user.address || '',
-                num_phone: data.user.num_phone || '',
-                email: data.user.email || '',
+                name: data.name || '',
+                gender: data.gender || '',
+                place_of_birth: data.place_of_birth || '',
+                date_of_birth: data.date_of_birth || '',
+                religion: data.religion || '',
+                address: data.address || '',
+                num_phone: data.num_phone || '',
+                email: data.email || '',
             });
         }
     }, [data, reset]);
@@ -97,7 +97,7 @@ const TeacherForm = () => {
     const onSubmit = async (data: ObjectInput) => {
         console.log(data);
 
-        const userData: UserDataProps = {
+        const teacherData: TeacherDataProps = {
             name: data.name || '',
             gender: data.gender || '',
             place_of_birth: data.place_of_birth || '',
@@ -106,10 +106,7 @@ const TeacherForm = () => {
             address: data.address || '',
             num_phone: data.num_phone || '',
             email: data.email || '',
-        };
-
-        const teacherData: TeacherDataProps = {
-            user: userData,
+            teaching_hours: 0, // or any default value
         };
 
         try {
@@ -193,7 +190,7 @@ const TeacherForm = () => {
                             label='Full Name'
                             placeholder='Please input teacher’s Full Name'
                             errors={errors.name}
-                            value={data?.user.name}
+                            value={data?.name}
                         />
                         <ControllerSelectField
                             control={control}
@@ -204,7 +201,7 @@ const TeacherForm = () => {
                             }))}
                             placeholder={'Please choose teacher’s gender.'}
                             errors={errors.gender}
-                            value={data?.user.gender}
+                            value={data?.gender}
                         />
                         <ControllerField
                             control={control}
@@ -212,7 +209,7 @@ const TeacherForm = () => {
                             label='Place of Birth'
                             placeholder='Please input teacher’s Place of Birth'
                             errors={errors.place_of_birth}
-                            value={data?.user.place_of_birth}
+                            value={data?.place_of_birth}
                         />
                         <ControllerField
                             control={control}
@@ -221,7 +218,7 @@ const TeacherForm = () => {
                             placeholder='Please input teacher’s Date Of Birth'
                             type='date'
                             errors={errors.date_of_birth}
-                            value={data?.user.date_of_birth}
+                            value={data?.date_of_birth}
                         />
                         <ControllerSelectField
                             control={control}
@@ -233,11 +230,11 @@ const TeacherForm = () => {
                                 'Kristen Katolik',
                                 'Hindu',
                                 'Buddha',
-                                'Khonghucu',
+                                'Konghucu',
                             ].map((value) => ({ label: value }))}
                             placeholder='Please choose Teacher’s Religion.'
                             errors={errors.religion}
-                            value={data?.user.religion}
+                            value={data?.religion}
                         />
                         <ControllerField
                             control={control}
@@ -245,7 +242,7 @@ const TeacherForm = () => {
                             label='Address'
                             placeholder='Please input teacher’s address'
                             errors={errors.address}
-                            value={data?.user.address}
+                            value={data?.address}
                         />
                         <ControllerField
                             control={control}
@@ -253,7 +250,7 @@ const TeacherForm = () => {
                             label='Number Phone'
                             placeholder='Please input teacher’s Number Phone'
                             errors={errors.num_phone}
-                            value={data?.user.num_phone}
+                            value={data?.num_phone}
                         />
 
                         <ControllerField
@@ -262,7 +259,7 @@ const TeacherForm = () => {
                             label='Email'
                             placeholder='Please input teacher’s Email'
                             errors={errors.email}
-                            value={data?.user.email}
+                            value={data?.email}
                         />
                     </div>
 
