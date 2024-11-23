@@ -8,20 +8,20 @@ import { useEffect, useState } from 'react';
 import Delete from '../common/dialog/Delete';
 import { useRouter } from 'next/navigation';
 import { TeacherDataProps } from './types/types';
-import { getTeacher } from '@/app/api/teacher';
+import { deleteTeacher, getTeacher } from '@/app/api/teacher';
 
 const TeacherData = () => {
     const [data, setData] = useState<TeacherDataProps[]>([]);
     const [searchValue, setSearchValue] = useState('');
     const [selectedClass, setSelectedClass] = useState<number>();
     const [open, setOpen] = useState(false);
-    const [selectedStudentId, setSelectedStudentId] = useState<string | null>(
+    const [selectedTeacherId, setSelectedTeacherId] = useState<string | null>(
         null
     );
     const router = useRouter();
 
     const handleClickOpen = (studentId: number) => {
-        setSelectedStudentId(studentId.toString());
+        setSelectedTeacherId(studentId.toString());
         console.log('handleClickOpen clicked', studentId);
         setOpen(true);
     };
@@ -40,7 +40,7 @@ const TeacherData = () => {
 
     const handleClose = () => {
         setOpen(false);
-        setSelectedStudentId(null);
+        setSelectedTeacherId(null);
     };
 
     const handleSearchChange = (value: string) => {
@@ -69,14 +69,27 @@ const TeacherData = () => {
         fetchData();
     }, []);
 
+    const deletedTeacher = async () => {
+        console.log('deletedTeacher clicked', selectedTeacherId);
+        if (selectedTeacherId) {
+            try {
+                const deleted = await deleteTeacher(selectedTeacherId);
+                setSelectedTeacherId(null);
+                return deleted;
+            } catch (error) {
+                console.error('API request error', error);
+            }
+        }
+    };
+
     return (
         <Box sx={{ padding: 3, width: '87vw' }}>
-            {/* <Delete
+            <Delete
                 setOpen={handleClose}
                 name={'Student'}
-                onDelete={deletedStudent}
+                onDelete={deletedTeacher}
                 open={open}
-            /> */}
+            />
             <h1 className='my-8 text-3xl font-bold text-[#0C4177]'>
                 Teacher Personal Data
             </h1>

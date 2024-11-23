@@ -80,7 +80,7 @@ const TeacherForm = () => {
                 address: data.address || '',
                 num_phone: data.num_phone || '',
                 email: data.email || '',
-                teaching_hour: data.teaching_hour || '0',
+                teaching_hour: String(data.teaching_hour) || '0',
             });
         }
     }, [data, reset]);
@@ -112,7 +112,7 @@ const TeacherForm = () => {
             address: data.address || '',
             num_phone: data.num_phone || '',
             email: data.email || '',
-            teaching_hour: data.teaching_hour || '0', // or any default value
+            teaching_hour: String(data.teaching_hour) || '0', // or any default value
         };
 
         try {
@@ -130,19 +130,6 @@ const TeacherForm = () => {
         } catch (error) {
             console.error('API request error', error);
         }
-    };
-
-    const formatPhoneNumber = (number: string) => {
-        if (!number) return '';
-
-        if (!number.startsWith('62')) {
-            console.log('number', `+62${number}`);
-
-            return `+62${number}`;
-        }
-        console.log('number', `+${number}`);
-
-        return `+${number}`;
     };
 
     return (
@@ -266,7 +253,7 @@ const TeacherForm = () => {
                             label='Teaching Hours'
                             placeholder='Please teaching hour'
                             errors={errors.teaching_hour}
-                            value={Number(data?.teaching_hour)}
+                            value={data?.teaching_hour}
                         />
                     </div>
 

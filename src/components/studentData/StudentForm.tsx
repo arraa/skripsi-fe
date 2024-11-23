@@ -14,13 +14,17 @@ import type { InferInput } from 'valibot';
 import { useForm } from 'react-hook-form';
 import { ControllerField } from '../common/form/textField';
 import { ControllerSelectField } from '../common/form/selectField';
-import { minLength, number, object, pipe, string } from 'valibot';
+import { minLength, object, pipe, string } from 'valibot';
 import { getClass } from '@/app/api/class';
 import ImportData from '../common/dialog/ImportData';
 import { useSearchParams } from 'next/navigation';
 import { Box } from '@mui/material';
 import { getStudentById } from '@/app/api/student';
-import { formatDateForm, formatStudentData } from '@/lib/formatData';
+import {
+    formatDateForm,
+    formatPhoneNumber,
+    formatStudentData,
+} from '@/lib/formatData';
 import { religionList } from '@/constant/religionList';
 
 type ObjectInput = InferInput<typeof ObjectSchema>;
@@ -202,16 +206,6 @@ const StudentForm = () => {
             console.error('API request error', error);
             alert('Failed to create student');
         }
-    };
-
-    const formatPhoneNumber = (number: string) => {
-        if (!number) return '';
-
-        if (!number.startsWith('62')) {
-            return `+62${number}`;
-        }
-
-        return `+${number}`;
     };
 
     const handleFileUpload = async (file: File | null) => {

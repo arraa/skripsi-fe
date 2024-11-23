@@ -178,8 +178,22 @@ export const updateTeacher = async (
 //   }
 // };
 
-// export const deleteStudent = async (id: string | null) => {
-//   if (id) {
-//     return api.delete(`/student/delete/${id}`);
-//   }
-// };
+export const deleteTeacher = async (
+    id: string | null
+): Promise<AxiosResponse> => {
+    if (id) {
+        try {
+            const response = await api.delete(`${routeTeacher}/delete/${id}`);
+
+            if (response.status === 200) {
+                return response;
+            } else {
+                throw new Error('Failed to delete teacher');
+            }
+        } catch (error) {
+            console.error('API request error', error);
+            return Promise.reject(error);
+        }
+    }
+    return Promise.reject(new Error('No teacher id provided'));
+};
