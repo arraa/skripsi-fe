@@ -164,7 +164,7 @@ const FinalizeClassGenerator = () => {
             try {
                 const resultClass = await getClass();
 
-                const updatedResultClass = resultClass.map(
+                const updatedResultClass = resultClass.data.class.map(
                     (item: { id_grade: number }) => {
                         if (item.id_grade === 1) {
                             return { ...item, id_grade: 7 };

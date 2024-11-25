@@ -446,7 +446,7 @@ const ClassGenerator = () => {
 
                 console.log(resultClass);
 
-                setClassData(resultClass);
+                setClassData(resultClass.data.class);
             } catch (error) {
                 console.error('API request error', error);
             }
@@ -458,7 +458,7 @@ const ClassGenerator = () => {
         console.log('deletedStudent clicked', selectedClassId);
         if (selectedClassId) {
             try {
-                const deleted = await deleteClass(selectedClassId);
+                const deleted = await deleteClass(Number(selectedClassId));
                 setSelectedClassId('');
                 console.log('deleted student', deleted);
                 return deleted;

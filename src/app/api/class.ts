@@ -1,4 +1,10 @@
 import { AxiosResponse } from 'axios';
+
+interface ObjectInput {
+    // create the input object here
+    // name: string;
+    // description: string;
+}
 import { api } from './axios';
 
 export const getClass = async (): Promise<AxiosResponse> => {
@@ -14,7 +20,9 @@ export const getClass = async (): Promise<AxiosResponse> => {
     }
 };
 
-export const createClass = async (data: ObjectInput): Promise<AxiosResponse> => {
+export const createClass = async (
+    data: ObjectInput
+): Promise<AxiosResponse> => {
     try {
         const response = await api.post('/class/', data);
         if (response.status !== 201) {
@@ -25,7 +33,7 @@ export const createClass = async (data: ObjectInput): Promise<AxiosResponse> => 
         console.error('API request error', error);
         throw error;
     }
-}
+};
 
 export const deleteClass = async (id: number): Promise<AxiosResponse> => {
     try {
@@ -38,5 +46,4 @@ export const deleteClass = async (id: number): Promise<AxiosResponse> => {
         console.error('API request error', error);
         throw error;
     }
-}
-
+};
