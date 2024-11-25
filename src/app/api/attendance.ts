@@ -1,8 +1,9 @@
 import { AxiosResponse } from 'axios';
 import { api } from './axios';
 import { formatDate } from '@/lib/formatData';
+import { AllStudentAttendanceByClassIDAndDateProps } from '@/components/attendance/type/types';
 
-interface AttendanceByMonthApiProps {
+export interface AttendanceByMonthApiProps {
     attendance: [
         {
             date: string;
@@ -31,14 +32,19 @@ export const getAttendanceByMonth = async (classID: number, date: Date): Promise
     }
 };
 
+export interface AllStudentAttendanceByClassIDAndDateApiProps {
+    attendance: AllStudentAttendanceByClassIDAndDateProps[];
+}
+
+
 export const getAllStudentAttendanceByClassIDAndDate = async (
     classID: number,
     date: Date
-): Promise<AttendanceByMonthApiProps> => {
+): Promise<AllStudentAttendanceByClassIDAndDateApiProps> => {
     const formatedDate = formatDate(date);
     try {
-        const response: AxiosResponse<AttendanceByMonthApiProps> =
-            await api.get(`/attendance/summary/${classID}/${formatedDate}`);
+        const response: AxiosResponse<AllStudentAttendanceByClassIDAndDateApiProps> =
+            await api.get(`/attendance/all-student/${classID}/${formatedDate}`);
         if (response.status !== 200) {
             throw new Error('Error fetching attendance data');
         }

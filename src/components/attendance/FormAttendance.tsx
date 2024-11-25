@@ -4,13 +4,13 @@ import Table from '@/components/common/Table';
 
 import { Box } from '@mui/material';
 import { getClass } from '@/app/api/class';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Button } from '../common/button/button';
 import Delete from '../common/dialog/Delete';
 import {
-    AttendanceFormProps,
-    AttendanceProps,
+    AllStudentAttendanceByClassIDAndDateProps,
     AttendanceFormData,
+    AttendanceListFormProps,
 } from './type/types';
 import { classDataProps } from '../classGenerator/types/types';
 import { columnData, columnDataAttendanceForm } from './column';
@@ -18,7 +18,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { valibotResolver } from '@hookform/resolvers/valibot';
 import { array, InferInput, minLength, object, pipe, string } from 'valibot';
-import { ControllerSelectField } from '../common/form/selectField';
+import { getAllStudentAttendanceByClassIDAndDate } from '@/app/api/attendance';
 
 const ObjectSchema = array(
     object({
@@ -29,67 +29,24 @@ const ObjectSchema = array(
 type ObjectInput = InferInput<typeof ObjectSchema>;
 
 const AttendanceForm = () => {
-    const initialAttendanceData = [
-        {
-            id: 1,
-            student_id: '1',
-            name: 'John Doe',
-            sex: 'Male',
-            reason: '',
-            date: new Date(),
-        },
-        {
-            id: 2,
-            student_id: '2',
-            name: 'Jane Smith',
-            sex: 'Female',
-            reason: '',
-            date: new Date(),
-        },
-        {
-            id: 3,
-            student_id: '3',
-            name: 'Alice Johnson',
-            sex: 'Female',
-            reason: '',
-            date: new Date(),
-        },
-        {
-            id: 4,
-            student_id: '4',
-            name: 'Bob Brown',
-            sex: 'Male',
-            reason: '',
-            date: new Date(),
-        },
-        {
-            id: 5,
-            student_id: '5',
-            name: 'Charlie Davis',
-            sex: 'Male',
-            reason: '',
-            date: new Date(),
-        },
-    ];
-
     const searchParams = useSearchParams();
     const actionType = searchParams.get('action');
-    const id = searchParams.get('student');
-    const status = ['Hadir', 'Sakit', 'Izin', 'Alfa'];
-    const [classData, setClassData] = useState<classDataProps[]>([]);
+    const classID = Number(searchParams.get('class_id'));
+    const dateString = searchParams.get('date');
+    const date = useMemo(() => {
+        const correctedDateString = dateString?.replace(' ', '+');
+        return correctedDateString ? new Date(correctedDateString) : new Date();
+    }, [dateString]);
+    const status = ['Present', 'Sick', 'Leave', 'Absent'];
 
-    const [attendance, setAttendance] = useState<AttendanceFormProps[]>(
-        initialAttendanceData
-    );
-    const [reason, setreason] = useState<string>('');
+    const [studentAttendanceList, setStudentAttendanceList] = useState<
+        AttendanceListFormProps[]
+    >([]);
     const [open, setOpen] = useState(false);
-    const [selectedClass, setSelectedClass] = useState<number>();
-    const [openDelete, setOpenDelete] = useState(false);
-
     const [formattedDate, setFormattedDate] = useState('');
 
     useEffect(() => {
-        const dateObj = new Date();
+        const dateObj = new Date(date.toString());
         const formatted = dateObj.toLocaleDateString('en-GB', {
             weekday: 'long',
             day: 'numeric',
@@ -97,38 +54,17 @@ const AttendanceForm = () => {
             year: 'numeric',
         });
         setFormattedDate(formatted);
-    }, []);
-
-    // function generateSchema(data: AttendanceFormProps[]) {
-    //   const reasonSchema = data.reduce((acc, entry) => {
-    //     acc[`reason-${entry.id}`] = pipe(string(), minLength(1, 'Reason is required'));
-    //     return acc;
-    //   }, {});
-
-    //   return object(reasonSchema);
-    // }
+    }, [date]);
 
     const { handleSubmit, control, setValue, reset } =
         useForm<AttendanceFormData>({
-            defaultValues: {}, // defaultValues will be updated by `reset`
+            defaultValues: {},
         });
-
-    useEffect(() => {
-        const transformedData = attendance.reduce<AttendanceFormData>(
-            (acc, entry) => {
-                acc[`reason-${entry.id}`] = { reason: entry.reason || 'Hadir' };
-                return acc;
-            },
-            {}
-        );
-
-        reset(transformedData);
-    }, [attendance, reset]);
 
     const onSubmit = (data: AttendanceFormData) => {
         console.log(data);
 
-        const submittedData = attendance.map((student) => {
+        const submittedData = studentAttendanceList.map((student) => {
             const reasonKey = `reason-${student.id}`;
             const reason = data[reasonKey].reason || data[reasonKey];
 
@@ -143,37 +79,53 @@ const AttendanceForm = () => {
         console.log('Submitted data:', submittedData);
     };
 
-    const handleClassChange = (value: number) => {
-        setSelectedClass(value);
-    };
-
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const resultClass =
-                    await getAllStudentAttendanceByClassIDAndDate();
+                const resultStudentAttendanceList =
+                    await getAllStudentAttendanceByClassIDAndDate(
+                        classID,
+                        date
+                    );
 
-                setClassData(resultClass);
+                const defaultValues =
+                    resultStudentAttendanceList.attendance.reduce<AttendanceFormData>(
+                        (acc, student, index) => {
+                            acc[`reason-${index}`] = {
+                                reason: student.reason || '',
+                            };
+                            return acc;
+                        },
+                        {}
+                    );
+                reset(defaultValues);
+
+                setStudentAttendanceList(
+                    resultStudentAttendanceList.attendance.map(
+                        (
+                            student: AllStudentAttendanceByClassIDAndDateProps,
+                            index: number
+                        ) => ({
+                            id: index,
+                            student_id: student.id.toString(),
+                            name: student.name,
+                            sex: student.sex,
+                            reason: student.reason,
+                        })
+                    )
+                );
             } catch (error) {
                 console.error('API request error', error);
             }
         };
         fetchData();
-    }, []);
-
-    // const handleUpdate = (id: number, reason: string) => {
-    //     setAttendance((prevData: any[]) =>
-    //         prevData.map((row: { id: number }) =>
-    //             row.id === id ? { ...row, reason } : row
-    //         )
-    //     );
-    // };
+    }, [classID, date, reset]);
 
     const rows = columnDataAttendanceForm(
         status,
         control,
         setValue,
-        attendance
+        studentAttendanceList
     );
 
     return (
@@ -193,7 +145,11 @@ const AttendanceForm = () => {
                         {formattedDate}
                     </div>
 
-                    <Table data={attendance} columnData={rows} heighRow={75} />
+                    <Table
+                        data={studentAttendanceList}
+                        columnData={rows}
+                        heighRow={75}
+                    />
 
                     <div className='mb-4 flex justify-end'>
                         <Button

@@ -6,16 +6,25 @@ export interface AttendanceProps {
     alfa: number;
 }
 
-export interface AttendanceFormProps {
-    id: number;
-    student_id: string;
-    date: Date;
-    reason: string;
+export interface AttendanceListFormProps {
+    id?: number;
+    student_id?: string;
+    name?: string;
     sex?: string;
-}
+    reason?: string;
+    date?: Date;
+};
 
 export type AttendanceFormData = {
     [key: string]: {
         reason: string;
     };
 };
+
+export interface AllStudentAttendanceByClassIDAndDateProps {
+    id: number;
+    name: string;
+    sex: string;
+    reason: string;
+    date: string;
+}

@@ -13,19 +13,43 @@ import { useRouter } from 'next/navigation';
 import { getAttendanceByMonth } from '@/app/api/attendance';
 import { formatDateAttendance } from './interface/dateInterface';
 
+interface dateProps {
+    month: number;
+    year: number;
+}
+
+const month = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+];
+
 const AttendanceToday = () => {
     const grade = [7, 8, 9];
     const [classData, setClassData] = useState<classDataProps[]>([]);
-    const [attendance, setAttendance] =
-        useState<AttendanceProps[]>([]);
+    const [attendance, setAttendance] = useState<AttendanceProps[]>([]);
     const [NewClass, setNewClass] = useState<string>('');
     const [open, setOpen] = useState(false);
     const [selectedClass, setSelectedClass] = useState<number>(0);
+    const [selectedDate, setselectedDate] = useState<dateProps>({
+        month: new Date().getMonth(),
+        year: new Date().getFullYear(),
+    });
     const [openDelete, setOpenDelete] = useState(false);
 
     const handleClassChange = (value: number) => {
         setSelectedClass(value);
     };
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -45,17 +69,19 @@ const AttendanceToday = () => {
             try {
                 const result = await getAttendanceByMonth(
                     selectedClass,
-                    new Date('2024-08-01')
+                    new Date(selectedDate.year, selectedDate.month)
                 );
 
                 setAttendance(
-                    result.attendance.map((item, index: number) => ({
-                        id: index,
-                        date: formatDateAttendance(item.date),
-                        hadir: item.present_total,
-                        sakit: item.sick_total,
-                        alfa: item.absent_total,
-                    }))
+                    (result.attendance &&
+                        result.attendance.map((item, index: number) => ({
+                            id: index,
+                            date: item.date,
+                            hadir: item.present_total,
+                            sakit: item.sick_total,
+                            alfa: item.absent_total,
+                        }))) ||
+                        []
                 );
             } catch (error) {
                 console.error('API request error', error);
@@ -64,9 +90,11 @@ const AttendanceToday = () => {
         if (selectedClass !== 0) {
             fetchData();
         }
-    }, [classData, selectedClass]);
+    }, [classData, selectedClass, selectedDate]);
     const handleEditAttendance = (id: number) => {
-        router.push('/attendance/attendance-form?action=edit&');
+        router.push(
+            `/attendance/attendance-form?action=edit&class_id=${selectedClass}&date=${attendance[id].date}`
+        );
     };
 
     const rows = columnData(handleEditAttendance);
@@ -97,24 +125,29 @@ const AttendanceToday = () => {
                     Attendance
                 </h1>
                 <div className='flex cursor-pointer bg-[#31426E]  text-white sm:rounded-md'>
-                    <label htmlFor='class-select' className='sr-only'>
-                        Select Class
+                    <label htmlFor='date-select' className='sr-only'>
+                        Select Date
                     </label>
                     <select
-                        id='class-select'
+                        id='date-select'
                         className='mx-2 w-full bg-transparent px-6 py-3 text-lg'
-                        value={selectedClass}
-                        onChange={(e) =>
-                            handleClassChange(Number(e.target.value))
-                        }
+                        value={`${selectedDate.month} ${selectedDate.year}`}
+                        onChange={(e) => {
+                            const [month, year] = e.target.value.split(' ');
+                            setselectedDate({
+                                month: Number(month),
+                                year: Number(year),
+                            });
+                        }}
                     >
-                        {classData &&
-                            classData.map((item: classDataProps) => (
-                                <option key={item.id} value={item.id}>
-                                    Class&ensp; {item.Grade?.grade}
-                                    {item.name}
-                                </option>
-                            ))}
+                        {month.map((month, index) => (
+                            <option
+                                key={index}
+                                value={`${index} ${new Date().getFullYear()}`}
+                            >
+                                {month} {new Date().getFullYear()}
+                            </option>
+                        ))}
                     </select>
                 </div>
             </div>
@@ -126,8 +159,11 @@ const AttendanceToday = () => {
                     </Button>
 
                     <div className='flex cursor-pointer bg-[#31426E]  text-white sm:rounded-md'>
-                        <label htmlFor='select-class-add-attendance' className='sr-only'>
-                            Select Class
+                        <label
+                            htmlFor='select-class-add-attendance'
+                            className='sr-only'
+                        >
+                            Select Month
                         </label>
                         <select
                             id='select-class-add-attendance'
@@ -150,7 +186,13 @@ const AttendanceToday = () => {
                         </select>
                     </div>
                 </div>
-                <Table data={attendance} columnData={rows} />
+                <Table
+                    data={attendance.map((item: AttendanceProps) => ({
+                        ...item,
+                        date: formatDateAttendance(item.date),
+                    }))}
+                    columnData={rows}
+                />
             </div>
         </Box>
     );
