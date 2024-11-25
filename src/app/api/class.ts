@@ -13,3 +13,30 @@ export const getClass = async (): Promise<AxiosResponse> => {
         throw error;
     }
 };
+
+export const createClass = async (data: ObjectInput): Promise<AxiosResponse> => {
+    try {
+        const response = await api.post('/class/', data);
+        if (response.status !== 201) {
+            throw new Error('Error creating student data');
+        }
+        return response;
+    } catch (error) {
+        console.error('API request error', error);
+        throw error;
+    }
+}
+
+export const deleteClass = async (id: number): Promise<AxiosResponse> => {
+    try {
+        const response = await api.delete(`/class/${id}`);
+        if (response.status !== 204) {
+            throw new Error('Error deleting student data');
+        }
+        return response;
+    } catch (error) {
+        console.error('API request error', error);
+        throw error;
+    }
+}
+

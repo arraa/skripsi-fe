@@ -97,6 +97,7 @@ const StyledTabs = styled((props: StyledTabsProps) => (
     <Tabs
         {...props}
         TabIndicatorProps={{
+            // eslint-disable-next-line tailwindcss/no-custom-classname
             children: <span className='MuiTabs-indicatorSpan' />,
         }}
     />
