@@ -1,7 +1,10 @@
-import AttandanceToday from '@/components/attandance/TodayAttandance';
+import { AuthProvider } from '@/app/context/provider';
+import AttendanceToday from '@/components/attendance/TodayAttendance';
 
 export default function todayAttendance() {
-  return (
-      <AttandanceToday/>
-  );
+    return (
+        <AuthProvider>
+            <AttendanceToday />
+        </AuthProvider>
+    );
 }

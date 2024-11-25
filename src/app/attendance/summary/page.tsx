@@ -1,8 +1,10 @@
-import AttandanceSummary from '@/components/attandance/Summary';
+import { AuthProvider } from '@/app/context/provider';
+import AttendanceSummary from '@/components/attendance/Summary';
 
 export default function todayAttendance() {
-  return (
-    <AttandanceSummary/>
-
-  );
+    return (
+        <AuthProvider>
+            <AttendanceSummary />
+        </AuthProvider>
+    );
 }

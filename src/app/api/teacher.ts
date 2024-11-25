@@ -1,5 +1,7 @@
+import { AxiosResponse } from 'axios';
 import { api } from './axios';
-import { TeacherDataProps } from '@/components/teacherData/types/types';
+import { GetTeacherByIDApiProps, TeacherDataProps } from '@/components/teacherData/types/types';
+import { date } from 'valibot';
 
 const routeTeacher = '/teacher';
 
@@ -41,7 +43,9 @@ export const getTeacher = async () => {
     }
 };
 
-export const getTeacherById = async (id: string) => {
+export const getTeacherById = async (
+    id: string
+): Promise<AxiosResponse<GetTeacherByIDApiProps>> => {
     try {
         const response = await api.get(`${routeTeacher}/${id}`);
         return response;
@@ -52,26 +56,18 @@ export const getTeacherById = async (id: string) => {
 };
 
 export const createTeacher = async (props: TeacherDataProps) => {
-    const {
-        name,
-        gender,
-        place_of_birth,
-        date_of_birth,
-        religion,
-        address,
-        num_phone,
-        email,
-    } = props.user;
-
     const data = {
-        name,
-        gender,
-        place_of_birth,
-        date_of_birth,
-        religion,
-        address,
-        num_phone: num_phone.toString(),
-        email,
+        teacher_id: props.teacher_id,
+        user_id: props.user_id,
+        name: props.name,
+        gender: props.gender,
+        place_of_birth: props.place_of_birth,
+        date_of_birth: props.date_of_birth,
+        religion: props.religion,
+        address: props.address,
+        num_phone: props.num_phone,
+        email: props.email,
+        teaching_hours: props.teaching_hour,
     };
 
     try {
@@ -81,6 +77,34 @@ export const createTeacher = async (props: TeacherDataProps) => {
     } catch (error: any) {
         console.error('Update error:', error);
         return error.response;
+    }
+};
+
+export const updateTeacher = async (
+    getid: string,
+    props: TeacherDataProps
+): Promise<AxiosResponse> => {
+    const { name, gender, date_of_birth } = props;
+
+    if (!name || !gender || !date_of_birth) {
+        throw new Error('Missing required fields');
+    }
+
+    const data = {
+        ...props,
+        number_phone: props.num_phone.toString(),
+        teaching_hour: Number(props.teaching_hour),
+    };
+
+    try {
+        const response = await api.put(
+            `${routeTeacher}/update/${getid}`,
+            data
+        );
+        return response;
+    } catch (error) {
+        console.error('Update error:', error);
+        return Promise.reject(error);
     }
 };
 
@@ -154,8 +178,22 @@ export const createTeacher = async (props: TeacherDataProps) => {
 //   }
 // };
 
-// export const deleteStudent = async (id: string | null) => {
-//   if (id) {
-//     return api.delete(`/student/delete/${id}`);
-//   }
-// };
+export const deleteTeacher = async (
+    id: string | null
+): Promise<AxiosResponse> => {
+    if (id) {
+        try {
+            const response = await api.delete(`${routeTeacher}/delete/${id}`);
+
+            if (response.status === 200) {
+                return response;
+            } else {
+                throw new Error('Failed to delete teacher');
+            }
+        } catch (error) {
+            console.error('API request error', error);
+            return Promise.reject(error);
+        }
+    }
+    return Promise.reject(new Error('No teacher id provided'));
+};

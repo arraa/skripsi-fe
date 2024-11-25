@@ -78,7 +78,7 @@ export const columnData = (
         width: 100,
     },
     {
-        field: 'id_class',
+        field: 'class_id',
         headerName: 'Class',
         width: 100,
     },

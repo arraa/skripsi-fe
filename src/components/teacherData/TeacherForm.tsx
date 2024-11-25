@@ -1,18 +1,14 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import {
-    classDataProps,
-    UserDataProps,
-    TeacherDataProps,
-    studentFormPageProps,
-} from './types/types';
+import { GetTeacherByIDApiProps, TeacherDataProps } from './types/types';
 import * as XLSX from 'xlsx';
 import { Button } from '../common/button/button';
 import {
     createTeacher,
     // createTeacherbyExcel,
     getTeacherById,
+    updateTeacher,
     // updateTeacher,
 } from '@/app/api/teacher';
 import { valibotResolver } from '@hookform/resolvers/valibot';
@@ -24,6 +20,7 @@ import { minLength, number, object, pipe, string } from 'valibot';
 import { AxiosResponse } from 'axios';
 import { useSearchParams } from 'next/navigation';
 import { Box } from '@mui/material';
+import { formatDate } from '../../lib/formatData';
 
 type ObjectInput = InferInput<typeof ObjectSchema>;
 
@@ -36,15 +33,15 @@ const ObjectSchema = object({
     address: pipe(string(), minLength(1, 'Address is required')),
     num_phone: pipe(string(), minLength(1, 'Phone Number is required')),
     email: pipe(string(), minLength(1, 'Email is required')),
+    teaching_hour: pipe(string(), minLength(1, 'Teaching Hour is required')),
 });
 
 const TeacherForm = () => {
     const searchParams = useSearchParams();
     const actionType = searchParams.get('action');
-    const id = searchParams.get('student');
+    const id = searchParams.get('teacher');
 
     const [data, setData] = useState<TeacherDataProps>();
-    const [classData, setClassData] = useState<classDataProps[]>([]);
     const [open, setOpen] = useState(false);
 
     const {
@@ -63,6 +60,7 @@ const TeacherForm = () => {
             address: '',
             num_phone: '',
             email: '',
+            teaching_hour: '0',
         },
     });
 
@@ -72,23 +70,40 @@ const TeacherForm = () => {
 
     useEffect(() => {
         if (data) {
+            console.log('data', data);
             reset({
-                name: data.user.name || '',
-                gender: data.user.gender || '',
-                place_of_birth: data.user.place_of_birth || '',
-                date_of_birth: data.user.date_of_birth || '',
-                religion: data.user.religion || '',
-                address: data.user.address || '',
-                num_phone: data.user.num_phone || '',
-                email: data.user.email || '',
+                name: data.name || '',
+                gender: data.gender || '',
+                place_of_birth: data.place_of_birth || '',
+                date_of_birth: data.date_of_birth || '',
+                religion: data.religion || '',
+                address: data.address || '',
+                num_phone: data.num_phone || '',
+                email: data.email || '',
+                teaching_hour: String(data.teaching_hour) || '0',
             });
         }
     }, [data, reset]);
 
-    const onSubmit = async (data: ObjectInput) => {
-        console.log(data);
+    useEffect(() => {
+        if (id) {
+            getTeacherById(id)
+                .then((response: AxiosResponse<GetTeacherByIDApiProps>) => {
+                    if (response.status === 200) {
+                        response.data.teacher.date_of_birth = formatDate(
+                            response.data.teacher.date_of_birth
+                        );
+                        setData(response.data.teacher);
+                    }
+                })
+                .catch((error) => {
+                    console.error('API request error', error);
+                });
+        }
+    }, [actionType, id]);
 
-        const userData: UserDataProps = {
+    const onSubmit = async (data: ObjectInput) => {
+        const newTeacherData: TeacherDataProps = {
             name: data.name || '',
             gender: data.gender || '',
             place_of_birth: data.place_of_birth || '',
@@ -97,48 +112,24 @@ const TeacherForm = () => {
             address: data.address || '',
             num_phone: data.num_phone || '',
             email: data.email || '',
-        };
-
-        const teacherData: TeacherDataProps = {
-            user: userData,
+            teaching_hour: String(data.teaching_hour) || '0', // or any default value
         };
 
         try {
             if (actionType === 'update' && id) {
-                console.log('Updating student with ID:', id);
-                // await updateStudent(id, newData);
+                await updateTeacher(id, newTeacherData);
             } else if (actionType === 'create') {
                 console.log('Creating new teacher');
-                await createTeacher(teacherData);
+                await createTeacher(newTeacherData);
             }
             alert(
                 actionType === 'update'
-                    ? 'Student updated successfully'
-                    : 'Student created successfully'
+                    ? 'Teacher updated successfully'
+                    : 'Teacher created successfully'
             );
         } catch (error) {
             console.error('API request error', error);
         }
-    };
-
-    const formatPhoneNumber = (number: string) => {
-        if (!number) return '';
-
-        if (!number.startsWith('62')) {
-            console.log('number', `+62${number}`);
-
-            return `+62${number}`;
-        }
-        console.log('number', `+${number}`);
-
-        return `+${number}`;
-    };
-
-    const formatDate = (date: number) => {
-        const dateFormated = XLSX.SSF.parse_date_code(date);
-        return new Date(dateFormated.y, dateFormated.m - 1, dateFormated.d)
-            .toISOString()
-            .split('T')[0];
     };
 
     return (
@@ -184,7 +175,7 @@ const TeacherForm = () => {
                             label='Full Name'
                             placeholder='Please input teacher’s Full Name'
                             errors={errors.name}
-                            value={data?.user.name}
+                            value={data?.name}
                         />
                         <ControllerSelectField
                             control={control}
@@ -195,7 +186,7 @@ const TeacherForm = () => {
                             }))}
                             placeholder={'Please choose teacher’s gender.'}
                             errors={errors.gender}
-                            value={data?.user.gender}
+                            value={data?.gender}
                         />
                         <ControllerField
                             control={control}
@@ -203,7 +194,7 @@ const TeacherForm = () => {
                             label='Place of Birth'
                             placeholder='Please input teacher’s Place of Birth'
                             errors={errors.place_of_birth}
-                            value={data?.user.place_of_birth}
+                            value={data?.place_of_birth}
                         />
                         <ControllerField
                             control={control}
@@ -212,7 +203,7 @@ const TeacherForm = () => {
                             placeholder='Please input teacher’s Date Of Birth'
                             type='date'
                             errors={errors.date_of_birth}
-                            value={data?.user.date_of_birth}
+                            value={data?.date_of_birth}
                         />
                         <ControllerSelectField
                             control={control}
@@ -226,9 +217,9 @@ const TeacherForm = () => {
                                 'Buddha',
                                 'Konghucu',
                             ].map((value) => ({ label: value }))}
-                            placeholder='Please choose student’s Religion.'
+                            placeholder='Please choose Teacher’s Religion.'
                             errors={errors.religion}
-                            value={data?.user.religion}
+                            value={data?.religion}
                         />
                         <ControllerField
                             control={control}
@@ -236,7 +227,7 @@ const TeacherForm = () => {
                             label='Address'
                             placeholder='Please input teacher’s address'
                             errors={errors.address}
-                            value={data?.user.address}
+                            value={data?.address}
                         />
                         <ControllerField
                             control={control}
@@ -244,7 +235,7 @@ const TeacherForm = () => {
                             label='Number Phone'
                             placeholder='Please input teacher’s Number Phone'
                             errors={errors.num_phone}
-                            value={data?.user.num_phone}
+                            value={data?.num_phone}
                         />
 
                         <ControllerField
@@ -253,7 +244,16 @@ const TeacherForm = () => {
                             label='Email'
                             placeholder='Please input teacher’s Email'
                             errors={errors.email}
-                            value={data?.user.email}
+                            value={data?.email}
+                        />
+
+                        <ControllerField
+                            control={control}
+                            name='teaching_hour'
+                            label='Teaching Hours'
+                            placeholder='Please teaching hour'
+                            errors={errors.teaching_hour}
+                            value={data?.teaching_hour}
                         />
                     </div>
 

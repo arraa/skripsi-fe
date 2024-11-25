@@ -1,4 +1,5 @@
 import { StudentDataProps } from '@/components/studentData/types/types';
+import * as XLSX from 'xlsx';
 
 export const formatDate = (date: string | Date): string => {
     const d = new Date(date);
@@ -12,6 +13,13 @@ export const formatDate = (date: string | Date): string => {
     return `${year}-${month}-${day}`;
 };
 
+export const formatDateForm = (date: number) => {
+    const dateFormated = XLSX.SSF.parse_date_code(date);
+    return new Date(dateFormated.y, dateFormated.m - 1, dateFormated.d)
+        .toISOString()
+        .split('T')[0];
+};
+
 export const formatStudentData = (data: any, includedIdClass = true) => {
     if (Array.isArray(data)) {
         return data.map((student: StudentDataProps) => ({
@@ -19,7 +27,7 @@ export const formatStudentData = (data: any, includedIdClass = true) => {
             date_of_birth: formatDate(student.date_of_birth),
             accepted_date: formatDate(student.accepted_date),
             ...(includedIdClass && {
-                id_class:
+                class_id:
                     student.ClassName.Grade.grade + student.ClassName.name,
             }),
         }));
@@ -30,7 +38,20 @@ export const formatStudentData = (data: any, includedIdClass = true) => {
         date_of_birth: formatDate(data.date_of_birth),
         accepted_date: formatDate(data.accepted_date),
         ...(includedIdClass && {
-            id_class: data.ClassName.Grade.grade + data.ClassName.name,
+            class_id: data.ClassName.Grade.grade + data.ClassName.name,
         }),
     };
+};
+
+export const formatPhoneNumber = (number: string) => {
+    if (!number) return '';
+
+    if (!number.startsWith('62')) {
+        console.log('number', `+62${number}`);
+
+        return `+62${number}`;
+    }
+    console.log('number', `+${number}`);
+
+    return `+${number}`;
 };

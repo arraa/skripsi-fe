@@ -14,13 +14,18 @@ import type { InferInput } from 'valibot';
 import { useForm } from 'react-hook-form';
 import { ControllerField } from '../common/form/textField';
 import { ControllerSelectField } from '../common/form/selectField';
-import { minLength, number, object, pipe, string } from 'valibot';
+import { minLength, object, pipe, string } from 'valibot';
 import { getClass } from '@/app/api/class';
 import ImportData from '../common/dialog/ImportData';
 import { useSearchParams } from 'next/navigation';
 import { Box } from '@mui/material';
 import { getStudentById } from '@/app/api/student';
-import { formatStudentData } from '@/lib/formatData';
+import {
+    formatDateForm,
+    formatPhoneNumber,
+    formatStudentData,
+} from '@/lib/formatData';
+import { religionList } from '@/constant/religionList';
 
 type ObjectInput = InferInput<typeof ObjectSchema>;
 
@@ -188,36 +193,19 @@ const StudentForm = () => {
             } else if (actionType === 'create') {
                 response = await createStudent(newData);
             }
-			if (response?.status === 200) {
-				alert(
-					actionType === 'update'
-						? 'Student updated successfully'
-						: 'Student created successfully'
-				);
-			} else {
-				alert('Failed to create student');
-			}
+            if (response?.status === 200) {
+                alert(
+                    actionType === 'update'
+                        ? 'Student updated successfully'
+                        : 'Student created successfully'
+                );
+            } else {
+                alert('Failed to create student');
+            }
         } catch (error) {
             console.error('API request error', error);
-			alert('Failed to create student');
+            alert('Failed to create student');
         }
-    };
-
-    const formatPhoneNumber = (number: string) => {
-        if (!number) return '';
-
-        if (!number.startsWith('62')) {
-            return `+62${number}`;
-        }
-
-        return `+${number}`;
-    };
-
-    const formatDate = (date: number) => {
-        const dateFormated = XLSX.SSF.parse_date_code(date);
-        return new Date(dateFormated.y, dateFormated.m - 1, dateFormated.d)
-            .toISOString()
-            .split('T')[0];
     };
 
     const handleFileUpload = async (file: File | null) => {
@@ -263,12 +251,12 @@ const StudentForm = () => {
                         name: name || '',
                         gender: gender || '',
                         place_of_birth: place_of_birth || '',
-                        date_of_birth: formatDate(date_of_birth) || '',
+                        date_of_birth: formatDateForm(date_of_birth) || '',
                         religion: religion || '',
                         address: address || '',
                         number_phone: formatPhoneNumber(number_phone),
                         email: email || '',
-                        accepted_date: formatDate(accepted_date) || '',
+                        accepted_date: formatDateForm(accepted_date) || '',
                         school_origin: school_origin || '',
                         class_id: class_id || 0,
                         father_name: father_name || '',
@@ -385,14 +373,9 @@ const StudentForm = () => {
                             control={control}
                             name='religion'
                             label='Religion'
-                            options={[
-                                'Islam',
-                                'Kristen Protestan',
-                                'Kristen Katolik',
-                                'Hindu',
-                                'Buddha',
-                                'Konghucu',
-                            ].map((value) => ({ label: value }))}
+                            options={religionList.map((value) => ({
+                                label: value,
+                            }))}
                             placeholder='Please choose student’s Religion.'
                             errors={errors.religion}
                             value={data?.religion}

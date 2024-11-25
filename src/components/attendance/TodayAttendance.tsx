@@ -6,65 +6,50 @@ import { Box } from '@mui/material';
 import { getClass } from '@/app/api/class';
 import { useEffect, useState } from 'react';
 import { Button } from '../common/button/button';
-import Delete from '../common/dialog/Delete';
-import { AttandanceProps } from './type/types';
-import { classDataProps } from '../classGenerator/types/types';
+import { AttendanceProps } from './type/types';
+import { classDataProps } from '../studentData/types/types';
 import { columnData } from './column';
 import { useRouter } from 'next/navigation';
 import { getAttendanceByMonth } from '@/app/api/attendance';
+import { formatDateAttendance } from './interface/dateInterface';
 
-const AttandanceToday = () => {
-    const attandanceData = [
-        {
-            id: 1,
-            date: '2024-11-01',
-            hadir: 20,
-            sakit: 2,
-            alfa: 1,
-        },
-        {
-            id: 2,
-            date: '2024-11-02',
-            hadir: 18,
-            sakit: 3,
-            alfa: 2,
-        },
-        {
-            id: 3,
-            date: '2024-11-03',
-            hadir: 22,
-            sakit: 1,
-            alfa: 0,
-        },
-        {
-            id: 4,
-            date: '2024-11-04',
-            hadir: 19,
-            sakit: 4,
-            alfa: 1,
-        },
-        {
-            id: 5,
-            date: '2024-11-05',
-            hadir: 21,
-            sakit: 2,
-            alfa: 2,
-        },
-    ];
+interface dateProps {
+    month: number;
+    year: number;
+}
 
+const month = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+];
+
+const AttendanceToday = () => {
     const grade = [7, 8, 9];
     const [classData, setClassData] = useState<classDataProps[]>([]);
-
-    const [attandance, setAttandance] =
-        useState<AttandanceProps[]>(attandanceData);
+    const [attendance, setAttendance] = useState<AttendanceProps[]>([]);
     const [NewClass, setNewClass] = useState<string>('');
     const [open, setOpen] = useState(false);
     const [selectedClass, setSelectedClass] = useState<number>(0);
+    const [selectedDate, setselectedDate] = useState<dateProps>({
+        month: new Date().getMonth(),
+        year: new Date().getFullYear(),
+    });
     const [openDelete, setOpenDelete] = useState(false);
 
     const handleClassChange = (value: number) => {
         setSelectedClass(value);
     };
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -82,25 +67,40 @@ const AttandanceToday = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const result = await getAttendanceByMonth(selectedClass, new Date("2024-08-01"));
+                const result = await getAttendanceByMonth(
+                    selectedClass,
+                    new Date(selectedDate.year, selectedDate.month)
+                );
 
-                console.log('result data', result);
+                setAttendance(
+                    (result.attendance &&
+                        result.attendance.map((item, index: number) => ({
+                            id: index,
+                            date: item.date,
+                            hadir: item.present_total,
+                            sakit: item.sick_total,
+                            alfa: item.absent_total,
+                        }))) ||
+                        []
+                );
             } catch (error) {
                 console.error('API request error', error);
             }
-        }
+        };
         if (selectedClass !== 0) {
             fetchData();
         }
-    } , [classData, selectedClass]);
-    const handleEditAttandance = (id: number) => {
-        router.push('/attendance/attendance-form?action=edit&');
+    }, [classData, selectedClass, selectedDate]);
+    const handleEditAttendance = (id: number) => {
+        router.push(
+            `/attendance/attendance-form?action=edit&class_id=${selectedClass}&date=${attendance[id].date}`
+        );
     };
 
-    const rows = columnData(handleEditAttandance);
+    const rows = columnData(handleEditAttendance);
     const router = useRouter();
 
-    const handleAddAttandance = () => {
+    const handleAddAttendance = () => {
         router.push('/attendance/attendance-form?action=create');
     };
 
@@ -125,32 +125,48 @@ const AttandanceToday = () => {
                     Attendance
                 </h1>
                 <div className='flex cursor-pointer bg-[#31426E]  text-white sm:rounded-md'>
+                    <label htmlFor='date-select' className='sr-only'>
+                        Select Date
+                    </label>
                     <select
+                        id='date-select'
                         className='mx-2 w-full bg-transparent px-6 py-3 text-lg'
-                        value={selectedClass}
-                        onChange={(e) =>
-                            handleClassChange(Number(e.target.value))
-                        }
+                        value={`${selectedDate.month} ${selectedDate.year}`}
+                        onChange={(e) => {
+                            const [month, year] = e.target.value.split(' ');
+                            setselectedDate({
+                                month: Number(month),
+                                year: Number(year),
+                            });
+                        }}
                     >
-                        {classData &&
-                            classData.map((classItem) => (
-                                <option key={classItem.id} value={classItem.id}>
-                                    Class&ensp; {classItem.Grade?.grade}
-                                    {classItem.name}
-                                </option>
-                            ))}
+                        {month.map((month, index) => (
+                            <option
+                                key={index}
+                                value={`${index} ${new Date().getFullYear()}`}
+                            >
+                                {month} {new Date().getFullYear()}
+                            </option>
+                        ))}
                     </select>
                 </div>
             </div>
             {/* <div className=' h-[80vh] bg-white'> */}
             <div className='flex h-[80vh] flex-col gap-4 rounded-3xl bg-white p-5 text-[#0c427770] shadow-md'>
                 <div className='flex items-center justify-between'>
-                    <Button onClick={handleAddAttandance} size={'default'}>
-                        add Attandance
+                    <Button onClick={handleAddAttendance} size={'default'}>
+                        add Attendance
                     </Button>
 
                     <div className='flex cursor-pointer bg-[#31426E]  text-white sm:rounded-md'>
+                        <label
+                            htmlFor='select-class-add-attendance'
+                            className='sr-only'
+                        >
+                            Select Month
+                        </label>
                         <select
+                            id='select-class-add-attendance'
                             className='mx-2  bg-transparent px-6 py-2 text-lg'
                             value={selectedClass}
                             onChange={(e) =>
@@ -170,10 +186,16 @@ const AttandanceToday = () => {
                         </select>
                     </div>
                 </div>
-                <Table data={attandance} columnData={rows} />
+                <Table
+                    data={attendance.map((item: AttendanceProps) => ({
+                        ...item,
+                        date: formatDateAttendance(item.date),
+                    }))}
+                    columnData={rows}
+                />
             </div>
         </Box>
     );
 };
 
-export default AttandanceToday;
+export default AttendanceToday;
