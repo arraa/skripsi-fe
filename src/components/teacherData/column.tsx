@@ -29,8 +29,8 @@ export const columnData = (
             >
                 <div
                     onClick={() =>
-                        params.row.TeacherID &&
-                        handleUpdate(params.row.TeacherID)
+                        params.row.teacher_id &&
+                        handleUpdate(params.row.teacher_id.toString())
                     }
                 >
                     <GridActionsCellItem
@@ -64,7 +64,7 @@ export const columnData = (
                     }
                     label='Delete'
                     onClick={() =>
-                        handleClickOpen(Number(params.row.TeacherID))
+                        handleClickOpen(Number(params.row.teacher_id))
                     }
                 />
             </Box>
