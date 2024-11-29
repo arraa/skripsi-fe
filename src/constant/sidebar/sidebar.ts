@@ -57,6 +57,16 @@ export const SIDEBAR = [
         name: 'Scoring',
         link: '/scoring',
         img: '/icon/icon-scoring.svg',
+        subMenu: [
+            {
+                name: 'Subject',
+                link: '/scoring/Subject',
+            },
+            {
+                name: 'Summary',
+                link: '/scoring/Subject',
+            },
+        ],
     },
     {
         name: 'Calender',

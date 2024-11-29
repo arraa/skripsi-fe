@@ -7,6 +7,8 @@ export const ControllerField = ({
     placeholder,
     errors,
     type = 'text',
+    defaultValues,
+    value
 }: any) => (
     <div className='flex flex-col gap-2'>
         <label htmlFor={name}>{label}</label>
