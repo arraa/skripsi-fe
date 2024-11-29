@@ -19,11 +19,13 @@ export default function RootLayout({
 }>) {
 
     const pathname = usePathname(); 
-    if (pathname === '/login') {
+    if (pathname.includes('/auth')) {
         return (
             <html lang="en">
                 <body className={monseMontserrat.className}>
+                <div className='flex min-h-screen bg-[#FAFDFF]'>
                     {children}
+                </div>
                 </body>
             </html>
         );

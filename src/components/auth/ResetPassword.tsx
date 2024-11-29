@@ -3,10 +3,8 @@ import { login, resetPassword } from '@/app/api/auth';
 import Link from 'next/link';
 import { FormEvent, useState } from 'react';
 
-const ResetPassword = () => {
-    // const { token, email } = props;
-    const token = '';
-    const email = '';
+const ResetPassword = (props: { token: string; email: string }) => {
+    const { token, email } = props;
     const [password, setPassword] = useState('');
     const [password_confirmation, setPasswordConfirmation] = useState('');
     const [error, setError] = useState('');

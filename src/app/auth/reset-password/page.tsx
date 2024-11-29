@@ -1,4 +1,4 @@
-import { ResetPasswordForm } from '@/components/auth/AuthComponent';
+import ResetPassword from '@/components/auth/ResetPassword';
 import { redirect } from 'next/navigation';
 
 export default async function ResetPasswordPage({
@@ -20,5 +20,5 @@ export default async function ResetPasswordPage({
         redirect('/auth/login');
     }
 
-    return <ResetPasswordForm token={token} email={email} />;
+    return <ResetPassword token={token} email={email} />;
 }

@@ -36,12 +36,12 @@ export function IsNotLoggedIn({ children }: { children: React.ReactNode }) {
             let response = await validateAccesToken();
 
             if (response.status === 200) {
-                window.location.href = '/personal-data';
+                window.location.href = '/auth/login';
             } else {
                 response = await getNewAccessToken();
 
                 if (response.status === 200) {
-                    window.location.href = '/personal-data';
+                    window.location.href = '/auth/login';
                 }
             }
         };
