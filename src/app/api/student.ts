@@ -4,7 +4,7 @@ import { AxiosResponse } from 'axios';
 
 export const getStudent = async (): Promise<AxiosResponse> => {
     try {
-        const response = await api.get('/student/');
+        const response = await api.get('/student');
         return response;
     } catch (error) {
         console.error('API request error', error);

@@ -35,7 +35,7 @@ const formatDate = (date: string | Date): string => {
 
 export const getTeacher = async () => {
     try {
-        const response = await api.get('/teacher/');
+        const response = await api.get(routeTeacher)
         return response;
     } catch (error: any) {
         console.error('API request error', error);

@@ -57,14 +57,14 @@ const StudentData = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            try {
-                const result = await getStudent();
-
-                const data = formatStudentData(result.data.students);
-                setData(data);
-            } catch (error: any) {
-                console.error('API request error', error);
-            }
+            getStudent()
+                .then((result) => {
+                    const data = formatStudentData(result.data.students);
+                    setData(data);
+                })
+                .catch((error) => {
+                    console.error('API request error', error);
+                });
         };
         fetchData();
     }, []);

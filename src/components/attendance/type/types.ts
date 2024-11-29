@@ -7,12 +7,12 @@ export interface AttendanceProps {
 }
 
 export interface AttendanceListFormProps {
-    id?: number;
-    student_id?: string;
-    name?: string;
-    sex?: string;
-    reason?: string;
-    date?: Date;
+    id: number;
+    student_id: string;
+    name: string;
+    sex: string;
+    reason: string;
+    date: Date;
 };
 
 export type AttendanceFormData = {
