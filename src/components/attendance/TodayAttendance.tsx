@@ -12,6 +12,7 @@ import { columnData } from './column';
 import { useRouter } from 'next/navigation';
 import { getAttendanceByMonth } from '@/app/api/attendance';
 import { formatDateAttendance } from './interface/dateInterface';
+import { getUserType } from '@/app/api/auth';
 
 interface dateProps {
     month: number;
@@ -54,7 +55,7 @@ const AttendanceToday = () => {
         const fetchData = async () => {
             try {
                 const result = await getClass();
-
+                // const userType = await getUserType();
                 setClassData(result.data.ClassName);
                 setSelectedClass(result.data.ClassName[0].id);
             } catch (error) {

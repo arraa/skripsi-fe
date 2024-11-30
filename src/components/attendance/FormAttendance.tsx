@@ -4,7 +4,7 @@ import Table from '@/components/common/Table'
 
 import { Box } from '@mui/material'
 import { getClass } from '@/app/api/class'
-import { useEffect, useMemo, useState } from 'react'
+import { act, useEffect, useMemo, useState } from 'react'
 import { Button } from '../common/button/button'
 import Delete from '../common/dialog/Delete'
 import {
@@ -80,7 +80,7 @@ const AttendanceForm = () => {
         const outputData: AttendancePropsSubmitApi = {
             classID: classID,
             date: new Date(correctedDateString),
-            data: submittedData
+            data: submittedData,
         }
 
         if (actionType === 'edit') {
@@ -120,34 +120,58 @@ const AttendanceForm = () => {
                     )
                 reset(defaultValues)
 
-                setStudentAttendanceList(
-                    resultStudentAttendanceList.attendance.map(
-                        (
-                            student: AllStudentAttendanceByClassIDAndDateProps
-                        ) => {
-                            return {
-                                id: student.id,
-                                student_id: student.id.toString(),
-                                name: student.name,
-                                sex: student.sex,
-                                reason: student.reason,
-                                date: new Date(student.date),
+                if (actionType === 'edit') {
+                    setStudentAttendanceList(
+                        resultStudentAttendanceList.attendance.map(
+                            (
+                                student: AllStudentAttendanceByClassIDAndDateProps
+                            ) => {
+                                return {
+                                    id: student.id,
+                                    student_id: student.id.toString(),
+                                    name: student.name,
+                                    sex: student.sex,
+                                    reason: student.reason,
+                                    date: new Date(student.date),
+                                }
                             }
-                        }
+                        )
                     )
-                )
+                } else {
+                    if (resultStudentAttendanceList.attendance.length > 0) {
+                        // TODO: kalo udh ada data absen bakal show data absen yang udah ada tapigk bisa di submit lagi
+                    } else {
+                        // const classData: classDataProps = await fetchClassData()
+                        
+                        setStudentAttendanceList([
+                            // TODO: bakal jadi data dari student yang ada di kelas yang belum absen hari ini
+                            {
+                                id: 1,
+                                student_id: '1',
+                                name: 'Nguyen Van A',
+                                sex: 'Male',
+                                reason: 'Sick',
+                                date: new Date(),
+                            },
+                            {
+                                id: 2,
+                                student_id: '2',
+                                name: 'Nguyen Van B',
+                                sex: 'Female',
+                                reason: 'Absent',
+                                date: new Date(),
+                            },
+                        ])
+                    }
+                }
             } catch (error) {
                 console.error('API request error', error)
             }
         }
         fetchData()
-    }, [classID, date, reset])
+    }, [classID, date, reset, actionType])
 
-    const rows = columnDataAttendanceForm(
-        status,
-        control,
-        setValue
-    )
+    const rows = columnDataAttendanceForm(status, control, setValue)
 
     return (
         <Box sx={{ padding: 3, paddingLeft: 0, width: '80vw' }}>
