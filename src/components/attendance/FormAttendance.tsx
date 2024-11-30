@@ -14,7 +14,7 @@ import {
 } from './type/types'
 import { classDataProps } from '../classGenerator/types/types'
 import { columnDataAttendanceForm } from './column'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useSearchParams } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { valibotResolver } from '@hookform/resolvers/valibot'
 import { array, InferInput, minLength, object, pipe, string } from 'valibot'
@@ -24,6 +24,8 @@ import {
     getAllStudentAttendanceByClassIDAndDate,
     updateAttendance,
 } from '@/app/api/attendance'
+import { getStudentClassNameID } from '@/app/api/student'
+import { StudentDataProps } from '../studentData/types/types'
 
 const ObjectSchema = array(
     object({
@@ -128,7 +130,7 @@ const AttendanceForm = () => {
                             ) => {
                                 return {
                                     id: student.id,
-                                    student_id: student.id.toString(),
+                                    student_id: student.id.toString() || '',
                                     name: student.name,
                                     sex: student.sex,
                                     reason: student.reason,
@@ -141,27 +143,27 @@ const AttendanceForm = () => {
                     if (resultStudentAttendanceList.attendance.length > 0) {
                         // TODO: kalo udh ada data absen bakal show data absen yang udah ada tapigk bisa di submit lagi
                     } else {
-                        // const classData: classDataProps = await fetchClassData()
-                        
-                        setStudentAttendanceList([
-                            // TODO: bakal jadi data dari student yang ada di kelas yang belum absen hari ini
-                            {
-                                id: 1,
-                                student_id: '1',
-                                name: 'Nguyen Van A',
-                                sex: 'Male',
-                                reason: 'Sick',
-                                date: new Date(),
-                            },
-                            {
-                                id: 2,
-                                student_id: '2',
-                                name: 'Nguyen Van B',
-                                sex: 'Female',
-                                reason: 'Absent',
-                                date: new Date(),
-                            },
-                        ])
+                        await getStudentClassNameID(classID).then(
+                            (response) => {
+                                setStudentAttendanceList(
+                                    response.data.students.map(
+                                        (
+                                            student: StudentDataProps,
+                                            index: number
+                                        ) => {
+                                            return {
+                                                id: index,
+                                                student_id: student.StudentID,
+                                                name: student.name,
+                                                sex: student.gender,
+                                                reason: '',
+                                                date: new Date(),
+                                            }
+                                        }
+                                    )
+                                )
+                            }
+                        )
                     }
                 }
             } catch (error) {

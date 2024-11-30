@@ -12,9 +12,14 @@ export const getStudent = async (): Promise<AxiosResponse> => {
     }
 }
 
-export const getStudentClassNameID = async (classID: string | number): Promise<AxiosResponse> => {
+interface StudentClassIDApiProps {
+    students: StudentDataProps[]
+}
+export const getStudentClassNameID = async (
+    classID: string | number
+): Promise<AxiosResponse<StudentClassIDApiProps>> => {
     try {
-        const response = await api.get(`/student/${classID}`)
+        const response = await api.get(`/student/class/${classID}`)
         return response
     } catch (error) {
         console.error('API request error', error)
