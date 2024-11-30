@@ -122,7 +122,31 @@ const AttendanceForm = () => {
                     )
                 reset(defaultValues)
 
-                if (actionType === 'edit') {
+                if (resultStudentAttendanceList.attendance.length == 0) {
+                    await getStudentClassNameID(classID).then(
+                        (response) => {
+                            setStudentAttendanceList(
+                                response.data.students.map(
+                                    (
+                                        student: StudentDataProps,
+                                        index: number
+                                    ) => {
+                                        return {
+                                            id: index,
+                                            student_id: String(
+                                                student.StudentID
+                                            ),
+                                            name: student.name,
+                                            sex: student.gender,
+                                            reason: '',
+                                            date: new Date(),
+                                        }
+                                    }
+                                )
+                            )
+                        }
+                    )
+                } else {
                     setStudentAttendanceList(
                         resultStudentAttendanceList.attendance.map(
                             (
@@ -139,32 +163,6 @@ const AttendanceForm = () => {
                             }
                         )
                     )
-                } else {
-                    if (resultStudentAttendanceList.attendance.length > 0) {
-                        // TODO: kalo udh ada data absen bakal show data absen yang udah ada tapigk bisa di submit lagi
-                    } else {
-                        await getStudentClassNameID(classID).then(
-                            (response) => {
-                                setStudentAttendanceList(
-                                    response.data.students.map(
-                                        (
-                                            student: StudentDataProps,
-                                            index: number
-                                        ) => {
-                                            return {
-                                                id: index,
-                                                student_id: student.StudentID,
-                                                name: student.name,
-                                                sex: student.gender,
-                                                reason: '',
-                                                date: new Date(),
-                                            }
-                                        }
-                                    )
-                                )
-                            }
-                        )
-                    }
                 }
             } catch (error) {
                 console.error('API request error', error)

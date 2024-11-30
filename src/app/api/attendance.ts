@@ -75,7 +75,7 @@ export const createAttendance = async ({
     const formatedDate = formatDate(date)
     try {
         const response: AxiosResponse<CreateAttendanceApiProps> =
-            await api.post(`/attendance/${classID}/${formatedDate}`, {
+            await api.post(`/attendance/${classID}`, {
                 student: data,
             })
         if (response.status !== 200) {
