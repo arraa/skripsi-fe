@@ -26,3 +26,9 @@ export interface classDataProps {
     name: string;
     grade: string;
 }
+
+export interface subjectListProps {
+    id: number;
+    grade: number;
+    name: string;
+}
