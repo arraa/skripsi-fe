@@ -383,22 +383,22 @@ const ScoringForm = () => {
             <div className='flex h-[80vh] flex-col gap-4 rounded-3xl bg-white p-5 text-[#0c427770] shadow-md'>
                 <form
                     onSubmit={handleSubmit(onSubmit)}
-                    className='text-[#353535]'
+                    className='max-h-[80vh] text-[#353535]'
                 >
-                    <div className='mb-4 ml-3 mt-10 flex w-full justify-start text-xl  text-[#0c42777a] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2  '>
+                    <div className=' flex w-full justify-start text-base  text-[#0c42777a] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2  '>
                         <div className='relative w-1/4'>
                             <div className='relative'>
-                                <div className='relative'>
+                                <div className='relative '>
                                     <button
                                         id='custom-dropdown'
-                                        className='w-full rounded-lg border p-2 text-left'
+                                        className='w-full rounded-lg border  p-2 text-left'
                                         onClick={() => setShowCustomInput((prev) => !prev)}
                                     >
                                         {selectedOption || 'Input Assignment Type...'}
                                     </button>
 
                                     {showCustomInput && (
-                                        <div className='absolute z-10 mt-1 w-full rounded-lg border bg-white'>
+                                        <div className='absolute z-10 mt-1 w-full rounded-lg border bg-white '>
                                             <div
                                                 className='cursor-pointer p-2 hover:bg-gray-100'
                                                 onClick={() => handleOptionChange('PAS')}
