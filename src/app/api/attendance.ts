@@ -112,3 +112,34 @@ export const updateAttendance = async ({
         throw error
     }
 }
+
+interface SummaryAttendanceByClassIDAndYearProps {
+    student_id: number
+    student_name: string
+    present_total: number
+    sick_total: number
+    leave_total: number
+    absent_total: number
+}
+
+export interface SummaryAttendanceByClassIDAndYearApiProps {
+    attendance: SummaryAttendanceByClassIDAndYearProps[]
+}
+
+export const getAllSummaryAttendanceByClassIDAndYear = async (
+    classID: number
+): Promise<SummaryAttendanceByClassIDAndYearApiProps> => {
+    const year = new Date().getFullYear()
+    try {
+        const response: AxiosResponse<SummaryAttendanceByClassIDAndYearApiProps> =
+            await api.get(`/attendance/summaries/${classID}/${year}`)
+        if (response.status !== 200) {
+            throw new Error('Error fetching attendance data')
+        }
+
+        return response.data
+    } catch (error) {
+        console.error('API request error', error)
+        throw error
+    }
+}
