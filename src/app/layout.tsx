@@ -23,9 +23,9 @@ export default function RootLayout({
         return (
             <html lang="en">
                 <body className={monseMontserrat.className}>
-                <div className='flex min-h-screen bg-[#FAFDFF]'>
-                    {children}
-                </div>
+                    <div className='flex min-h-screen bg-[#FAFDFF]'>
+                        {children}
+                    </div>
                 </body>
             </html>
         );
