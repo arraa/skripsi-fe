@@ -1,3 +1,4 @@
+import { SummaryAttendanceByClassIDAndYearApiProps } from '../../../app/api/attendance';
 export interface AttendanceProps {
     id?: number;
     date: string;
@@ -7,12 +8,12 @@ export interface AttendanceProps {
 }
 
 export interface AttendanceListFormProps {
-    id?: number;
-    student_id?: string;
-    name?: string;
-    sex?: string;
-    reason?: string;
-    date?: Date;
+    id: number;
+    student_id: string;
+    name: string;
+    sex: string;
+    reason: string;
+    date: Date;
 };
 
 export type AttendanceFormData = {
@@ -27,4 +28,13 @@ export interface AllStudentAttendanceByClassIDAndDateProps {
     sex: string;
     reason: string;
     date: string;
+}
+
+export interface SummaryAttendanceShowProps {
+    id: number
+    name: string
+    hadir: number
+    sakit: number
+    izin: number
+    alfa: number
 }
