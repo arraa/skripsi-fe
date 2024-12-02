@@ -144,6 +144,7 @@ const TeacherForm = () => {
 
     const onSubmit = async (data: ObjectInput) => {
         const newTeacherData: TeacherDataProps = {
+            id: Number(id),
             name: data.name || '',
             gender: data.gender || '',
             place_of_birth: data.place_of_birth || '',
