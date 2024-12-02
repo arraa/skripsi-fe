@@ -1,24 +1,24 @@
-import { StudentDataProps } from '@/components/studentData/types/types';
-import * as XLSX from 'xlsx';
+import { StudentDataProps } from '@/components/studentData/types/types'
+import * as XLSX from 'xlsx'
 
 export const formatDate = (date: string | Date): string => {
-    const d = new Date(date);
+    const d = new Date(date)
     if (isNaN(d.getTime())) {
-        return 'Invalid Date';
+        return 'Invalid Date'
     }
-    const year = d.getFullYear();
-    const month = String(d.getMonth() + 1).padStart(2, '0');
-    const day = String(d.getDate()).padStart(2, '0');
+    const year = d.getFullYear()
+    const month = String(d.getMonth() + 1).padStart(2, '0')
+    const day = String(d.getDate()).padStart(2, '0')
 
-    return `${year}-${month}-${day}`;
-};
+    return `${year}-${month}-${day}`
+}
 
 export const formatDateForm = (date: number) => {
-    const dateFormated = XLSX.SSF.parse_date_code(date);
+    const dateFormated = XLSX.SSF.parse_date_code(date)
     return new Date(dateFormated.y, dateFormated.m - 1, dateFormated.d)
         .toISOString()
-        .split('T')[0];
-};
+        .split('T')[0]
+}
 
 export const formatStudentData = (data: any, includedIdClass = true) => {
     if (Array.isArray(data)) {
@@ -30,7 +30,7 @@ export const formatStudentData = (data: any, includedIdClass = true) => {
                 class_id:
                     student.ClassName.Grade.grade + student.ClassName.name,
             }),
-        }));
+        }))
     }
 
     return {
@@ -40,18 +40,19 @@ export const formatStudentData = (data: any, includedIdClass = true) => {
         ...(includedIdClass && {
             class_id: data.ClassName.Grade.grade + data.ClassName.name,
         }),
-    };
-};
+    }
+}
 
 export const formatPhoneNumber = (number: string) => {
-    if (!number) return '';
+    if (!number) return ''
 
-    if (!number.startsWith('62')) {
-        console.log('number', `+62${number}`);
-
-        return `+62${number}`;
+    if (number.startsWith('0')) {
+        return `+62${number.slice(1)}`
+    } else if (number.startsWith('62')) {
+        return `+${number}`
+    } else if (number.startsWith('+62')) {
+        return number
     }
-    console.log('number', `+${number}`);
 
-    return `+${number}`;
-};
+    return number
+}

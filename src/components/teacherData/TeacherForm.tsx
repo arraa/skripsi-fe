@@ -20,7 +20,7 @@ import type { InferInput } from 'valibot'
 import { useForm } from 'react-hook-form'
 import { ControllerField } from '../common/form/textField'
 import { ControllerSelectField } from '../common/form/selectField'
-import { minLength, number, object, pipe, string } from 'valibot'
+import { minLength, object, pipe, string } from 'valibot'
 import { AxiosResponse } from 'axios'
 import { useSearchParams } from 'next/navigation'
 import {
@@ -131,16 +131,15 @@ const TeacherForm = () => {
             })
     }, [])
 
-    const handleChange = (event: SelectChangeEvent<typeof subjectList>) => {
+    const handleChange = (event: SelectChangeEvent<number[]>) => {
         const {
             target: { value },
         } = event
-        console.log('value', value)
-        setSelectedSubject(
-            typeof value === 'string'
-                ? value.split(',').map(Number)
-                : value.map((item: subjectListProps) => item.id)
-        )
+
+        const values =
+            typeof value === 'string' ? value.split(',').map(Number) : value
+
+        setSelectedSubject(Array.isArray(values) ? values : [])
     }
 
     const onSubmit = async (data: ObjectInput) => {
@@ -153,7 +152,8 @@ const TeacherForm = () => {
             address: data.address || '',
             num_phone: data.num_phone || '',
             email: data.email || '',
-            teaching_hour: String(data.teaching_hour) || '0', // or any default value
+            teaching_hour: data.teaching_hour || '0', // or any default value
+            subject: selectedSubject,
         }
 
         try {
@@ -303,18 +303,12 @@ const TeacherForm = () => {
                             labelId="demo-multiple-name-label"
                             id="demo-multiple-name"
                             multiple
-                            value={subjectList.filter((item) =>
-                                selectedSubject.includes(item.id)
-                            )}
+                            value={selectedSubject}
                             onChange={handleChange}
-                            input={<OutlinedInput label="Name" />}
+                            input={<OutlinedInput label="Subject" />}
                         >
                             {subjectList.map((item) => (
-                                <MenuItem
-                                    key={item.id}
-                                    value={item.id}
-                                    // style={getStyles(item, personitem, theme)}
-                                >
+                                <MenuItem key={item.id} value={item.id}>
                                     {`${item.grade} - ${item.name}`}
                                 </MenuItem>
                             ))}

@@ -8,7 +8,7 @@ export const getStudent = async (): Promise<AxiosResponse> => {
         return response
     } catch (error) {
         console.error('API request error', error)
-        return Promise.reject(error)
+        return Promise.reject(new Error(String(error)))
     }
 }
 
@@ -23,7 +23,7 @@ export const getStudentClassNameID = async (
         return response
     } catch (error) {
         console.error('API request error', error)
-        return Promise.reject(error)
+        return Promise.reject(new Error(String(error)))
     }
 }
 
@@ -37,7 +37,7 @@ export const getStudentById = async (id: string): Promise<AxiosResponse> => {
         return response
     } catch (error) {
         console.error('API request error', error)
-        return Promise.reject(error)
+        return Promise.reject(new Error(String(error)))
     }
 }
 
@@ -62,7 +62,7 @@ export const createStudent = async (
         return response
     } catch (error) {
         console.error('Error:', error)
-        return Promise.reject(error)
+        return Promise.reject(new Error(String(error)))
     }
 }
 
@@ -79,7 +79,7 @@ export const createStudentbyExcel = async (
         return response
     } catch (error) {
         console.log('create excel error:', error)
-        return Promise.reject(error)
+        return Promise.reject(new Error(String(error)))
     }
 }
 
@@ -105,7 +105,7 @@ export const updateStudent = async (
         return response // Ensure to return the response data
     } catch (error) {
         console.error('Update error:', error) // Log the error
-        return Promise.reject(error)
+        return Promise.reject(new Error(String(error)))
     }
 }
 
@@ -118,7 +118,7 @@ export const deleteStudent = async (
             return response
         } catch (error) {
             console.error('API request error', error)
-            return Promise.reject(error)
+            return Promise.reject(new Error(String(error)))
         }
     }
     return Promise.reject(new Error('No student id provided'))
