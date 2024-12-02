@@ -1,4 +1,5 @@
 export interface TeacherDataProps {
+    id: number
     teacher_id?: number
     user_id?: number
     name: string
