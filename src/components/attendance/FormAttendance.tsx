@@ -11,6 +11,7 @@ import {
     AllStudentAttendanceByClassIDAndDateProps,
     AttendanceFormData,
     AttendanceListFormProps,
+    StudentAttendanceListProps,
 } from './type/types'
 import { classDataProps } from '../classGenerator/types/types'
 import { columnDataAttendanceForm } from './column'
@@ -25,7 +26,6 @@ import {
     updateAttendance,
 } from '@/app/api/attendance'
 import { getStudentClassNameID } from '@/app/api/student'
-import { StudentDataProps } from '../studentData/types/types'
 
 const ObjectSchema = array(
     object({
@@ -122,48 +122,71 @@ const AttendanceForm = () => {
                     )
                 reset(defaultValues)
 
-                if (resultStudentAttendanceList.attendance.length == 0) {
-                    await getStudentClassNameID(classID).then(
-                        (response) => {
-                            setStudentAttendanceList(
-                                response.data.students.map(
-                                    (
-                                        student: StudentDataProps,
-                                        index: number
-                                    ) => {
-                                        return {
-                                            id: index,
-                                            student_id: String(
-                                                student.StudentID
-                                            ),
-                                            name: student.name,
-                                            sex: student.gender,
-                                            reason: '',
-                                            date: new Date(),
-                                        }
-                                    }
-                                )
+                const mapStudentAttendance = (
+                    student: StudentAttendanceListProps,
+                    index: number
+                ) => {
+                    return {
+                        id: index,
+                        student_id: String(student.StudentID),
+                        name: student.name,
+                        sex: student.gender,
+                        reason: '',
+                        date: new Date(),
+                    }
+                }
+
+                const mapExistingAttendance = (
+                    student: AllStudentAttendanceByClassIDAndDateProps
+                ) => {
+                    return {
+                        id: student.id,
+                        student_id: student.id.toString() || '',
+                        name: student.name,
+                        sex: student.sex,
+                        reason: student.reason,
+                        date: new Date(student.date),
+                    }
+                }
+
+                const fetchStudentClassData = async (classID: number) => {
+                    const response = await getStudentClassNameID(classID)
+                    return response.data.students
+                }
+
+                const setAttendanceList = (attendanceData: any[]) => {
+                    setStudentAttendanceList(attendanceData)
+                }
+
+                const handleStudentAttendance = async (
+                    classID: number,
+                    resultStudentAttendanceList: any
+                ) => {
+                    if (resultStudentAttendanceList.attendance.length === 0) {
+                        try {
+                            const students = await fetchStudentClassData(
+                                classID
+                            )
+                            const mappedStudents =
+                                students.map(mapStudentAttendance)
+                            setAttendanceList(mappedStudents)
+                        } catch (error) {
+                            console.error(
+                                'Error fetching student class data',
+                                error
                             )
                         }
-                    )
-                } else {
-                    setStudentAttendanceList(
-                        resultStudentAttendanceList.attendance.map(
-                            (
-                                student: AllStudentAttendanceByClassIDAndDateProps
-                            ) => {
-                                return {
-                                    id: student.id,
-                                    student_id: student.id.toString() || '',
-                                    name: student.name,
-                                    sex: student.sex,
-                                    reason: student.reason,
-                                    date: new Date(student.date),
-                                }
-                            }
-                        )
-                    )
+                    } else {
+                        const mappedAttendance =
+                            resultStudentAttendanceList.attendance.map(
+                                mapExistingAttendance
+                            )
+                        setAttendanceList(mappedAttendance)
+                    }
                 }
+
+                // Usage
+                handleStudentAttendance(classID, resultStudentAttendanceList)
             } catch (error) {
                 console.error('API request error', error)
             }

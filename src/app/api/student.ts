@@ -1,6 +1,8 @@
 import { StudentDataProps } from '@/components/studentData/types/types'
 import { api } from './axios'
 import { AxiosResponse } from 'axios'
+import { formatPhoneNumber } from '../../lib/formatData';
+import { StudentAttendanceListProps } from '@/components/attendance/type/types';
 
 export const getStudent = async (): Promise<AxiosResponse> => {
     try {
@@ -8,12 +10,12 @@ export const getStudent = async (): Promise<AxiosResponse> => {
         return response
     } catch (error) {
         console.error('API request error', error)
-        return Promise.reject(error)
+        return Promise.reject(new Error(String(error)))
     }
 }
 
 interface StudentClassIDApiProps {
-    students: StudentDataProps[]
+    students: StudentAttendanceListProps[]
 }
 export const getStudentClassNameID = async (
     classID: string | number
@@ -23,7 +25,7 @@ export const getStudentClassNameID = async (
         return response
     } catch (error) {
         console.error('API request error', error)
-        return Promise.reject(error)
+        return Promise.reject(new Error(String(error)))
     }
 }
 
@@ -37,7 +39,7 @@ export const getStudentById = async (id: string): Promise<AxiosResponse> => {
         return response
     } catch (error) {
         console.error('API request error', error)
-        return Promise.reject(error)
+        return Promise.reject(new Error(String(error)))
     }
 }
 
@@ -52,9 +54,9 @@ export const createStudent = async (
 
     const data = {
         ...props,
-        number_phone: props.number_phone.toString(),
-        father_number_phone: props.father_number_phone.toString(),
-        mother_number_phone: props.mother_number_phone.toString(),
+        number_phone: formatPhoneNumber(props.number_phone),
+        father_number_phone: formatPhoneNumber(props.father_number_phone),
+        mother_number_phone: formatPhoneNumber(props.mother_number_phone),
     }
 
     try {
@@ -62,7 +64,7 @@ export const createStudent = async (
         return response
     } catch (error) {
         console.error('Error:', error)
-        return Promise.reject(error)
+        return Promise.reject(new Error(String(error)))
     }
 }
 
@@ -79,7 +81,7 @@ export const createStudentbyExcel = async (
         return response
     } catch (error) {
         console.log('create excel error:', error)
-        return Promise.reject(error)
+        return Promise.reject(new Error(String(error)))
     }
 }
 
@@ -102,10 +104,10 @@ export const updateStudent = async (
 
     try {
         const response = await api.put(`/student/update/${getid}`, data)
-        return response // Ensure to return the response data
+        return response
     } catch (error) {
         console.error('Update error:', error) // Log the error
-        return Promise.reject(error)
+        return Promise.reject(new Error(String(error)))
     }
 }
 
@@ -118,7 +120,7 @@ export const deleteStudent = async (
             return response
         } catch (error) {
             console.error('API request error', error)
-            return Promise.reject(error)
+            return Promise.reject(new Error(String(error)))
         }
     }
     return Promise.reject(new Error('No student id provided'))

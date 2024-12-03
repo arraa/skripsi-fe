@@ -1,3 +1,4 @@
+import { StudentDataProps } from '@/components/studentData/types/types';
 import { SummaryAttendanceByClassIDAndYearApiProps } from '../../../app/api/attendance';
 export interface AttendanceProps {
     id?: number;
@@ -37,4 +38,14 @@ export interface SummaryAttendanceShowProps {
     sakit: number
     izin: number
     alfa: number
+}
+
+// export interface StudentAttendanceListProps extends StudentDataProps {
+//     StudentID: number;
+// }
+
+export interface StudentAttendanceListProps {
+    StudentID: number
+    name: string
+    gender: string
 }

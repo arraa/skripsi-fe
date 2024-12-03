@@ -1,96 +1,96 @@
-'use client';
+'use client'
 
-import { deleteStudent } from '@/app/api/student';
-import Table from '@/components/common/Table';
-import SearchBar from '@/components/common/searchBar';
-import { columnData } from '@/components/studentData/column';
-import { StudentDataProps } from '@/components/studentData/types/types';
-import { Box } from '@mui/material';
-import { useEffect, useState } from 'react';
-import Delete from '../common/dialog/Delete';
-import { useRouter } from 'next/navigation';
-import { getStudent } from '@/app/api/student';
-import { formatStudentData } from '@/lib/formatData';
-import { classDataProps } from '../classGenerator/types/types';
+import { deleteStudent } from '@/app/api/student'
+import Table from '@/components/common/Table'
+import SearchBar from '@/components/common/searchBar'
+import { columnData } from '@/components/studentData/column'
+import { StudentDataProps } from '@/components/studentData/types/types'
+import { Box } from '@mui/material'
+import { useEffect, useState } from 'react'
+import Delete from '../common/dialog/Delete'
+import { useRouter } from 'next/navigation'
+import { getStudent } from '@/app/api/student'
+import { formatStudentData } from '@/lib/formatData'
+import { classDataProps } from '../classGenerator/types/types'
 
 const StudentData = () => {
-    const [data, setData] = useState<StudentDataProps[]>([]);
-    const [classData, setClassData] = useState<classDataProps[]>([]);
-    const [searchValue, setSearchValue] = useState('');
-    const [selectedClass, setSelectedClass] = useState<number>();
-    const [open, setOpen] = useState(false);
+    const [data, setData] = useState<StudentDataProps[]>([])
+    const [classData, setClassData] = useState<classDataProps[]>([])
+    const [searchValue, setSearchValue] = useState('')
+    const [selectedClass, setSelectedClass] = useState<number>()
+    const [open, setOpen] = useState(false)
     const [selectedStudentId, setSelectedStudentId] = useState<string | null>(
         null
-    );
-    const router = useRouter();
+    )
+    const router = useRouter()
 
     const handleClickOpen = (studentId: number) => {
-        setSelectedStudentId(studentId.toString());
-        console.log('handleClickOpen clicked', studentId);
-        setOpen(true);
-    };
+        setSelectedStudentId(studentId.toString())
+        console.log('handleClickOpen clicked', studentId)
+        setOpen(true)
+    }
 
     const handleAddStudent = () => {
-        router.push('/personal-data/student/student-form?action=create');
-    };
+        router.push('/personal-data/student/student-form?action=create')
+    }
 
     const handleUpdate = (id: string) => {
         router.push(
             `/personal-data/student/student-form?action=update&student=${id}`
-        );
-    };
+        )
+    }
 
-    const columns = columnData(handleClickOpen, handleUpdate);
+    const columns = columnData(handleClickOpen, handleUpdate)
 
     const handleClose = () => {
-        setOpen(false);
-        setSelectedStudentId(null);
-    };
+        setOpen(false)
+        setSelectedStudentId(null)
+    }
 
     const handleSearchChange = (value: string) => {
-        setSearchValue(value);
-    };
+        setSearchValue(value)
+    }
 
     const handleClassChange = (value: number) => {
-        setSelectedClass(value);
-    };
+        setSelectedClass(value)
+    }
 
     useEffect(() => {
         const fetchData = async () => {
             getStudent()
                 .then((result) => {
-                    const data = formatStudentData(result.data.students);
-                    setData(data);
+                    const data = formatStudentData(result.data.students)
+                    setData(data)
                 })
                 .catch((error) => {
-                    console.error('API request error', error);
-                });
-        };
-        fetchData();
-    }, []);
+                    console.error('API request error', error)
+                })
+        }
+        fetchData()
+    }, [])
 
     const filteredData = data
         ? data.map((student: StudentDataProps, index) => {
             return {
                 ...student,
                 id: index,
-            };
+            }
         })
-        : [];
+        : []
 
     const deletedStudent = async () => {
-        console.log('deletedStudent clicked', selectedStudentId);
+        console.log('deletedStudent clicked', selectedStudentId)
         if (selectedStudentId) {
             try {
-                const deleted = await deleteStudent(selectedStudentId);
-                setSelectedStudentId(null);
-                console.log('deleted student', selectedStudentId);
-                return deleted;
+                const deleted = await deleteStudent(selectedStudentId)
+                setSelectedStudentId(null)
+                console.log('deleted student', selectedStudentId)
+                return deleted
             } catch (error) {
-                console.error('API request error', error);
+                console.error('API request error', error)
             }
         }
-    };
+    }
 
     return (
         <Box sx={{ padding: 3, width: '87vw' }}>
@@ -100,23 +100,23 @@ const StudentData = () => {
                 onDelete={deletedStudent}
                 open={open}
             />
-            <h1 className='my-8 text-3xl font-bold text-[#0C4177]'>
+            <h1 className="my-8 text-3xl font-bold text-[#0C4177]">
                 Personal Data
             </h1>
-            <div className='min-h-screen   rounded-3xl bg-white p-5 text-[#0c427770] shadow-md'>
-                <div className='mb-2 flex items-center justify-between'>
-                    <div className='flex gap-4'>
+            <div className="min-h-screen   rounded-3xl bg-white p-5 text-[#0c427770] shadow-md">
+                <div className="mb-2 flex items-center justify-between">
+                    <div className="flex gap-4">
                         <SearchBar
                             setSearchValue={handleSearchChange}
                             SearchName={'Student'}
                         />
                         <div>
-                            <label htmlFor='class-select' className='sr-only'>
+                            <label htmlFor="class-select" className="sr-only">
                                 Select Class
                             </label>
                             <select
-                                id='class-select'
-                                className='rounded-md shadow-sm focus:border-[#0C4177] focus:ring focus:ring-[#0C4177]/50'
+                                id="class-select"
+                                className="rounded-md shadow-sm focus:border-[#0C4177] focus:ring focus:ring-[#0C4177]/50"
                                 value={selectedClass}
                                 onChange={(e) =>
                                     handleClassChange(Number(e.target.value))
@@ -136,15 +136,15 @@ const StudentData = () => {
                         </div>
                     </div>
 
-                    <div
+                    <button
                         onClick={handleAddStudent}
-                        className='flex bg-[#31426E] px-5 pb-2 pt-3 text-white sm:rounded-md'
+                        className="flex bg-[#31426E] px-5 pb-2 pt-3 text-white sm:rounded-md"
                     >
                         &#43;{' '}
-                        <span className='hidden pl-3 sm:flex'>Add Student</span>
-                    </div>
+                        <span className="hidden pl-3 sm:flex">Add Student</span>
+                    </button>
                 </div>
-                <div className='flex h-full items-center justify-between'>
+                <div className="flex h-full items-center justify-between">
                     <Table
                         data={filteredData}
                         columnData={columns}
@@ -153,7 +153,7 @@ const StudentData = () => {
                 </div>
             </div>
         </Box>
-    );
-};
+    )
+}
 
-export default StudentData;
+export default StudentData
