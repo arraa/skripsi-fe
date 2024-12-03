@@ -9,7 +9,7 @@ import { api } from './axios';
 
 export const getClass = async (): Promise<AxiosResponse> => {
     try {
-        const response = await api.get('/class/');
+        const response = await api.get('/class');
         if (response.status !== 200) {
             throw new Error('Error fetching student data');
         }
