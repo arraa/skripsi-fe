@@ -71,7 +71,7 @@ export const createTeacher = async (props: TeacherDataProps) => {
         address: props.address,
         num_phone: formatPhoneNumber(props.num_phone),
         email: props.email,
-        teaching_hours: props.teaching_hour,
+        teaching_hour: props.teaching_hour,
         teaching_subject: props.subject,
     }
 
@@ -98,7 +98,6 @@ export const updateTeacher = async (
     const data = {
         ...props,
         number_phone: formatPhoneNumber(props.num_phone),
-        teaching_hour: Number(props.teaching_hour),
     }
 
     try {

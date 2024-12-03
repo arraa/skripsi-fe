@@ -107,6 +107,11 @@ const TeacherForm = () => {
                             response.data.teacher.date_of_birth
                         )
                         setData(response.data.teacher)
+                        setSelectedSubject(
+                            response.data.teacher.subject.map(
+                                (item: any) => item.SubjectID
+                            )
+                        )
                     }
                 })
                 .catch((error) => {
