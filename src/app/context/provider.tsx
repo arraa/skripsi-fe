@@ -7,7 +7,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         const refreshToken = async () => {
             const accessToken = await validateAccesToken();
 
-            if (accessToken.status !== 200) {
+            if (accessToken?.status !== 200) {
                 try {
                     const response = await getNewAccessToken();
 
@@ -21,6 +21,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
                     window.location.href = '/auth/login';
                     return;
                 }
+            } else {
+                return;
             }
         };
 
@@ -36,12 +38,12 @@ export function IsNotLoggedIn({ children }: { children: React.ReactNode }) {
             let response = await validateAccesToken();
 
             if (response.status === 200) {
-                window.location.href = '/personal-data';
+                window.location.href = '/personal-data/student';
             } else {
                 response = await getNewAccessToken();
 
                 if (response.status === 200) {
-                    window.location.href = '/personal-data';
+                    window.location.href = '/personal-data/student';
                 }
             }
         };
