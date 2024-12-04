@@ -13,7 +13,7 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 import { Box } from '@mui/material';
 import interactionPlugin from '@fullcalendar/interaction';
 
-const Dashboard = (props: any) => {
+const Calendar = (props: any) => {
     const [calendarLoaded, setCalendarLoaded] = useState(false);
     const [fullCalendarInstance, setFullCalendarInstance] = useState<any>(null);
     const [events, setEvents] = useState([
@@ -88,6 +88,8 @@ const Dashboard = (props: any) => {
                     {...props}
                     plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]} // Pass plugins here
                     headerToolbar={{
+                        start: 'addEventButton', // Default buttons
+                        center: 'title', // Calendar title
                         end: 'prev,next today', // Custom button
                     }}
                     customButtons={{
@@ -114,4 +116,4 @@ const Dashboard = (props: any) => {
     );
 };
 
-export default Dashboard;
+export default Calendar;

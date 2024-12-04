@@ -3,9 +3,6 @@
 // import * as React from "react";
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
-import CssBaseline from '@mui/material/CssBaseline';
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
 import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
@@ -21,6 +18,7 @@ import { useState } from 'react';
 import { styled, alpha } from '@mui/material/styles';
 import SearchIcon from '@mui/icons-material/Search';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 const drawerWidth = 240;
 
@@ -71,6 +69,11 @@ export default function Sidebar() {
         setOpen((prevOpen) => ({ ...prevOpen, [index]: !prevOpen[index] }));
     };
 
+    const pathname = usePathname();
+
+    console.log(pathname);
+
+
     return (
         <Box sx={{ display: 'flex', marginLeft: '30px' }}>
             <Drawer
@@ -117,7 +120,7 @@ export default function Sidebar() {
                         </Typography>
                     </Box>
 
-                    <Search>
+                    {/* <Search>
                         <SearchIconWrapper>
                             <SearchIcon />
                         </SearchIconWrapper>
@@ -125,7 +128,7 @@ export default function Sidebar() {
                             placeholder='Search…'
                             inputProps={{ 'aria-label': 'search' }}
                         />
-                    </Search>
+                    </Search> */}
 
                     <List>
                         <Divider
@@ -140,6 +143,7 @@ export default function Sidebar() {
                                     >
                                         {data.subMenu ? (
                                             <>
+                                               
                                                 <ListItemIcon
                                                     sx={{
                                                         display: 'flex',
@@ -165,10 +169,17 @@ export default function Sidebar() {
                                                 )}
                                             </>
                                         ) : (
+                                            
                                             <Link
                                                 href={data.link}
                                                 className='flex w-full items-center justify-evenly'
                                             >
+                                                {pathname === data.link && (
+                                                    <div
+                                                   
+                                                        className='absolute left-0 ml-4 h-2/3 w-[2px] bg-white'
+                                                    ></div>
+                                                )}
                                                 <ListItemIcon
                                                     sx={{
                                                         display: 'flex',
@@ -200,11 +211,18 @@ export default function Sidebar() {
                                         <List component='div' disablePadding>
                                             {data.subMenu.map(
                                                 (sub, subIndex) => (
+                                                    
                                                     <Link
                                                         key={subIndex}
                                                         href={sub.link}
                                                         className='flex w-full items-center justify-evenly'
                                                     >
+                                                        {pathname === sub.link && (
+                                                            <div
+                                                   
+                                                                className='absolute left-0 ml-16 h-1/3 w-[2px] bg-white'
+                                                            ></div>
+                                                        )}
                                                         <ListItemButton
                                                             sx={{ pl: 10 }}
                                                         >
