@@ -263,7 +263,7 @@ const ScoringPerSubject = () => {
         )
     );
 
-    const [classData, setClassData] = useState<classDataProps[]>([]);
+    const [classData, setClassData] = useState<string[]>(['Class 7 A - Math','Class 7 B - Math', 'Class 7 C - Science', 'Class 8 B - Science']);
     const [NewClass, setNewClass] = useState<string>('');
     const [open, setOpen] = useState(false);
     const [selectedClass, setSelectedClass] = useState<number>();
@@ -294,36 +294,12 @@ const ScoringPerSubject = () => {
 
     const columns = columnData(handleClickOpen, uniqueAssignmentTypes);
 
-    const rows = classData.map((row, index) => ({
-        ...row,
-        isLastRow: index === classData.length - 1, // Set true for the last row
-    }));
-
     const handleClose = () => {
         setOpen(false);
         setOpenDelete(false);
     };
 
-    function addNextClass(currentClasses: string) {
-        const classArray = currentClasses.split(' ');
 
-        const highestClass = classArray.sort().reverse()[0];
-        const nextClass = String.fromCharCode(highestClass.charCodeAt(0) + 1);
-
-        return nextClass;
-    }
-
-    const handleGenerateClass = () => {
-        const currentClasses = classData
-            .map((classItem) => classItem.name)
-            .join(' ');
-
-        const newClassName = addNextClass(currentClasses);
-        setNewClass(`${newClassName}`);
-        console.log('New class generated:', newClassName);
-
-        setOpen(true);
-    };
 
     useEffect(() => {
         const fetchData = async () => {
@@ -345,7 +321,7 @@ const ScoringPerSubject = () => {
         <Box sx={{ padding: 3, paddingLeft: 0, width: '80vw' }}>
             <div className='mb-2 flex items-center justify-between'>
                 <h1 className='my-8 text-3xl font-bold text-[#0C4177]'>
-       Scoring Per Subject
+       Scoring
                 </h1>
                 <div className='flex cursor-pointer bg-[#31426E]  text-white sm:rounded-md'>
                     <select
@@ -354,12 +330,13 @@ const ScoringPerSubject = () => {
                         onChange={(e) => handleClassChange(Number(e.target.value))}
                     >
                         {classData &&
-              classData.map((classItem) => (
+              classData.map((classItem, index) => (
                   <option
-                      key={classItem.id}
-                      value={classItem.id}
+                      key={index}
+                      value={index}
+                      className=' text-[#31426E]'
                   >
-                  Grade&ensp; {classItem.Grade?.grade}
+                      {classItem}
                   </option>
               ))}
                     </select>
@@ -370,10 +347,9 @@ const ScoringPerSubject = () => {
                 {/* if you filter not ready you can change data={data} */}
                 <div className='flex justify-end'>
                     <Button
-                        onClick={handleGenerateClass}
                         size={'default'}
                     >
-            Add Class
+            Add Scoring
                     </Button>
                 </div>
                 <Table

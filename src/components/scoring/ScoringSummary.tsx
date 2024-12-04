@@ -277,7 +277,7 @@ const ScoringSummary = () => {
         <Box sx={{ padding: 3, paddingLeft: 0, width: '80vw' }}>
             <div className='mb-2 flex items-center justify-between'>
                 <h1 className='my-8 text-3xl font-bold text-[#0C4177]'>
-          Generate Class
+          Summary Scoring
                 </h1>
                 <div className='flex cursor-pointer bg-[#31426E]  text-white sm:rounded-md'>
                     <select
@@ -290,6 +290,7 @@ const ScoringSummary = () => {
                   <option
                       key={classItem.id}
                       value={classItem.id}
+                      className=' text-[#31426E]'
                   >
                   Grade&ensp; {classItem.Grade?.grade}
                   </option>

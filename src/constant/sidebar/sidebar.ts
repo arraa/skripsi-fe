@@ -60,11 +60,11 @@ export const SIDEBAR = [
         subMenu: [
             {
                 name: 'Subject',
-                link: '/scoring/Subject',
+                link: '/scoring/subject',
             },
             {
                 name: 'Summary',
-                link: '/scoring/Subject',
+                link: '/scoring/summary',
             },
         ],
     },

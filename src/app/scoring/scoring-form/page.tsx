@@ -4,7 +4,7 @@ import ScoringEditForm from '@/components/scoring/ScoringEditForm';
 export default function scoringForm() {
     return (
         <>
-            <ScoringForm/>
+            <ScoringEditForm/>
         </>
     );
 }
