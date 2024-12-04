@@ -17,11 +17,10 @@ export default function RootLayout({
 }: Readonly<{
     children: React.ReactNode;
 }>) {
-
-    const pathname = usePathname(); 
+    const pathname = usePathname();
     if (pathname.includes('/auth')) {
         return (
-            <html lang="en">
+            <html lang='en'>
                 <body className={monseMontserrat.className}>
                     <div className='flex min-h-screen bg-[#FAFDFF]'>
                         {children}
@@ -30,7 +29,7 @@ export default function RootLayout({
             </html>
         );
     }
-    
+
     return (
         <html lang='en'>
             <body className={monseMontserrat.className}>

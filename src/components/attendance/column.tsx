@@ -103,7 +103,6 @@ export const columnDataAttendanceForm = (
     status: string[],
     control: any,
     setValue: any,
-    attendance: any
 ): GridColDef[] => [
     {
         field: 'name',
@@ -120,35 +119,43 @@ export const columnDataAttendanceForm = (
         headerName: 'Reason',
         width: 200,
         renderCell: (params: GridRenderCellParams) => {
-            // console.log(params);
             return (
                 <Box
-                    display='flex'
-                    flexDirection='row'
-                    alignItems='center'
-                    justifyContent='center'
+                    display="flex"
+                    flexDirection="row"
+                    alignItems="center"
+                    justifyContent="center"
                 >
-                    <ControllerSelectField
-                        control={control}
+                    <Controller
                         name={`reason-${params.row.id}`}
-                        label=''
-                        options={status.map((item: string) => ({
-                            value: item,
-                            label: item,
-                        }))}
-                        noDefault={true}
-                        value={attendance[params.row.id - 1]?.reason || 'Hadir'}
-                        onChange={(selectedValue: string) => {
-                            console.log('Selected value:', selectedValue);
-
-                            // Use the setValue function to update the form value for the specific row ID
-                            setValue(`reason-${params.row.id}`, {
-                                reason: selectedValue,
-                            });
-                        }}
+                        control={control}
+                        render={({ field }) => (
+                            <Select
+                                {...field}
+                                value={field.value?.reason || ''}
+                                onChange={(event) => {
+                                    const selectedValue = event.target.value
+                                    setValue(`reason-${params.row.id}`, {
+                                        reason: selectedValue,
+                                    })
+                                }}
+                                title={`reason-${params.row.id}`}
+                                native
+                                aria-label={`reason-${params.row.id}`}
+                            >
+                                <option value="" disabled>
+                                    Select
+                                </option>
+                                {status.map((item) => (
+                                    <option key={item} value={item}>
+                                        {item}
+                                    </option>
+                                ))}
+                            </Select>
+                        )}
                     />
                 </Box>
-            );
+            )
         },
     },
-];
+]

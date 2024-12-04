@@ -1,17 +1,17 @@
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 
-interface tableProps {
+interface TableProps {
     data: Array<object>;
     columnData: GridColDef[];
     searchValue?: string;
     heighRow?: number;
 }
-const Table = (props: tableProps) => {
-    const { data, columnData, searchValue, heighRow } = props;
+const Table = (props: TableProps) => {
+    const { data, columnData, searchValue, heighRow } = props
     return (
-        <div className='h-[70vh]'>
+        <div className="h-[70vh]">
             <DataGrid
-                rowHeight={heighRow ? heighRow : undefined}
+                rowHeight={heighRow || undefined}
                 rows={data}
                 columns={columnData}
                 {...data}
@@ -41,7 +41,7 @@ const Table = (props: tableProps) => {
                 }}
             />
         </div>
-    );
-};
+    )
+}
 
 export default Table;

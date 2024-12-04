@@ -91,7 +91,7 @@ const Login = () => {
                             {isLoading ? 'Logging in...' : 'Login'}
                         </button>
 
-                        <Link href='/forget-password' className='mt-4 text-center text-sm font-medium text-[#0C4177]'>Forget Password ?</Link>
+                        <Link href='/auth/forget-password' className='mt-4 text-center text-sm font-medium text-[#0C4177]'>Forget Password ?</Link>
                     </div>
                 </form>
             </div>
