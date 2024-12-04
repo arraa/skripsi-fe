@@ -37,15 +37,13 @@ export function IsNotLoggedIn({ children }: { children: React.ReactNode }) {
         const accessToken = async () => {
             let response = await validateAccesToken();
 
-            if (response?.status === 200) {
-                window.location.href = '/personal-data';
+            if (response.status === 200) {
+                window.location.href = '/personal-data/student';
             } else {
                 response = await getNewAccessToken();
 
-                if (response?.status === 200) {
-                    window.location.href = '/personal-data';
-                } else {
-                    return;
+                if (response.status === 200) {
+                    window.location.href = '/personal-data/student';
                 }
             }
         };
