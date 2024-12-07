@@ -92,12 +92,14 @@ const Calendar = (props: any) => {
                         center: 'title', // Calendar title
                         end: 'prev,next today', // Custom button
                     }}
+                    editable={true}
                     customButtons={{
                         addEventButton: {
                             text: 'Add Event',
                             click: handleAddEvent,
                         },
                     }}
+                    
                     eventTimeFormat={{
                         hour: 'numeric',
                         minute: '2-digit',
