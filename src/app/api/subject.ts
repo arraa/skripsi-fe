@@ -18,3 +18,18 @@ export const getAllSubject = async (): Promise<
         return Promise.reject(error)
     }
 }
+
+export const getAllSubjectClassName = async (): Promise<
+    AxiosResponse<SubjectClassListApiProps>
+> => {
+    try {
+        const response = await api.get(`${routeSubject}/class`)
+        if (response.status !== 200) {
+            throw new Error('API request error')
+        }
+        return response
+    } catch (error) {
+        console.error('API request error', error)
+        return Promise.reject(error)
+    }
+}

@@ -8,3 +8,13 @@ interface SubjectDataProps {
 interface SubjecListApiProps {
 	subjects: SubjectDataProps[]
 }
+
+interface SubjectClassDataProps {
+    subject_id: number,
+    grade_class_name: string,
+    subject_name: string
+}
+
+interface SubjectClassListApiProps {
+    subjects: SubjectClassDataProps[]
+}
