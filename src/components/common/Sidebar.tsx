@@ -1,81 +1,75 @@
-'use client';
+'use client'
 
 // import * as React from "react";
-import Box from '@mui/material/Box';
-import Drawer from '@mui/material/Drawer';
-import List from '@mui/material/List';
-import Typography from '@mui/material/Typography';
-import Divider from '@mui/material/Divider';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import Image from 'next/image';
-import { SIDEBAR } from '@/constant/sidebar/sidebar';
-import { Collapse, InputBase } from '@mui/material';
-import { ExpandLess, ExpandMore } from '@mui/icons-material';
-import { useState } from 'react';
-import { styled, alpha } from '@mui/material/styles';
-import SearchIcon from '@mui/icons-material/Search';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import Box from '@mui/material/Box'
+import Drawer from '@mui/material/Drawer'
+import List from '@mui/material/List'
+import Typography from '@mui/material/Typography'
+import Divider from '@mui/material/Divider'
+import ListItem from '@mui/material/ListItem'
+import ListItemButton from '@mui/material/ListItemButton'
+import ListItemIcon from '@mui/material/ListItemIcon'
+import ListItemText from '@mui/material/ListItemText'
+import Image from 'next/image'
+import { SIDEBAR } from '@/constant/sidebar/sidebar'
+import { Collapse, InputBase } from '@mui/material'
+import { ExpandLess, ExpandMore } from '@mui/icons-material'
+import { useState } from 'react'
+import { styled, alpha } from '@mui/material/styles'
+import SearchIcon from '@mui/icons-material/Search'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 
-const drawerWidth = 240;
+const drawerWidth = 200
 
-const Search = styled('div')(({ theme }) => ({
-    position: 'relative',
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: alpha(theme.palette.common.white, 0.15),
-    '&:hover': {
-        backgroundColor: alpha(theme.palette.common.white, 0.25),
-    },
-    marginRight: theme.spacing(2),
-    marginLeft: 0,
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
-        marginLeft: theme.spacing(3),
-        width: 'auto',
-    },
-}));
-
-const SearchIconWrapper = styled('div')(({ theme }) => ({
-    padding: theme.spacing(0, 2),
-    height: '100%',
-    position: 'absolute',
-    pointerEvents: 'none',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-}));
-
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
-    color: 'inherit',
-    '& .MuiInputBase-input': {
-        padding: theme.spacing(1, 1, 1, 0),
-        // vertical padding + font size from searchIcon
-        paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-        transition: theme.transitions.create('width'),
-        width: '100%',
-        [theme.breakpoints.up('md')]: {
-            width: '15ch',
-        },
-    },
-}));
 
 export default function Sidebar() {
-    const [open, setOpen] = useState<{ [key: number]: boolean }>({});
+    const roles = sessionStorage.getItem('roles')
+    const [open, setOpen] = useState<{ [key: number]: boolean }>({})
 
     const handleClick = (index: number) => {
-        setOpen((prevOpen) => ({ ...prevOpen, [index]: !prevOpen[index] }));
-    };
+        setOpen((prevOpen) => ({ ...prevOpen, [index]: !prevOpen[index] }))
+    }
 
-    const pathname = usePathname();
+    const pathname = usePathname()
 
-    console.log(pathname);
+    console.log(pathname)
 
+    const adjustedSidebar = SIDEBAR.map((item) => {
+        if (roles === 'teacher' && item.name === 'Attendance') {
+            return {
+                ...item,
+                link: '/attendance/today',
+                subMenu: undefined,
+            }
+        } else if (roles === 'teacher' && item.name === 'Scoring') {
+            return {
+                ...item,
+                link: '/attendance/today',
+                subMenu: undefined,
+            }
+        }
+        if (roles === 'teacher' && item.name === 'Personal Data') {
+            return {
+                ...item,
+                link: '/personal-data/student',
+                subMenu: undefined,
+            }
+        }
+        return item
+    })
+
+    const filteredSidebar = adjustedSidebar.filter((item) => {
+        if (item.name === 'Generator' || item.name === 'Attendance') {
+            return (
+                roles === 'admin' || roles === 'staff' || roles === 'homeroom'
+            )
+        }
+        return true
+    })
 
     return (
-        <Box sx={{ display: 'flex', marginLeft: '30px' }}>
+        <Box sx={{ display: 'flex', marginLeft: '25px' }}>
             <Drawer
                 sx={{
                     width: drawerWidth,
@@ -90,8 +84,8 @@ export default function Sidebar() {
                         padding: '20px 0px',
                     },
                 }}
-                variant='permanent'
-                anchor='left'
+                variant="permanent"
+                anchor="left"
             >
                 <Box
                     sx={{
@@ -106,16 +100,16 @@ export default function Sidebar() {
                             justifyContent: 'start',
                             alignItems: 'end',
                             gap: '20px',
-                            paddingLeft: '30px',
+                            paddingLeft: '25px',
                         }}
                     >
                         <Image
-                            src='/icon/icon-edu-link.svg'
+                            src="/icon/icon-edu-link.svg"
                             width={40}
                             height={40}
-                            alt='logo'
+                            alt="logo"
                         />
-                        <Typography variant='h5' sx={{ marginBottom: '-5px' }}>
+                        <Typography variant="h5" sx={{ marginBottom: '-5px' }}>
                             EduLink
                         </Typography>
                     </Box>
@@ -132,10 +126,10 @@ export default function Sidebar() {
 
                     <List>
                         <Divider
-                            variant='middle'
+                            variant="middle"
                             sx={{ backgroundColor: 'white' }}
                         />
-                        {SIDEBAR.map((data, index) => (
+                        {filteredSidebar.map((data, index) => (
                             <div key={index}>
                                 <ListItem disablePadding>
                                     <ListItemButton
@@ -143,7 +137,6 @@ export default function Sidebar() {
                                     >
                                         {data.subMenu ? (
                                             <>
-                                               
                                                 <ListItemIcon
                                                     sx={{
                                                         display: 'flex',
@@ -169,16 +162,12 @@ export default function Sidebar() {
                                                 )}
                                             </>
                                         ) : (
-                                            
                                             <Link
                                                 href={data.link}
-                                                className='flex w-full items-center justify-evenly'
+                                                className="flex w-full items-center justify-evenly"
                                             >
                                                 {pathname === data.link && (
-                                                    <div
-                                                   
-                                                        className='absolute left-0 ml-4 h-2/3 w-[2px] bg-white'
-                                                    ></div>
+                                                    <div className="absolute left-0 ml-4 h-2/3 w-[2px] bg-white"></div>
                                                 )}
                                                 <ListItemIcon
                                                     sx={{
@@ -205,23 +194,20 @@ export default function Sidebar() {
                                 {data.subMenu && (
                                     <Collapse
                                         in={open[index]}
-                                        timeout='auto'
+                                        timeout="auto"
                                         unmountOnExit
                                     >
-                                        <List component='div' disablePadding>
+                                        <List component="div" disablePadding>
                                             {data.subMenu.map(
                                                 (sub, subIndex) => (
-                                                    
                                                     <Link
                                                         key={subIndex}
                                                         href={sub.link}
-                                                        className='flex w-full items-center justify-evenly'
+                                                        className="flex w-full items-center justify-evenly"
                                                     >
-                                                        {pathname === sub.link && (
-                                                            <div
-                                                   
-                                                                className='absolute left-0 ml-16 h-1/3 w-[2px] bg-white'
-                                                            ></div>
+                                                        {pathname ===
+                                                            sub.link && (
+                                                            <div className="absolute left-0 ml-16 h-1/3 w-[2px] bg-white"></div>
                                                         )}
                                                         <ListItemButton
                                                             sx={{ pl: 10 }}
@@ -243,8 +229,8 @@ export default function Sidebar() {
                     </List>
                 </Box>
 
-                <Box sx={{ paddingLeft: '30px' }}>profile</Box>
+                <Box sx={{ paddingLeft: '25px' }}>profile</Box>
             </Drawer>
         </Box>
-    );
+    )
 }

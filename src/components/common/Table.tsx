@@ -5,11 +5,17 @@ interface TableProps {
     columnData: GridColDef[];
     searchValue?: string;
     heighRow?: number;
+    maxHeight?: string
 }
 const Table = (props: TableProps) => {
-    const { data, columnData, searchValue, heighRow } = props
+    const { data, columnData, searchValue, heighRow, maxHeight } = props
+
+    const height = maxHeight  || '70vh'
+
+    console.log('data', height)
+
     return (
-        <div className="h-[70vh]">
+        <div className={`h-[${height}]`}>
             <DataGrid
                 rowHeight={heighRow || undefined}
                 rows={data}
@@ -18,7 +24,7 @@ const Table = (props: TableProps) => {
                 initialState={{
                     pagination: {
                         paginationModel: {
-                            pageSize: 5,
+                            pageSize: 10,
                             /* page: 0 // default value will be used if not passed */
                         },
                     },

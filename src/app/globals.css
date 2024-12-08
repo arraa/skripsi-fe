@@ -144,3 +144,7 @@ body {
 .fc-daygrid-day {
   border-right: none; /* Ensures no vertical borders within cells */
 }
+
+&.MuiDataGrid-footerContainer {
+  border: none;
+}

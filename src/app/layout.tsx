@@ -1,11 +1,12 @@
-'use client';
-import type { Metadata } from 'next';
-import { Montserrat } from 'next/font/google';
-import './globals.css';
-import Sidebar from '@/components/common/Sidebar';
-import { usePathname } from 'next/navigation';
+'use client'
+import type { Metadata } from 'next'
+import { Montserrat } from 'next/font/google'
+import './globals.css'
+import Sidebar from '@/components/common/Sidebar'
+import { usePathname } from 'next/navigation'
+import { AuthProvider } from './context/provider'
 
-const monseMontserrat = Montserrat({ subsets: ['latin'] });
+const monseMontserrat = Montserrat({ subsets: ['latin'] })
 
 // export const metadata: Metadata = {
 //     title: 'Create Next App',
@@ -15,29 +16,31 @@ const monseMontserrat = Montserrat({ subsets: ['latin'] });
 export default function RootLayout({
     children,
 }: Readonly<{
-    children: React.ReactNode;
+    children: React.ReactNode
 }>) {
-    const pathname = usePathname();
+    const pathname = usePathname()
     if (pathname.includes('/auth')) {
         return (
-            <html lang='en'>
+            <html lang="en">
                 <body className={monseMontserrat.className}>
-                    <div className='flex min-h-screen bg-[#FAFDFF]'>
+                    <div className="flex min-h-screen bg-[#FAFDFF]">
                         {children}
                     </div>
                 </body>
             </html>
-        );
+        )
     }
 
     return (
-        <html lang='en'>
+        // <AuthProvider>
+        <html lang="en">
             <body className={monseMontserrat.className}>
-                <div className='flex min-h-screen bg-[#FAFDFF]'>
+                <div className="flex min-h-screen bg-[#FAFDFF]">
                     <Sidebar />
                     {children}
                 </div>
             </body>
         </html>
-    );
+        // </AuthProvider>
+    )
 }
