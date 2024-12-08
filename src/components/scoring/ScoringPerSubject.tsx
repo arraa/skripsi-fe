@@ -368,6 +368,7 @@ const ScoringPerSubject = () => {
                             <option
                                 key={item.subject_id}
                                 value={item.subject_id}
+                                className='text-[#0c427770]'
                             >
                                 {item.grade_class_name} - {item.subject_name}
                             </option>
