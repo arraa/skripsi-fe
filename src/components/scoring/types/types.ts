@@ -39,6 +39,7 @@ export interface StudentScoringPerSubjectForm {
 
 export interface SubjectClassDataProps {
     subject_id: number
+    class_name_id: number
     grade_class_name: string
     subject_name: string
 }

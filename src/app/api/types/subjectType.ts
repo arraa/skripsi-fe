@@ -6,12 +6,13 @@ interface SubjectDataProps {
 }
 
 interface SubjecListApiProps {
-	subjects: SubjectDataProps[]
+    subjects: SubjectDataProps[]
 }
 
 interface SubjectClassDataProps {
-    subject_id: number,
-    grade_class_name: string,
+    subject_id: number
+    class_name_id: number
+    grade_class_name: string
     subject_name: string
 }
 
