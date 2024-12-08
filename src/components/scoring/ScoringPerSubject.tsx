@@ -4,12 +4,11 @@ import Table from '@/components/common/Table'
 import { Box } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { Button } from '../common/button/button'
-import { StudentScoringPerSubject } from './types/types'
+import { StudentScoringPerSubject, SubjectClassDataProps } from './types/types'
 import Delete from '../common/dialog/Delete'
 import { columnData } from './column'
 import { useRouter } from 'next/navigation'
 import { getAllSubjectClassName } from '@/app/api/subject'
-import { SubjectClassDataProps } from '@/app/api/types/subjectType'
 
 const studentScorings: StudentScoringPerSubject[] = [
     {
