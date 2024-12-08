@@ -175,9 +175,10 @@ const StudentForm = () => {
             mother_job: data.mother_job,
             mother_number_phone: data.mother_number_phone,
             ClassName: {
+                id: 0,
                 name: '',
                 Grade: {
-                    grade: '',
+                    grade: 0,
                 },
             },
         }
@@ -264,9 +265,10 @@ const StudentForm = () => {
                         mother_number_phone:
                             formatPhoneNumber(mother_number_phone),
                         ClassName: {
+                            id: 0,
                             name: '',
                             Grade: {
-                                grade: '',
+                                grade: 0,
                             },
                         },
                     }
