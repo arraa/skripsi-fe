@@ -28,7 +28,7 @@ const studentScorings: StudentScoringPerSubject[] = [
         StudentID: 1,
         ScoringID: 101,
         StudentName: 'Alice Johnson',
-        Scoring: [
+        Scores: [
             {
                 SubjectID: 201,
                 AssignmentID: 301,
@@ -52,7 +52,7 @@ const studentScorings: StudentScoringPerSubject[] = [
         StudentID: 2,
         ScoringID: 102,
         StudentName: 'Bob Smith',
-        Scoring: [
+        Scores: [
             {
                 SubjectID: 203,
                 AssignmentID: 303,
@@ -76,7 +76,7 @@ const studentScorings: StudentScoringPerSubject[] = [
         StudentID: 3,
         ScoringID: 103,
         StudentName: 'Charlie Davis',
-        Scoring: [
+        Scores: [
             {
                 SubjectID: 205,
                 AssignmentID: 305,
@@ -100,7 +100,7 @@ const studentScorings: StudentScoringPerSubject[] = [
         StudentID: 4,
         ScoringID: 104,
         StudentName: 'Diana Miller',
-        Scoring: [
+        Scores: [
             {
                 SubjectID: 207,
                 AssignmentID: 307,
@@ -124,7 +124,7 @@ const studentScorings: StudentScoringPerSubject[] = [
         StudentID: 5,
         ScoringID: 105,
         StudentName: 'Ethan Brown',
-        Scoring: [
+        Scores: [
             {
                 SubjectID: 209,
                 AssignmentID: 309,
@@ -148,7 +148,7 @@ const studentScorings: StudentScoringPerSubject[] = [
         StudentID: 6,
         ScoringID: 106,
         StudentName: 'Fiona Williams',
-        Scoring: [
+        Scores: [
             {
                 SubjectID: 211,
                 AssignmentID: 311,
@@ -172,7 +172,7 @@ const studentScorings: StudentScoringPerSubject[] = [
         StudentID: 7,
         ScoringID: 107,
         StudentName: 'George Martinez',
-        Scoring: [
+        Scores: [
             {
                 SubjectID: 213,
                 AssignmentID: 313,
@@ -196,7 +196,7 @@ const studentScorings: StudentScoringPerSubject[] = [
         StudentID: 8,
         ScoringID: 108,
         StudentName: 'Hannah Lee',
-        Scoring: [
+        Scores: [
             {
                 SubjectID: 215,
                 AssignmentID: 315,
@@ -220,7 +220,7 @@ const studentScorings: StudentScoringPerSubject[] = [
         StudentID: 9,
         ScoringID: 109,
         StudentName: 'Ian Wilson',
-        Scoring: [
+        Scores: [
             {
                 SubjectID: 217,
                 AssignmentID: 317,
@@ -244,7 +244,7 @@ const studentScorings: StudentScoringPerSubject[] = [
         StudentID: 10,
         ScoringID: 110,
         StudentName: 'Julia Taylor',
-        Scoring: [
+        Scores: [
             {
                 SubjectID: 219,
                 AssignmentID: 319,
@@ -269,19 +269,8 @@ type ObjectInput = InferInput<typeof ObjectSchema>
 
 const ScoringSubjectForm = () => {
     const searchParams = useSearchParams()
-    const actionType = searchParams.get('action')
     const classID = Number(searchParams.get('class_id'))
-    const dateString = searchParams.get('date')
-    const date = useMemo(() => {
-        const correctedDateString = dateString?.replace(' ', '+')
-        return correctedDateString ? new Date(correctedDateString) : new Date()
-    }, [dateString])
-    const status = ['Present', 'Sick', 'Leave', 'Absent']
-
-    const [studentAttendanceList, setStudentAttendanceList] =
-        useState<StudentScoringPerSubject[]>(studentScorings)
-    const [open, setOpen] = useState(false)
-    const [formattedDate, setFormattedDate] = useState('')
+    const SubjectID = Number(searchParams.get('subject_id'))
 
     const [selectedOption, setSelectedOption] = useState('')
     const [customOption, setCustomOption] = useState('')
@@ -297,82 +286,14 @@ const ScoringSubjectForm = () => {
         }
     }
 
-    useEffect(() => {
-        const dateObj = new Date(date.toString())
-        const formatted = dateObj.toLocaleDateString('en-GB', {
-            weekday: 'long',
-            day: 'numeric',
-            month: 'long',
-            year: 'numeric',
-        })
-        setFormattedDate(formatted)
-    }, [date])
-
-    const { handleSubmit, control, setValue, reset } =
-        useForm<StudentScoringPerSubject>({
-            defaultValues: {},
-        })
+    const { handleSubmit, control } = useForm<StudentScoringPerSubject>({
+        defaultValues: {},
+    })
 
     const onSubmit = (data: StudentScoringPerSubject) => {
         console.log(data)
-
-        const submittedData = studentAttendanceList.map((student) => {
-            const reasonKey = `scoring-${student.StudentID}`
-            const studentScore =
-                data[reasonKey as keyof StudentScoringPerSubject]
-
-            console.log('reason key', studentScore)
-
-            return {
-                StudentName: student.StudentName,
-                studentID: student.StudentID,
-                score: studentScore,
-            }
-        })
-
-        console.log('Submitted data:', submittedData)
     }
-
-    // useEffect(() => {
-    //     const fetchData = async () => {
-    //         try {
-    //             const resultStudentAttendanceList =
-    //       await getAllStudentAttendanceByClassIDAndDate(classID, date);
-
-    //             const defaultValues =
-    //       resultStudentAttendanceList.attendance.reduce<StudentScoringPerSubject>(
-    //           (acc, student, index) => {
-    //               acc[`reason-${index}`] = {
-    //                   reason: student.reason || '',
-    //               };
-    //               return acc;
-    //           },
-    //           {}
-    //       );
-    //             reset(defaultValues);
-
-    //             setStudentAttendanceList(
-    //                 resultStudentAttendanceList.attendance.map(
-    //                     (
-    //                         student: AllStudentAttendanceByClassIDAndDateProps,
-    //                         index: number
-    //                     ) => ({
-    //                         id: index,
-    //                         student_id: student.id.toString(),
-    //                         name: student.name,
-    //                         sex: student.sex,
-    //                         reason: student.reason,
-    //                     })
-    //                 )
-    //             );
-    //         } catch (error) {
-    //             console.error('API request error', error);
-    //         }
-    //     };
-    //     fetchData();
-    // }, [classID, date, reset]);
-
-    const rows = columnDataScoringForm(status, control, setValue)
+    const rows = columnDataScoringForm(control)
 
     return (
         <Box sx={{ padding: 3, paddingLeft: 0, width: '80vw' }}>

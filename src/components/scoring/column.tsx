@@ -87,9 +87,7 @@ export const columnData = (
 };
 
 export const columnDataScoringForm = (
-    status: string[],
     control: any,
-    setValue: any
 ): GridColDef[] => [
     {
         field: 'id',
