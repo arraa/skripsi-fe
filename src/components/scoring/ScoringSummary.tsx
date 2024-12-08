@@ -245,17 +245,6 @@ const ScoringSummary = () => {
         return nextClass;
     }
 
-    const handleGenerateClass = () => {
-        const currentClasses = classData
-            .map((classItem) => classItem.name)
-            .join(' ');
-
-        const newClassName = addNextClass(currentClasses);
-        setNewClass(`${newClassName}`);
-        console.log('New class generated:', newClassName);
-
-        setOpen(true);
-    };
 
     useEffect(() => {
         const fetchData = async () => {
@@ -264,7 +253,7 @@ const ScoringSummary = () => {
 
                 console.log(resultClass);
 
-                setClassData(resultClass.data.class);
+                setClassData(resultClass.data.ClassName);
             } catch (error) {
                 console.error('API request error', error);
             }

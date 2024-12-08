@@ -1,11 +1,9 @@
 import { AuthProvider } from '@/app/context/provider';
-import ScoringForm from '@/components/scoring/AddScoringPerSubject';
-import ScoringEditForm from '@/components/scoring/ScoringEditForm';
-
+import ScoringForm from '@/components/scoring/ScoringForm';
 export default function scoringForm() {
     return (
         <AuthProvider>
-            <ScoringEditForm/>
+            <ScoringForm/>
         </AuthProvider>
     );
 }

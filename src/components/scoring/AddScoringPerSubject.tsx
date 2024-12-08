@@ -267,7 +267,7 @@ const studentScorings: StudentScoringPerSubject[] = [
 
 type ObjectInput = InferInput<typeof ObjectSchema>
 
-const ScoringForm = () => {
+const ScoringSubjectForm = () => {
     const searchParams = useSearchParams()
     const actionType = searchParams.get('action')
     const classID = Number(searchParams.get('class_id'))
@@ -497,4 +497,4 @@ const ScoringForm = () => {
     )
 }
 
-export default ScoringForm
+export default ScoringSubjectForm
