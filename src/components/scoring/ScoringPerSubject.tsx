@@ -1,16 +1,15 @@
 'use client'
 
 import Table from '@/components/common/Table'
-
 import { Box } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { Button } from '../common/button/button'
 import { StudentScoringPerSubject } from './types/types'
 import Delete from '../common/dialog/Delete'
 import { columnData } from './column'
-import { classDataProps } from '../studentData/types/types'
 import { useRouter } from 'next/navigation'
 import { getAllSubjectClassName } from '@/app/api/subject'
+import { SubjectClassDataProps } from '@/app/api/types/subjectType'
 
 const studentScorings: StudentScoringPerSubject[] = [
     {
@@ -264,20 +263,52 @@ const ScoringPerSubject = () => {
         )
     )
 
-    const [classData, setClassData] = useState<string[]>([
-        'Class 7 A - Math',
-        'Class 7 B - Math',
-        'Class 7 C - Science',
-        'Class 8 B - Science',
-    ]);
+    const [classDataApi, setClassDataApi] = useState<SubjectClassDataProps[]>(
+        []
+    )
 
-    const [NewClass, setNewClass] = useState<string>('')
     const [open, setOpen] = useState(false)
     const [selectedClass, setSelectedClass] = useState<number>()
     const [selectedClassId, setSelectedClassId] = useState<string | null>(null)
     const handleClassChange = (value: number) => {
         setSelectedClass(value)
     }
+
+    const handleClickOpen = (classId: number) => {
+        setSelectedClassId(classId.toString())
+    }
+
+    const columns = columnData(handleClickOpen, uniqueAssignmentTypes)
+
+    const handleClose = () => {
+        setOpen(false)
+    }
+    console.log('selectedClassId', selectedClassId)
+
+    const router = useRouter()
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const resultSubjectClass = await getAllSubjectClassName()
+                if (resultSubjectClass.status !== 200) {
+                    throw new Error('API request error')
+                }
+                const classData = resultSubjectClass.data.subjects.map(
+                    (subject: SubjectClassDataProps) => ({
+                        subject_id: subject.subject_id,
+                        grade_class_name: subject.grade_class_name,
+                        subject_name: subject.subject_name,
+                    })
+                )
+                setClassDataApi(classData)
+            } catch (error) {
+                console.error('API request error', error)
+            }
+        }
+        fetchData()
+    }, [])
+
     // const handleUpdate = (id: number) => {
     //     setOpen(true);
     //     const classId = classData.find((item) => item.id === id);
@@ -293,36 +324,6 @@ const ScoringPerSubject = () => {
     //     console.log('handleClickOpen clicked', classId);
     // };
 
-    const handleClickOpen = (classId: number) => {
-        setSelectedClassId(classId.toString())
-    }
-
-    const columns = columnData(handleClickOpen, uniqueAssignmentTypes)
-
-    const handleClose = () => {
-        setOpen(false)
-    }
-
-    const router = useRouter()
-
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const resultSubjectClass = await getAllSubjectClassName()
-                if (resultSubjectClass.status !== 200) {
-                    throw new Error('API request error')
-                }
-                const classData = resultSubjectClass.data.subjects.map(
-                    // TODO: Change this to the correct value
-                    (subject) => subject.grade_class_name
-                )
-            } catch (error) {
-                console.error('API request error', error)
-            }
-        }
-        fetchData()
-    }, [])
-
     return (
         <Box sx={{ padding: 3, paddingLeft: 0, width: '80vw' }}>
             <div className="mb-2 flex items-center justify-between">
@@ -330,7 +331,9 @@ const ScoringPerSubject = () => {
                     Scoring
                 </h1>
                 <div className="flex cursor-pointer bg-[#31426E]  text-white sm:rounded-md">
-                    <label htmlFor="class-select" className="sr-only">Select Class</label>
+                    <label htmlFor="class-select" className="sr-only">
+                        Select Class
+                    </label>
                     <select
                         id="class-select"
                         className="mx-2 w-full bg-transparent px-6 py-3 text-lg"
@@ -339,16 +342,14 @@ const ScoringPerSubject = () => {
                             handleClassChange(Number(e.target.value))
                         }
                     >
-                        {classData &&
-                            classData.map((classItem, index) => (
-                                <option
-                                    key={index}
-                                    value={index}
-                                    className=" text-[#31426E]"
-                                >
-                                    {classItem}
-                                </option>
-                            ))}
+                        {classDataApi.map((item) => (
+                            <option
+                                key={item.subject_id}
+                                value={item.subject_id}
+                            >
+                                {item.grade_class_name} - {item.subject_name}
+                            </option>
+                        ))}
                     </select>
                 </div>
             </div>

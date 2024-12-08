@@ -9,7 +9,7 @@ interface SubjecListApiProps {
 	subjects: SubjectDataProps[]
 }
 
-interface SubjectClassDataProps {
+export interface SubjectClassDataProps {
     subject_id: number,
     grade_class_name: string,
     subject_name: string
