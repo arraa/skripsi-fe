@@ -18,7 +18,7 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
-const drawerWidth = 200
+const drawerWidth = 215
 
 export default function Sidebar() {
     const [roles, setRoles] = useState<string | null>(null)
@@ -72,7 +72,7 @@ export default function Sidebar() {
     })
 
     return (
-        <Box sx={{ display: 'flex', marginLeft: '25px' }}>
+        <Box sx={{ display: 'flex', marginLeft: '20px' }}>
             <Drawer
                 sx={{
                     width: drawerWidth,
@@ -108,24 +108,14 @@ export default function Sidebar() {
                     >
                         <Image
                             src="/icon/icon-edu-link.svg"
-                            width={40}
-                            height={40}
+                            width={35}
+                            height={35}
                             alt="logo"
                         />
                         <Typography variant="h5" sx={{ marginBottom: '-5px' }}>
                             EduLink
                         </Typography>
                     </Box>
-
-                    {/* <Search>
-                        <SearchIconWrapper>
-                            <SearchIcon />
-                        </SearchIconWrapper>
-                        <StyledInputBase
-                            placeholder='Search…'
-                            inputProps={{ 'aria-label': 'search' }}
-                        />
-                    </Search> */}
 
                     <List>
                         <Divider
@@ -149,13 +139,13 @@ export default function Sidebar() {
                                                 >
                                                     <Image
                                                         src={data.img}
-                                                        width={20}
-                                                        height={20}
+                                                        width={15}
+                                                        height={15}
                                                         alt={data.name}
                                                     />
                                                 </ListItemIcon>
                                                 <ListItemText
-                                                    sx={{ fontSize: '20px' }}
+                                                    sx={{ fontSize: '15px', whiteSpace: 'nowrap' }}
                                                     primary={data.name}
                                                 />
                                                 {open[index] ? (
@@ -170,7 +160,7 @@ export default function Sidebar() {
                                                 className="flex w-full items-center justify-evenly"
                                             >
                                                 {pathname === data.link && (
-                                                    <div className="absolute left-0 ml-4 h-2/3 w-[2px] bg-white"></div>
+                                                    <div className="absolute left-0 ml-3 h-2/3 w-[2px] bg-white"></div>
                                                 )}
                                                 <ListItemIcon
                                                     sx={{
@@ -181,13 +171,13 @@ export default function Sidebar() {
                                                 >
                                                     <Image
                                                         src={data.img}
-                                                        width={20}
-                                                        height={20}
+                                                        width={15}
+                                                        height={15}
                                                         alt={data.name}
                                                     />
                                                 </ListItemIcon>
                                                 <ListItemText
-                                                    sx={{ fontSize: '20px' }}
+                                                    sx={{ fontSize: '15px' }} 
                                                     primary={data.name}
                                                 />
                                             </Link>
