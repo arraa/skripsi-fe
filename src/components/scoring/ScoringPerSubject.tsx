@@ -167,7 +167,7 @@ const ScoringPerSubject = () => {
                         size={'default'}
                         onClick={() => {
                             router.push(
-                                `/scoring/scoring-form?action=create&class_id=${selectedClass}`
+                                `/scoring/scoring-form?action=create&class_id=${selectedClass?.ClassID}&subject_id=${selectedClass?.SubjectID}`
                             )
                         }}
                     >
