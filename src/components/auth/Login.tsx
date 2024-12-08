@@ -17,7 +17,6 @@ const Login = () => {
         try {
             const response = await login({ email, password })
 
-            console.log(response)
             sessionStorage.setItem('UserID', String(response.data.user.UserID)) 
             sessionStorage.setItem('name', response.data.user.name)
             sessionStorage.setItem('email', response.data.user.email)
