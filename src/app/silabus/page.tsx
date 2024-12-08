@@ -1,7 +1,9 @@
-export default function Silabus() {
+import Silabus from '@/components/silabus/Silabus';
+
+export default function SilabusPage() {
     return (
         <>
-            <div className='text-3xl'> silabus page</div>
+            <Silabus/>
         </>
     );
 }

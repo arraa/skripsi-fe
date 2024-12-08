@@ -1,5 +1,10 @@
 export const SIDEBAR = [
     {
+        name: 'Home',
+        link: '/',
+        img: '/icon/icon-silabus.svg',
+    },
+    {
         name: 'Personal Data',
         link: '/personal-data',
         img: '/icon/icon-data.svg',

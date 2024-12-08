@@ -5,14 +5,15 @@ interface TableProps {
     columnData: GridColDef[];
     searchValue?: string;
     heighRow?: number;
-    maxHeight?: number;
+    maxHeight?: string
 }
 const Table = (props: TableProps) => {
-    const { data, columnData, searchValue, heighRow } = props
+    const { data, columnData, searchValue, heighRow, maxHeight } = props
 
-    const height = heighRow ? 'h-[65vh]' : 'h-[70vh]';
+    const height = maxHeight  || '74vh'
+
     return (
-        <div className={height}>
+        <div className={`h-[${height}]`}>
             <DataGrid
                 rowHeight={heighRow || undefined}
                 rows={data}
@@ -34,7 +35,7 @@ const Table = (props: TableProps) => {
                 }}
                 sx={{
                     backgroundColor: '#fff',
-                    maxWidth: '80vw',
+                    maxWidth: '76vw',
                     border: 'none',
                     boxShadow: 'none',
                     color: '#0c427770',

@@ -15,6 +15,14 @@ import { classDataProps } from '../classGenerator/types/types'
 
 const StudentData = () => {
     const [data, setData] = useState<StudentDataProps[]>([])
+    const [roles, setRoles] = useState<string>('')
+
+    useEffect(() => {
+        const storedRoles = sessionStorage.getItem('role')
+        if (storedRoles) {
+            setRoles(storedRoles)
+        }
+    }, [])
     const [classData, setClassData] = useState<classDataProps[]>([])
     const [searchValue, setSearchValue] = useState('')
     const [selectedClass, setSelectedClass] = useState<number>()
@@ -40,7 +48,7 @@ const StudentData = () => {
         )
     }
 
-    const columns = columnData(handleClickOpen, handleUpdate)
+    const columns = columnData(handleClickOpen, handleUpdate, roles)
 
     const handleClose = () => {
         setOpen(false)
@@ -61,6 +69,19 @@ const StudentData = () => {
                 .then((result) => {
                     const data = formatStudentData(result.data.students)
                     setData(data)
+
+                    const uniqueClassNames = Array.from(
+                        new Map(
+                            data.map((student: StudentDataProps) => [
+                                student.ClassName.name,
+                                student.ClassName,
+                            ])
+                        ).values()
+                    )
+
+                    console.log(data)
+
+                    setClassData(uniqueClassNames as classDataProps[])
                 })
                 .catch((error) => {
                     console.error('API request error', error)
@@ -70,13 +91,15 @@ const StudentData = () => {
     }, [])
 
     const filteredData = data
-        ? data.map((student: StudentDataProps, index) => {
-            return {
-                ...student,
-                id: index,
-            }
-        })
-        : []
+        .filter((student: StudentDataProps) =>
+            selectedClass && selectedClass !== 0
+                ? student.ClassName.id === selectedClass
+                : true
+        )
+        .map((student: StudentDataProps, index) => ({
+            ...student,
+            id: index,
+        }))
 
     const deletedStudent = async () => {
         console.log('deletedStudent clicked', selectedStudentId)
@@ -93,17 +116,17 @@ const StudentData = () => {
     }
 
     return (
-        <Box sx={{ padding: 3, width: '87vw' }}>
+        <Box sx={{ paddingY: 3, px: 2, paddingLeft: 0, width: '80vw' }}>
             <Delete
                 setOpen={handleClose}
                 name={'Student'}
                 onDelete={deletedStudent}
                 open={open}
             />
-            <h1 className="my-8 text-3xl font-bold text-[#0C4177]">
+            <h1 className="mb-6 mt-3 text-3xl font-bold text-[#0C4177]">
                 Personal Data
             </h1>
-            <div className="min-h-screen   rounded-3xl bg-white p-5 text-[#0c427770] shadow-md">
+            <div className="flex h-screen flex-col rounded-3xl  bg-white px-5 py-4 text-[#0c427770] shadow-md">
                 <div className="mb-2 flex items-center justify-between">
                     <div className="flex gap-4">
                         <SearchBar
@@ -111,12 +134,9 @@ const StudentData = () => {
                             SearchName={'Student'}
                         />
                         <div>
-                            <label htmlFor="class-select" className="sr-only">
-                                Select Class
-                            </label>
                             <select
                                 id="class-select"
-                                className="rounded-md shadow-sm focus:border-[#0C4177] focus:ring focus:ring-[#0C4177]/50"
+                                className="h-full rounded-md shadow-sm focus:border-[#0C4177] focus:ring focus:ring-[#0C4177]/50"
                                 value={selectedClass}
                                 onChange={(e) =>
                                     handleClassChange(Number(e.target.value))
@@ -136,15 +156,19 @@ const StudentData = () => {
                         </div>
                     </div>
 
-                    <button
-                        onClick={handleAddStudent}
-                        className="flex bg-[#31426E] px-5 pb-2 pt-3 text-white sm:rounded-md"
-                    >
-                        &#43;{' '}
-                        <span className="hidden pl-3 sm:flex">Add Student</span>
-                    </button>
+                    {roles != 'teacher' && (
+                        <button
+                            onClick={handleAddStudent}
+                            className="flex bg-[#31426E] px-5 pb-2 pt-3 text-white sm:rounded-md"
+                        >
+                            &#43;{' '}
+                            <span className="hidden pl-3 sm:flex">
+                                Add Student
+                            </span>
+                        </button>
+                    )}
                 </div>
-                <div className="flex h-full items-center justify-between">
+                <div className="flex items-center justify-between">
                     <Table
                         data={filteredData}
                         columnData={columns}

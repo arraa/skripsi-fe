@@ -17,12 +17,7 @@ export interface StudentDataProps {
     mother_name: string;
     mother_job: string;
     mother_number_phone: string;
-    ClassName: {
-        name: string;
-        Grade: {
-            grade: string;
-        };
-    };
+    ClassName: classDataProps
 }
 
 export interface studentFormPageProps {
