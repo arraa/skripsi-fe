@@ -32,15 +32,15 @@ export default function RootLayout({
     }
 
     return (
-        // <AuthProvider>
-        <html lang="en">
-            <body className={monseMontserrat.className}>
-                <div className="flex min-h-screen bg-[#FAFDFF]">
-                    <Sidebar />
-                    {children}
-                </div>
-            </body>
-        </html>
-        // </AuthProvider>
+        <AuthProvider>
+            <html lang="en">
+                <body className={monseMontserrat.className}>
+                    <div className="flex min-h-screen bg-[#FAFDFF]">
+                        <Sidebar />
+                        {children}
+                    </div>
+                </body>
+            </html>
+        </AuthProvider>
     )
 }

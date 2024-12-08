@@ -10,7 +10,7 @@ interface TableProps {
 const Table = (props: TableProps) => {
     const { data, columnData, searchValue, heighRow, maxHeight } = props
 
-    const height = maxHeight  || '70vh'
+    const height = maxHeight  || '74vh'
 
     return (
         <div className={`h-[${height}]`}>
@@ -35,7 +35,7 @@ const Table = (props: TableProps) => {
                 }}
                 sx={{
                     backgroundColor: '#fff',
-                    maxWidth: '80vw',
+                    maxWidth: '76vw',
                     border: 'none',
                     boxShadow: 'none',
                     color: '#0c427770',
