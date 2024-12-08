@@ -61,7 +61,7 @@ const ScoringEditForm = () => {
         StudentID: 1,
         ScoringID: 101,
         StudentName: 'Alice Johnson',
-        Scoring: [
+        Scores: [
             // Math
             {
                 SubjectID: 201,
@@ -211,11 +211,11 @@ const ScoringEditForm = () => {
     }
 
     const uniqueAssignmentTypes = Array.from(
-        new Set(dataSiswa.Scoring.map((score) => score.AssignmentType))
+        new Set(dataSiswa.Scores.map((score) => score.AssignmentType))
     )
 
     const uniqueSummaryTypes = Array.from(
-        new Set(dataSiswa.Scoring.map((score) => score.SubjectName))
+        new Set(dataSiswa.Scores.map((score) => score.SubjectName))
     )
 
     const searchParams = useSearchParams()
@@ -243,7 +243,7 @@ const ScoringEditForm = () => {
         },
     })
 
-    const groupedScoring = dataSiswa.Scoring.reduce<
+    const groupedScoring = dataSiswa.Scores.reduce<
         Record<string, ScoringItem[]>
     >((acc, item) => {
         acc[item.SubjectName] = acc[item.SubjectName] || []
@@ -337,7 +337,7 @@ const ScoringEditForm = () => {
                                             className="flex flex-col gap-2"
                                         >
                                             <label
-                                                htmlFor={`Scoring.${dataSiswa.Scoring.findIndex(
+                                                htmlFor={`Scoring.${dataSiswa.Scores.findIndex(
                                                     (s) =>
                                                         s.AssignmentID ===
                                                             assignment.AssignmentID &&
@@ -348,7 +348,7 @@ const ScoringEditForm = () => {
                                                 {assignment.AssignmentType}
                                             </label>
                                             <Controller
-                                                name={`Scoring.${dataSiswa.Scoring.findIndex(
+                                                name={`Scoring.${dataSiswa.Scores.findIndex(
                                                     (s) =>
                                                         s.AssignmentID ===
                                                             assignment.AssignmentID &&
@@ -362,7 +362,7 @@ const ScoringEditForm = () => {
                                                 render={({ field }) => (
                                                     <input
                                                         {...field}
-                                                        id={`Scoring.${dataSiswa.Scoring.findIndex(
+                                                        id={`Scoring.${dataSiswa.Scores.findIndex(
                                                             (s) =>
                                                                 s.AssignmentID ===
                                                                 assignment.AssignmentID

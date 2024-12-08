@@ -18,7 +18,7 @@ const ScoringSummary = () => {
             StudentID: 1,
             ScoringID: 101,
             StudentName: 'Alice Johnson',
-            Scoring: [
+            Scores: [
                 // Math
                 { SubjectID: 201, AssignmentID: 301, TeacherID: 401, AssignmentType: 'Quiz 1', SubjectName: 'Math', Score: 85 },
                 { SubjectID: 202, AssignmentID: 302, TeacherID: 401, AssignmentType: 'Quiz 2', SubjectName: 'Math', Score: 90 },
@@ -35,7 +35,7 @@ const ScoringSummary = () => {
             StudentID: 2,
             ScoringID: 102,
             StudentName: 'Bob Smith',
-            Scoring: [
+            Scores: [
                 // Math
                 { SubjectID: 203, AssignmentID: 303, TeacherID: 402, AssignmentType: 'Quiz 1', SubjectName: 'Math', Score: 88 },
                 { SubjectID: 204, AssignmentID: 304, TeacherID: 402, AssignmentType: 'Quiz 2', SubjectName: 'Math', Score: 92 },
@@ -52,7 +52,7 @@ const ScoringSummary = () => {
             StudentID: 3,
             ScoringID: 103,
             StudentName: 'Charlie Davis',
-            Scoring: [
+            Scores: [
                 // Math
                 { SubjectID: 205, AssignmentID: 305, TeacherID: 403, AssignmentType: 'Quiz 1', SubjectName: 'Math', Score: 79 },
                 { SubjectID: 206, AssignmentID: 306, TeacherID: 403, AssignmentType: 'Quiz 2', SubjectName: 'Math', Score: 85 },
@@ -69,7 +69,7 @@ const ScoringSummary = () => {
             StudentID: 4,
             ScoringID: 104,
             StudentName: 'Diana Miller',
-            Scoring: [
+            Scores: [
                 // Math
                 { SubjectID: 207, AssignmentID: 307, TeacherID: 404, AssignmentType: 'Quiz 1', SubjectName: 'Math', Score: 94 },
                 { SubjectID: 208, AssignmentID: 308, TeacherID: 404, AssignmentType: 'Quiz 2', SubjectName: 'Math', Score: 89 },
@@ -86,7 +86,7 @@ const ScoringSummary = () => {
             StudentID: 5,
             ScoringID: 105,
             StudentName: 'Ethan Brown',
-            Scoring: [
+            Scores: [
                 // Math
                 { SubjectID: 209, AssignmentID: 309, TeacherID: 405, AssignmentType: 'Quiz 1', SubjectName: 'Math', Score: 81 },
                 { SubjectID: 210, AssignmentID: 310, TeacherID: 405, AssignmentType: 'Quiz 2', SubjectName: 'Math', Score: 78 },
@@ -103,7 +103,7 @@ const ScoringSummary = () => {
             StudentID: 6,
             ScoringID: 106,
             StudentName: 'Fiona Williams',
-            Scoring: [
+            Scores: [
                 // Math
                 { SubjectID: 211, AssignmentID: 311, TeacherID: 406, AssignmentType: 'Quiz 1', SubjectName: 'Math', Score: 90 },
                 { SubjectID: 212, AssignmentID: 312, TeacherID: 406, AssignmentType: 'Quiz 2', SubjectName: 'Math', Score: 87 },
@@ -120,7 +120,7 @@ const ScoringSummary = () => {
             StudentID: 7,
             ScoringID: 107,
             StudentName: 'George Martinez',
-            Scoring: [
+            Scores: [
                 // Math
                 { SubjectID: 213, AssignmentID: 313, TeacherID: 407, AssignmentType: 'Quiz 1', SubjectName: 'Math', Score: 95 },
                 { SubjectID: 214, AssignmentID: 314, TeacherID: 407, AssignmentType: 'Quiz 2', SubjectName: 'Math', Score: 88 },
@@ -137,7 +137,7 @@ const ScoringSummary = () => {
             StudentID: 8,
             ScoringID: 108,
             StudentName: 'Hannah Lee',
-            Scoring: [
+            Scores: [
                 // Math
                 { SubjectID: 215, AssignmentID: 315, TeacherID: 408, AssignmentType: 'Quiz 1', SubjectName: 'Math', Score: 82 },
                 { SubjectID: 216, AssignmentID: 316, TeacherID: 408, AssignmentType: 'Quiz 2', SubjectName: 'Math', Score: 86 },
@@ -154,7 +154,7 @@ const ScoringSummary = () => {
             StudentID: 9,
             ScoringID: 109,
             StudentName: 'Ian Wilson',
-            Scoring: [
+            Scores: [
                 // Math
                 { SubjectID: 217, AssignmentID: 317, TeacherID: 409, AssignmentType: 'Quiz 1', SubjectName: 'Math', Score: 88 },
                 { SubjectID: 218, AssignmentID: 318, TeacherID: 409, AssignmentType: 'Quiz 2', SubjectName: 'Math', Score: 91 },
@@ -171,7 +171,7 @@ const ScoringSummary = () => {
             StudentID: 10,
             ScoringID: 110,
             StudentName: 'Julia Taylor',
-            Scoring: [
+            Scores: [
                 // Math
                 { SubjectID: 219, AssignmentID: 319, TeacherID: 410, AssignmentType: 'Quiz 1', SubjectName: 'Math', Score: 84 },
                 { SubjectID: 220, AssignmentID: 320, TeacherID: 410, AssignmentType: 'Quiz 2', SubjectName: 'Math', Score: 80 },
@@ -190,10 +190,10 @@ const ScoringSummary = () => {
     const uniqueAssignmentTypes = Array.from(
         new Set(
             studentScorings.flatMap((student) =>
-                student.Scoring.map((score) => score.SubjectName)
+                student.Scores.map((score) => score.SubjectName)
             )
         )
-    );
+    )
 
     const [classData, setClassData] = useState<classDataProps[]>([]);
     const [NewClass, setNewClass] = useState<string>('');
@@ -272,18 +272,20 @@ const ScoringSummary = () => {
                     <select
                         className='mx-2 w-full bg-transparent px-6 py-3 text-lg'
                         value={selectedClass}
+                        id='class-select'
                         onChange={(e) => handleClassChange(Number(e.target.value))}
+                        aria-label='Select Class'
                     >
                         {classData &&
-              classData.map((classItem) => (
-                  <option
-                      key={classItem.id}
-                      value={classItem.id}
-                      className=' text-[#31426E]'
-                  >
-                  Grade&ensp; {classItem.Grade?.grade}
-                  </option>
-              ))}
+                            classData.map((classItem) => (
+                                <option
+                                    key={classItem.id}
+                                    value={classItem.id}
+                                    className=' text-[#31426E]'
+                                >
+                                Grade&ensp; {classItem.Grade?.grade}
+                                </option>
+                            ))}
                     </select>
                 </div>
             </div>
