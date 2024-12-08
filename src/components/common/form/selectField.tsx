@@ -93,7 +93,7 @@ export const ControllerSelectField = ({
         <Controller
             name={name}
             control={control}
-            defaultValue={value || ''} // this will be handled by react-hook-form
+            defaultValue={value || ''} 
             render={({ field }) => (
                 <select
                     {...field}
