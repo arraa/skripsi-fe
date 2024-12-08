@@ -14,7 +14,13 @@ const CalendarComponent = dynamic(() => import('@fullcalendar/react'), {
 })
 
 const Dashboard = (props: any) => {
-    const roles = sessionStorage.getItem('roles')
+    const [roles, setRoles] = useState<string | null>(null)
+
+    useEffect(() => {
+        const storedRoles = sessionStorage.getItem('roles')
+        setRoles(storedRoles)
+    }, [])
+
     const calendarRef = useRef<any>(null)
     const [events, setEvents] = useState([
         {

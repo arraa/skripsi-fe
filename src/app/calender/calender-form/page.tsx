@@ -1,9 +1,12 @@
-import CalenderForm from '@/components/calender/CalenderForm';
+import CalenderForm from '@/components/calender/CalenderForm'
+import { Suspense } from 'react'
 
 export default function Calender() {
     return (
         <>
-            <CalenderForm/>
+            <Suspense fallback={<div>Loading...</div>}>
+                <CalenderForm />
+            </Suspense>
         </>
-    );
+    )
 }

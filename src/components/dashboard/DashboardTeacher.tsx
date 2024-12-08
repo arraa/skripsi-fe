@@ -16,7 +16,14 @@ import Link from 'next/link'
 import { Button } from '../common/button/button'
 
 const DashboardTeacher = (props: any) => {
-    const roles = sessionStorage.getItem('roles')
+    const [roles, setRoles] = useState<string | null>(null)
+
+    useEffect(() => {
+        // This will run only on the client side
+        const storedRoles = sessionStorage.getItem('roles')
+        setRoles(storedRoles)
+    }, [])
+
     const [calendarLoaded, setCalendarLoaded] = useState(false)
     const [fullCalendarInstance, setFullCalendarInstance] = useState<any>(null)
     const [events, setEvents] = useState([
@@ -48,7 +55,6 @@ const DashboardTeacher = (props: any) => {
     ])
 
     console.log('roles', roles)
-
 
     // Function to format time (e.g., "08:00")
     const formatTime = (dateString: string) => {
@@ -119,7 +125,6 @@ const DashboardTeacher = (props: any) => {
     const handleDateClick = (info: any) => {
         console.log('Date clicked:', info.dateStr)
     }
-
 
     return (
         <Box sx={{ padding: 2, width: '87vw' }}>

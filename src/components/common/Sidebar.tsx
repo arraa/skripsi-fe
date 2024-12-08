@@ -14,17 +14,20 @@ import Image from 'next/image'
 import { SIDEBAR } from '@/constant/sidebar/sidebar'
 import { Collapse, InputBase } from '@mui/material'
 import { ExpandLess, ExpandMore } from '@mui/icons-material'
-import { useState } from 'react'
-import { styled, alpha } from '@mui/material/styles'
-import SearchIcon from '@mui/icons-material/Search'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
 const drawerWidth = 200
 
-
 export default function Sidebar() {
-    const roles = sessionStorage.getItem('roles')
+    const [roles, setRoles] = useState<string | null>(null)
+
+    useEffect(() => {
+        const storedRoles = sessionStorage.getItem('roles')
+        setRoles(storedRoles)
+    }, [])
+
     const [open, setOpen] = useState<{ [key: number]: boolean }>({})
 
     const handleClick = (index: number) => {

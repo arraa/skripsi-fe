@@ -12,8 +12,6 @@ const Table = (props: TableProps) => {
 
     const height = maxHeight  || '70vh'
 
-    console.log('data', height)
-
     return (
         <div className={`h-[${height}]`}>
             <DataGrid

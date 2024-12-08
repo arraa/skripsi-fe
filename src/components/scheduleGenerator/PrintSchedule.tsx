@@ -12,13 +12,12 @@ interface ScheduleRow {
 interface TimeSlot {
     waktu: string // Example: "08:15 - 08:55"
     jamKe: number // Example: 1
-	periods: {
-		VII: string[];
-		VIII: string[];
-		IX: string[];
-	  };
+    periods: {
+        VII: string[]
+        VIII: string[]
+        IX: string[]
+    }
 }
-
 
 const PrintSchedule = ({ data }: ScheduleProps) => {
     const [printDate, setPrintDate] = useState('')
@@ -129,7 +128,24 @@ const PrintSchedule = ({ data }: ScheduleProps) => {
                                         timeSlot.periods.IX,
                                     ].flatMap((classPeriods, classIndex) =>
                                         classPeriods.map(
-                                            (period: string | number | bigint | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<React.AwaitedReactNode> | null | undefined, periodIndex: any) => (
+                                            (
+                                                period:
+                                                    | string
+                                                    | number
+                                                    | bigint
+                                                    | boolean
+                                                    | React.ReactElement<
+                                                          any,
+                                                          | string
+                                                          | React.JSXElementConstructor<any>
+                                                      >
+                                                    | Iterable<React.ReactNode>
+                                                    | React.ReactPortal
+                                                    | Promise<React.AwaitedReactNode>
+                                                    | null
+                                                    | undefined,
+                                                periodIndex: any
+                                            ) => (
                                                 <td
                                                     key={`${classIndex}-${periodIndex}`}
                                                 >
