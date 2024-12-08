@@ -20,7 +20,7 @@ const DashboardTeacher = (props: any) => {
 
     useEffect(() => {
         // This will run only on the client side
-        const storedRoles = sessionStorage.getItem('roles')
+        const storedRoles = sessionStorage.getItem('role')
         setRoles(storedRoles)
     }, [])
 

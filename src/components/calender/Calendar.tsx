@@ -31,7 +31,7 @@ const Calendar = (props: any) => {
     const [roles, setRoles] = useState<string>('')
 
     useEffect(() => {
-        const storedRoles = sessionStorage.getItem('roles')
+        const storedRoles = sessionStorage.getItem('role')
         if (storedRoles) {
             setRoles(storedRoles)
         }

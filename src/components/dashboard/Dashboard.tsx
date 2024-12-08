@@ -17,7 +17,7 @@ const Dashboard = (props: any) => {
     const [roles, setRoles] = useState<string | null>(null)
 
     useEffect(() => {
-        const storedRoles = sessionStorage.getItem('roles')
+        const storedRoles = sessionStorage.getItem('role')
         setRoles(storedRoles)
     }, [])
 

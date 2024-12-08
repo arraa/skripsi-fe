@@ -24,7 +24,7 @@ export default function Sidebar() {
     const [roles, setRoles] = useState<string | null>(null)
 
     useEffect(() => {
-        const storedRoles = sessionStorage.getItem('roles')
+        const storedRoles = sessionStorage.getItem('role')
         setRoles(storedRoles)
     }, [])
 
@@ -145,7 +145,10 @@ export default function Sidebar() {
                                                     />
                                                 </ListItemIcon>
                                                 <ListItemText
-                                                    sx={{ fontSize: '15px', whiteSpace: 'nowrap' }}
+                                                    sx={{
+                                                        fontSize: '15px',
+                                                        whiteSpace: 'nowrap',
+                                                    }}
                                                     primary={data.name}
                                                 />
                                                 {open[index] ? (
@@ -177,7 +180,7 @@ export default function Sidebar() {
                                                     />
                                                 </ListItemIcon>
                                                 <ListItemText
-                                                    sx={{ fontSize: '15px' }} 
+                                                    sx={{ fontSize: '15px' }}
                                                     primary={data.name}
                                                 />
                                             </Link>

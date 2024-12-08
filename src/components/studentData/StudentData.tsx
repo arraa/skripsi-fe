@@ -18,7 +18,7 @@ const StudentData = () => {
     const [roles, setRoles] = useState<string>('')
 
     useEffect(() => {
-        const storedRoles = sessionStorage.getItem('roles')
+        const storedRoles = sessionStorage.getItem('role')
         if (storedRoles) {
             setRoles(storedRoles)
         }
@@ -98,7 +98,7 @@ const StudentData = () => {
         )
         .map((student: StudentDataProps, index) => ({
             ...student,
-            id: index
+            id: index,
         }))
 
     const deletedStudent = async () => {
@@ -134,7 +134,6 @@ const StudentData = () => {
                             SearchName={'Student'}
                         />
                         <div>
-
                             <select
                                 id="class-select"
                                 className="h-full rounded-md shadow-sm focus:border-[#0C4177] focus:ring focus:ring-[#0C4177]/50"
