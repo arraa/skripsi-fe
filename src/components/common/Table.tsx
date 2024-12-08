@@ -27,7 +27,7 @@ const Table = (props: TableProps) => {
                         },
                     },
                 }}
-                pageSizeOptions={[5, 10, 25]}
+                pageSizeOptions={[20, 30]}
                 disableRowSelectionOnClick
                 filterModel={{
                     items: [],

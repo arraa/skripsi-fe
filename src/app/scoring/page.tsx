@@ -1,7 +1,10 @@
+import ScoringPerSubject from '@/components/scoring/ScoringPerSubject';
+import { AuthProvider } from '../context/provider';
+
 export default function scoring() {
     return (
-        <>
-            <div className='text-3xl'> scoring page</div>
-        </>
+        <AuthProvider>
+            <ScoringPerSubject/>
+        </AuthProvider>
     );
 }
