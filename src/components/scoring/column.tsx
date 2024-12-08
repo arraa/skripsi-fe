@@ -7,6 +7,7 @@ import {
 import Image from 'next/image';
 import { ControllerField } from '../common/form/textField';
 import { Controller } from 'react-hook-form';
+import { StudentScoringPerSubject } from './types/types';
 
 export const columnData = (
     handleUpdate: (id: number) => void,
@@ -16,20 +17,20 @@ export const columnData = (
         field: item,
         headerName: item,
         width: 300,
-        renderCell: (params: GridRenderCellParams) => {
-            const scoringData = params.row.Scoring;
+        renderCell: (params: GridRenderCellParams<StudentScoringPerSubject>) => {
+            const scoringData = params.row.Scores;
 
             const matchedScore = scoringData.find(
                 (scoreItem: any) => scoreItem.AssignmentType === item
-            );
+            )
 
             return matchedScore ? (
                 <Typography>{matchedScore.Score}</Typography>
             ) : (
                 <Typography>No Score</Typography>
-            );
+            )
         },
-    }));
+    }))
 
     return [
         {

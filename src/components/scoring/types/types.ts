@@ -3,7 +3,7 @@ export interface StudentScoringPerSubject {
     StudentID?: number
     ScoringID?: number
     StudentName: string
-    Scoring: ScoringItem[]
+    Scores: ScoringItem[]
 }
 
 export interface ScoringItem {
@@ -20,14 +20,7 @@ export interface StudentScoringPerSubject {
     StudentID?: number
     ScoringID?: number
     StudentName: string
-    Scoring: {
-        SubjectID: number
-        AssignmentID: number
-        TeacherID: number
-        AssignmentType: string
-        SubjectName: string
-        Score: number
-    }[]
+    Scores: ScoringItem[]
 }
 
 export interface StudentScoringPerSubjectForm {
