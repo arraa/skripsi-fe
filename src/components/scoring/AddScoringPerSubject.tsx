@@ -299,7 +299,7 @@ const ScoringSubjectForm = () => {
         <Box sx={{ padding: 3, paddingLeft: 0, width: '80vw' }}>
             <div className="mb-2 flex items-center justify-between">
                 <h1 className="my-8 text-3xl font-bold text-[#0C4177]">
-                    Attendance Class
+                    Add New Scoring
                 </h1>
             </div>
             {/* <div className=' h-[80vh] bg-white'> */}

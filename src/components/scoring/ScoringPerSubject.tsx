@@ -128,7 +128,7 @@ const ScoringPerSubject = () => {
     return (
         <Box sx={{ padding: 3, paddingLeft: 0, width: '80vw' }}>
             <div className="mb-2 flex items-center justify-between">
-                <h1 className="my-8 text-3xl font-bold text-[#0C4177]">
+                <h1 className="my-6 text-3xl font-bold text-[#0C4177]">
                     Scoring
                 </h1>
                 <div className="flex cursor-pointer bg-[#31426E]  text-white sm:rounded-md">
@@ -175,9 +175,7 @@ const ScoringPerSubject = () => {
                     </Button>
                 </div>
                 <Table data={scoreClassSubject} columnData={columns} />
-                <div className="flex justify-end">
-                    <Button size={'default'}>Generate Class</Button>
-                </div>
+               
             </div>
             {/* </div> */}
         </Box>

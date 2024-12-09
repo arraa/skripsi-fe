@@ -17,6 +17,7 @@ import { ExpandLess, ExpandMore } from '@mui/icons-material'
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { logout } from '@/app/api/auth'
 
 const drawerWidth = 215
 
@@ -34,6 +35,20 @@ export default function Sidebar() {
         setOpen((prevOpen) => ({ ...prevOpen, [index]: !prevOpen[index] }))
     }
 
+    const handleLogout = async () => {
+        try {
+            const response = await logout();
+
+            console.log(response);
+            
+            if (response.status === 200) {
+                sessionStorage.clear()
+                window.location.href = '/auth/login'
+            }
+        } catch (error) {
+
+        }
+    }
     const pathname = usePathname()
 
     console.log(pathname)
@@ -48,7 +63,7 @@ export default function Sidebar() {
         } else if (roles === 'teacher' && item.name === 'Scoring') {
             return {
                 ...item,
-                link: '/attendance/today',
+                link: '/scoring/subject',
                 subMenu: undefined,
             }
         }
@@ -225,7 +240,15 @@ export default function Sidebar() {
                     </List>
                 </Box>
 
-                <Box sx={{ paddingLeft: '25px' }}>profile</Box>
+                <div onClick={handleLogout} className="mb-5 flex gap-4 pl-11 text-lg font-bold">
+                    <Image
+                        src={'/icon/icon-logout.png'}
+                        width={25}
+                        height={25}
+                        alt={'logout'}
+                    />
+                    Logout
+                </div>
             </Drawer>
         </Box>
     )
