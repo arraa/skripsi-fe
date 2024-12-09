@@ -19,6 +19,21 @@ interface SubjectClassDataProps {
 interface SubjectClassListApiProps {
     subjects: SubjectClassDataProps[]
 }
+
+interface SubjectClassDataWithStudentProps extends SubjectClassDataProps {
+    students: {
+        StudentID: number
+        name: string
+    }[]
+}
+
 interface SubjectClassApiProps {
-    subject: SubjectClassDataProps
+    subject: SubjectClassDataWithStudentProps
+}
+
+interface StudentScoringFormProps {
+    id: number
+    score: number
+    StudentID: number
+    StudentName: string
 }

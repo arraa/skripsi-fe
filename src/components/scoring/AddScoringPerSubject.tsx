@@ -278,19 +278,31 @@ const ScoringSubjectForm = () => {
     const [customOption, setCustomOption] = useState('')
     const [showCustomInput, setShowCustomInput] = useState(false)
     const [assignmentID, setAssignmentID] = useState(0)
-    const [subjectData, setSubjectData] = useState({
-        className: '',
-        subjectName: '',
-    })
+    const [subjectData, setSubjectData] = useState<{
+        grade_class_name: string
+        subject_name: string
+    }>()
+    const [studentScorings, setStudentScorings] =
+        useState<StudentScoringFormProps[]>([])
 
     useEffect(() => {
         // Get class name and subject name
         getSubjectClassNameById(subjectID, classID)
             .then((res) => {
                 setSubjectData({
-                    className: res.data.subject.grade_class_name,
-                    subjectName: res.data.subject.subject_name,
+                    grade_class_name: res.data.subject.grade_class_name,
+                    subject_name: res.data.subject.subject_name,
                 })
+                setStudentScorings(
+                    res.data.subject.students.map((student, index) => {
+                        return {
+                            id: index,
+                            score: 0,
+                            StudentID: student.StudentID,
+                            StudentName: student.name,
+                        }
+                    })
+                )
             })
             .catch((error) => {
                 console.error('Error getting subject class name:', error)
@@ -311,8 +323,6 @@ const ScoringSubjectForm = () => {
             setShowCustomInput(false)
         }
     }
-
-    console.log('assignmentID', assignmentID)
 
     const handleValidateCreateOrGetAsgType = async () => {
         if (selectedOption === 'Tambahkan opsi') {
@@ -338,7 +348,7 @@ const ScoringSubjectForm = () => {
     })
 
     const onSubmit = (data: StudentScoringPerSubject) => {
-        console.log(data)
+        console.log('submited data', data)
     }
     const rows = columnDataScoringForm(control)
 
@@ -346,8 +356,8 @@ const ScoringSubjectForm = () => {
         <Box sx={{ padding: 3, paddingLeft: 0, width: '80vw' }}>
             <div className="mb-2 flex items-center justify-between">
                 <h1 className="my-8 text-3xl font-bold text-[#0C4177]">
-                    Class Score {subjectData.className}{' '}
-                    {subjectData.subjectName}
+                    Class Score {subjectData?.grade_class_name}{' '}
+                    {subjectData?.subject_name}
                 </h1>
             </div>
             {/* <div className=' h-[80vh] bg-white'> */}
