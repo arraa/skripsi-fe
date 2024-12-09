@@ -16,6 +16,7 @@ import {
 } from './types/types'
 import { AttendanceListFormProps } from '../attendance/type/types'
 import { validateCreateOrGetAsgType } from '@/app/api/scoring'
+import { getSubjectClassNameById } from '@/app/api/subject'
 
 const ObjectSchema = array(
     object({
@@ -271,12 +272,30 @@ type ObjectInput = InferInput<typeof ObjectSchema>
 const ScoringSubjectForm = () => {
     const searchParams = useSearchParams()
     const classID = Number(searchParams.get('class_id'))
-    const SubjectID = Number(searchParams.get('subject_id'))
+    const subjectID = Number(searchParams.get('subject_id'))
 
     const [selectedOption, setSelectedOption] = useState('')
     const [customOption, setCustomOption] = useState('')
     const [showCustomInput, setShowCustomInput] = useState(false)
     const [assignmentID, setAssignmentID] = useState(0)
+    const [subjectData, setSubjectData] = useState({
+        className: '',
+        subjectName: '',
+    })
+
+    useEffect(() => {
+        // Get class name and subject name
+        getSubjectClassNameById(subjectID, classID)
+            .then((res) => {
+                setSubjectData({
+                    className: res.data.subject.grade_class_name,
+                    subjectName: res.data.subject.subject_name,
+                })
+            })
+            .catch((error) => {
+                console.error('Error getting subject class name:', error)
+            })
+    }, [classID, subjectID])
 
     // Handle option change
     const handleOptionChange = (option: SetStateAction<string>) => {
@@ -327,7 +346,8 @@ const ScoringSubjectForm = () => {
         <Box sx={{ padding: 3, paddingLeft: 0, width: '80vw' }}>
             <div className="mb-2 flex items-center justify-between">
                 <h1 className="my-8 text-3xl font-bold text-[#0C4177]">
-                    Attendance Class
+                    Class Score {subjectData.className}{' '}
+                    {subjectData.subjectName}
                 </h1>
             </div>
             {/* <div className=' h-[80vh] bg-white'> */}

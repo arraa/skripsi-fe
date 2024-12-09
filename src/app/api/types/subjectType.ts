@@ -19,3 +19,6 @@ interface SubjectClassDataProps {
 interface SubjectClassListApiProps {
     subjects: SubjectClassDataProps[]
 }
+interface SubjectClassApiProps {
+    subject: SubjectClassDataProps
+}
