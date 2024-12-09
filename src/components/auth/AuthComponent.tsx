@@ -17,8 +17,14 @@ export function LoginForm() {
         
         try {
             const response = await login({ email, password });
-            if (response === 200) {
-                window.location.href = '/personal-data';
+           
+            sessionStorage.setItem('UserID', String(response.data.user.UserID)) 
+            sessionStorage.setItem('name', response.data.user.name)
+            sessionStorage.setItem('email', response.data.user.email)
+            sessionStorage.setItem('role', response.data.user.role)
+
+            if (response.status === 200) {
+                window.location.href = '/'
             }
         } catch (err) {
             console.error('Login error:', err);

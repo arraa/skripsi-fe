@@ -1,28 +1,36 @@
-export interface UserDataProps {
-  UserID?: string;
-  name: string;
-  gender: string;
-  place_of_birth: string;
-  date_of_birth: string;
-  address: string;
-  num_phone: string;
-  email: string;
+export interface TeacherDataProps {
+    id: number
+    teacher_id?: number
+    user_id?: number
+    name: string
+    gender: string
+    place_of_birth: string
+    date_of_birth: string
+    religion: string
+    address: string
+    num_phone: string
+    email: string
+    teaching_hour: string
+    subject: number[]
 }
 
-export interface TeacherDataProps {
-  TeacherID?: string;
-  id_user?: string;
-  teaching_hour: string;
-  user: UserDataProps;
-} 
+export interface GetTeacherByIDApiProps {
+    teacher: TeacherDataProps
+}
 
 export interface studentFormPageProps {
-  typePage: string;
-  id?: string;
+    typePage: string
+    id?: string
 }
 
-// export interface classDataProps {
-//   id: number;
-//   name: string;
-//   grade: string;
-// }
+export interface classDataProps {
+    id: number
+    name: string
+    grade: string
+}
+
+export interface subjectListProps {
+    id: number
+    grade: number
+    name: string
+}

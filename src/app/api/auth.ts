@@ -1,3 +1,4 @@
+import { AxiosResponse } from 'axios';
 import { api } from './axios';
 
 export const login = async (credentials: {
@@ -7,7 +8,7 @@ export const login = async (credentials: {
     try {
         const response = await api.post('/auth/login', credentials);
         if (response.status === 200) {
-            return response.status;
+            return response;
         } else if (response.status === 401) {
             throw new Error('Invalid credentials');
         } else {
@@ -52,7 +53,7 @@ export const resetPassword = async (data: {
     }
 }
 
-export const validateAccesToken = async () => {
+export const validateAccesToken = async (): Promise<AxiosResponse> => {
     try {
         const response = await api.get('/auth/validate-token');
 
@@ -62,7 +63,7 @@ export const validateAccesToken = async () => {
     }
 };
 
-export const getNewAccessToken = async () => {
+export const getNewAccessToken = async (): Promise<AxiosResponse> => {
     try {
         const response = await api.get('/auth/refresh-token');
 
@@ -72,3 +73,13 @@ export const getNewAccessToken = async () => {
         return error.response;
     }
 };
+
+export const getUserType = async (): Promise<AxiosResponse> => {
+    try {
+        const response = await api.get('/auth/user-type');
+
+        return response.data.user_type
+    } catch (error: any) {
+        return error.response;
+    }
+}

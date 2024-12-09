@@ -1,49 +1,51 @@
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 
-interface tableProps {
-  data: Array<object>;
-  columnData: GridColDef[];
-  searchValue?: string;
-  heighRow?: number
+interface TableProps {
+    data: Array<object>;
+    columnData: GridColDef[];
+    searchValue?: string;
+    heighRow?: number;
+    maxHeight?: string
 }
-const Table = (props: tableProps) => {
-  const { data, columnData, searchValue, heighRow } = props;
-  return (
-    <div className='h-[70vh]'>
+const Table = (props: TableProps) => {
+    const { data, columnData, searchValue, heighRow, maxHeight } = props
 
-      <DataGrid
-        rowHeight={heighRow ? heighRow : undefined}
-    
-        rows={data}
-        columns={columnData}
-        {...data}
-        initialState={{
-          pagination: {
-            paginationModel: {
-              pageSize: 5,
-              /* page: 0 // default value will be used if not passed */
-            },
-          },
-        }}
-        pageSizeOptions={[5, 10, 25]}
-        disableRowSelectionOnClick
-        filterModel={{
-          items: [],
-          quickFilterValues: [searchValue],
-        }}
-        sx={{
-          backgroundColor: '#fff',
-          maxWidth: '80vw',
-          border: 'none',
-          boxShadow: 'none',
-          color: '#0c427770',
-          '& .MuiDataGrid-columnHeaderTitle': {
-            fontWeight: 'bold',
-          },
-        }}
-      />
-    </div>
-  );
-};
+    const height = maxHeight  || '74vh'
+
+    return (
+        <div className={`h-[${height}]`}>
+            <DataGrid
+                rowHeight={heighRow || undefined}
+                rows={data}
+                columns={columnData}
+                {...data}
+                initialState={{
+                    pagination: {
+                        paginationModel: {
+                            pageSize: 10,
+                            /* page: 0 // default value will be used if not passed */
+                        },
+                    },
+                }}
+                pageSizeOptions={[20, 30]}
+                disableRowSelectionOnClick
+                filterModel={{
+                    items: [],
+                    quickFilterValues: [searchValue],
+                }}
+                sx={{
+                    backgroundColor: '#fff',
+                    maxWidth: '76vw',
+                    border: 'none',
+                    boxShadow: 'none',
+                    color: '#0c427770',
+                    '& .MuiDataGrid-columnHeaderTitle': {
+                        fontWeight: 'bold',
+                    },
+                }}
+            />
+        </div>
+    )
+}
 
 export default Table;

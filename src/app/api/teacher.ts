@@ -1,19 +1,25 @@
-'use server';
-import { StudentDataProps } from '@/components/studentData/types/types';
-import { api } from './axios';
-import { TeacherDataProps } from '@/components/teacherData/types/types';
+import { AxiosResponse } from 'axios'
+import { api } from './axios'
+import {
+    GetTeacherByIDApiProps,
+    TeacherDataProps,
+} from '@/components/teacherData/types/types'
+import { date } from 'valibot'
+import { formatPhoneNumber } from '@/lib/formatData'
+
+const routeTeacher = '/teacher'
 
 const formatDate = (date: string | Date): string => {
-    const d = new Date(date);
+    const d = new Date(date)
     if (isNaN(d.getTime())) {
-        return 'Invalid Date';
+        return 'Invalid Date'
     }
-    const year = d.getFullYear();
-    const month = String(d.getMonth() + 1).padStart(2, '0');
-    const day = String(d.getDate()).padStart(2, '0');
+    const year = d.getFullYear()
+    const month = String(d.getMonth() + 1).padStart(2, '0')
+    const day = String(d.getDate()).padStart(2, '0')
 
-    return `${year}-${month}-${day}`;
-};
+    return `${year}-${month}-${day}`
+}
 
 // const formatStudentData = (data: any) => {
 //   if (Array.isArray(data)) {
@@ -33,60 +39,75 @@ const formatDate = (date: string | Date): string => {
 
 export const getTeacher = async () => {
     try {
-        const response = await api.get('/teacher/');
-        console.log(response);
-        // const data = formatTeacherData(response.data.teachers);
-        return response.data.teachers;
-    } catch (error) {
-        console.error('API request error', error);
-        throw error;
+        const response = await api.get(routeTeacher)
+        return response
+    } catch (error: any) {
+        console.error('API request error', error)
+        return error.response
     }
-};
+}
 
-// export const getStudentById = async (id: string) => {
-//   try {
-//     const response = await api.get(`/student/${id}`);
-//     const data = formatStudentData(response.data.student);
-//     return data;
-//   } catch (error) {
-//     console.error('API request error', error);
-//     throw error;
-//   }
-// };
+export const getTeacherById = async (
+    id: string
+): Promise<AxiosResponse<GetTeacherByIDApiProps>> => {
+    try {
+        const response = await api.get(`${routeTeacher}/${id}`)
+        return response
+    } catch (error: any) {
+        console.error('API request error', error)
+        return error.response
+    }
+}
 
 export const createTeacher = async (props: TeacherDataProps) => {
-    const { teaching_hour } = props;
-
-    const {
-        name,
-        gender,
-        place_of_birth,
-        date_of_birth,
-        address,
-        num_phone,
-        email,
-    } = props.user;
-
     const data = {
-        name,
-        gender,
-        place_of_birth,
-        date_of_birth,
-        address,
-        num_phone: num_phone.toString(),
-        email,
-        teaching_hour,
-    };
+        teacher_id: props.teacher_id,
+        user_id: props.user_id,
+        name: props.name,
+        gender: props.gender,
+        place_of_birth: props.place_of_birth,
+        date_of_birth: props.date_of_birth,
+        religion: props.religion,
+        address: props.address,
+        num_phone: formatPhoneNumber(props.num_phone),
+        email: props.email,
+        teaching_hour: props.teaching_hour,
+        teaching_subject: props.subject,
+    }
 
     try {
-        const response = await api.post('/teacher/create', data);
-        console.log('Update response:', response.data); // Log the response
-        return response.data; // Ensure to return the response data
-    } catch (error) {
-        console.error('Update error:', error); // Log the error
-        throw error; // Rethrow the error for handling in the calling function
+        const response = await api.post(`${routeTeacher}/create`, data)
+        console.log('Update response:', response.data) // Log the response
+        return response.data // Ensure to return the response data
+    } catch (error: any) {
+        console.error('Update error:', error)
+        return error.response
     }
-};
+}
+
+export const updateTeacher = async (
+    getid: string,
+    props: TeacherDataProps
+): Promise<AxiosResponse> => {
+    const { name, gender, date_of_birth } = props
+
+    if (!name || !gender || !date_of_birth) {
+        throw new Error('Missing required fields')
+    }
+
+    const data = {
+        ...props,
+        number_phone: formatPhoneNumber(props.num_phone),
+    }
+
+    try {
+        const response = await api.put(`${routeTeacher}/update/${getid}`, data)
+        return response
+    } catch (error) {
+        console.error('Update error:', error)
+        return Promise.reject(new Error(String(error)))
+    }
+}
 
 // export const createStudentbyExcel = async (props: StudentDataProps[]) => {
 
@@ -158,8 +179,22 @@ export const createTeacher = async (props: TeacherDataProps) => {
 //   }
 // };
 
-// export const deleteStudent = async (id: string | null) => {
-//   if (id) {
-//     return api.delete(`/student/delete/${id}`);
-//   }
-// };
+export const deleteTeacher = async (
+    id: string | null
+): Promise<AxiosResponse> => {
+    if (id) {
+        try {
+            const response = await api.delete(`${routeTeacher}/delete/${id}`)
+
+            if (response.status === 200) {
+                return response
+            } else {
+                throw new Error('Failed to delete teacher')
+            }
+        } catch (error) {
+            console.error('API request error', error)
+            return Promise.reject(new Error(String(error)))
+        }
+    }
+    return Promise.reject(new Error('No teacher id provided'))
+}
