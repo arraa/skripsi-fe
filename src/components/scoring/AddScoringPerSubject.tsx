@@ -15,6 +15,7 @@ import {
     StudentScoringPerSubjectForm,
 } from './types/types'
 import { AttendanceListFormProps } from '../attendance/type/types'
+import { validateCreateOrGetAsgType } from '@/app/api/scoring'
 
 const ObjectSchema = array(
     object({
@@ -275,6 +276,7 @@ const ScoringSubjectForm = () => {
     const [selectedOption, setSelectedOption] = useState('')
     const [customOption, setCustomOption] = useState('')
     const [showCustomInput, setShowCustomInput] = useState(false)
+    const [assignmentID, setAssignmentID] = useState(0)
 
     // Handle option change
     const handleOptionChange = (option: SetStateAction<string>) => {
@@ -282,7 +284,33 @@ const ScoringSubjectForm = () => {
         if (option === 'Tambahkan opsi') {
             setShowCustomInput(true) // Show input when "Tambahkan opsi" is selected
         } else {
+            if (option === 'PAS') {
+                setAssignmentID(1)
+            } else if (option === 'PTS') {
+                setAssignmentID(2)
+            }
             setShowCustomInput(false)
+        }
+    }
+
+    console.log('assignmentID', assignmentID)
+
+    const handleValidateCreateOrGetAsgType = async () => {
+        if (selectedOption === 'Tambahkan opsi') {
+            try {
+                const result = await validateCreateOrGetAsgType(customOption)
+                setSelectedOption(customOption)
+                if (result.status !== 200) {
+                    throw new Error('Failed to validate custom option')
+                } else {
+                    console.log('Custom option validated:', result)
+                    setAssignmentID(result.data.score.AssignmentId)
+                    setShowCustomInput(false)
+                }
+            } catch (error) {
+                console.error('Error validating custom option:', error)
+                alert('Failed to validate custom option. Please try again.')
+            }
         }
     }
 
@@ -369,20 +397,9 @@ const ScoringSubjectForm = () => {
                                                         />
                                                     </div>
                                                     <Button
-                                                        onClick={() => {
-                                                            if (
-                                                                selectedOption ===
-                                                                    'Tambahkan opsi' &&
-                                                                customOption.trim()
-                                                            ) {
-                                                                setSelectedOption(
-                                                                    customOption
-                                                                )
-                                                                setShowCustomInput(
-                                                                    false
-                                                                )
-                                                            }
-                                                        }}
+                                                        onClick={() =>
+                                                            handleValidateCreateOrGetAsgType()
+                                                        }
                                                         size={'full'}
                                                     >
                                                         {' '}
