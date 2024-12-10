@@ -9,7 +9,7 @@ interface AssignmentDataApi {
 }
 
 interface ScoreClassSubject {
-    score: AssignmentDataApi
+    assignment: AssignmentDataApi
 }
 
 export const validateCreateOrGetAsgType = async (

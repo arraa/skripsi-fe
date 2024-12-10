@@ -91,7 +91,10 @@ const ScoringSubjectForm = () => {
                         throw new Error('Failed to validate custom option')
                     } else {
                         console.log('Custom option validated:', result)
-                        setAssignmentID(result.data.score.AssignmentId)
+                        const data = result.data.assignment.AssignmentId
+
+                        console.log('data', data)
+                        setAssignmentID(data)
                         setShowCustomInput(false)
                         setSelectedOption(customOption)
                     }
