@@ -52,4 +52,19 @@ export const getSubjectClassNameById = async (
     }
 }
 
+export const createSubjectScoringStudentsClass = async (
+    subjectID: number,
+    classID: number
+): Promise<AxiosResponse<SubjectClassApiProps>> => {
+    try {
+        const response = await api.post(`${routeSubject}/${subjectID}/${classID}`)
+        if (response.status !== 200) {
+            throw new Error('API request error')
+        }
+        return response
+    } catch (error) {
+        console.error('API request error', error)
+        return Promise.reject(new Error('API request error'))
+    }
+}
 
