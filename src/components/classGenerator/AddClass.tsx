@@ -10,7 +10,7 @@ import {
 } from '@mui/material';
 import { AxiosResponse } from 'axios';
 import { deleteStudent } from '@/app/api/student';
-import { classDataProps, teacher } from './types/types';
+import { classDataProps, TeacherDataProps } from './types/types';
 import { ControllerSelectField } from '../common/form/selectField';
 import { valibotResolver } from '@hookform/resolvers/valibot';
 import { useForm } from 'react-hook-form';
@@ -23,8 +23,8 @@ interface DeleteProps {
     open: boolean;
     className: string;
     grade: string;
-    teacherName: teacher;
-    teacher: teacher[];
+    teacherName: TeacherDataProps;
+    teacher: TeacherDataProps[];
 }
 
 type ObjectInput = InferInput<typeof ObjectSchema>;
@@ -129,14 +129,13 @@ export default function AddClass(props: DeleteProps) {
                         control={control}
                         name='teacher'
                         label='Teacher'
-                        // eslint-disable-next-line quotes
-                        options={teacher.map((item: teacher) => ({
-                            value: item.Teacher.TeacherID,
-                            label: `${item.Teacher.User.name}`,
+                        options={teacher.map((item: TeacherDataProps) => ({
+                            value: item.teacher_id,
+                            label: `${item.User.name}`,
                         }))}
                         placeholder='Please Teacher'
                         errors={errors.teacher}
-                        value={teacherName?.Teacher?.TeacherID}
+                        value={teacherName?.teacher_id}
                     />
                 </DialogContent>
                 <DialogActions>

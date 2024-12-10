@@ -6,20 +6,19 @@ import { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
 import { columnDataSiswa } from './column'
 import Table from '../common/Table'
-import { classDataProps, classGeneratorProps } from './types/types'
+import {
+    classDataProps,
+    classGeneratorProps,
+    gradeDataProps,
+} from './types/types'
 import { getClass } from '@/app/api/class'
-
-interface Student {
-    no: number
-    name: string
-    gender: 'Male' | 'Female'
-    class?: string // Optional properties since they will be assigned later
-    class_id?: number
-}
+import { StudentDataProps } from '../studentData/types/types'
+import { getStudent } from '@/app/api/student'
+import { formatStudentData } from '@/lib/formatData'
 
 // Define the distributed classes type
 interface DistributedClasses {
-    [key: string]: Student[]
+    [key: string]: StudentDataProps[]
 }
 
 interface TabPanelProps {
@@ -97,47 +96,53 @@ const StyledTab = styled((props: StyledTabProps) => (
 const FinalizeClassGenerator = () => {
     const [selectedGrade, setSelectedGrade] = useState<number>(7)
     const [classData, setClassData] = useState<classDataProps[]>([])
+    const [data, setData] = useState<StudentDataProps[]>([])
     const grade = [7, 8, 9]
     const [value, setValue] = useState(1)
 
-    const students: Student[] = [
-        { no: 1, name: 'Alice Johnson', gender: 'Female' },
-        { no: 2, name: 'Bob Smith', gender: 'Male' },
-        { no: 3, name: 'Clara Martinez', gender: 'Female' },
-        { no: 4, name: 'David Wilson', gender: 'Male' },
-        { no: 5, name: 'Emma Davis', gender: 'Female' },
-        { no: 6, name: 'Frank Brown', gender: 'Male' },
-        { no: 7, name: 'Grace Lee', gender: 'Female' },
-        { no: 8, name: 'Henry King', gender: 'Male' },
-        { no: 9, name: 'Isla Scott', gender: 'Female' },
-        { no: 10, name: 'Jack White', gender: 'Male' },
-        { no: 11, name: 'Karen Walker', gender: 'Female' },
-        { no: 12, name: 'Liam Lewis', gender: 'Male' },
-        { no: 13, name: 'Mia Hill', gender: 'Female' },
-        { no: 14, name: 'Noah Adams', gender: 'Male' },
-        { no: 15, name: 'Olivia Brooks', gender: 'Female' },
-        { no: 16, name: 'Paul Hall', gender: 'Male' },
-        { no: 17, name: 'Quinn Young', gender: 'Female' },
-        { no: 18, name: 'Ryan Ward', gender: 'Male' },
-        { no: 19, name: 'Sophia Perez', gender: 'Female' },
-        { no: 20, name: 'Tyler Sanders', gender: 'Male' },
-        { no: 21, name: 'Uma Roberts', gender: 'Female' },
-        { no: 22, name: 'Victor Turner', gender: 'Male' },
-        { no: 23, name: 'Wendy Collins', gender: 'Female' },
-        { no: 24, name: 'Xander Evans', gender: 'Male' },
-        { no: 25, name: 'Yara Hughes', gender: 'Female' },
-        { no: 26, name: 'Zachary Green', gender: 'Male' },
-        { no: 27, name: 'Ava Bell', gender: 'Female' },
-        { no: 28, name: 'Ben Foster', gender: 'Male' },
-        { no: 29, name: 'Chloe Carter', gender: 'Female' },
-        { no: 30, name: 'Daniel Ross', gender: 'Male' },
-    ]
+    console.log('data', data)
 
-    // List of class names
-    const classes = ['A', 'B', 'C']
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const studentsResult = await getStudent()
+                const formattedStudents = formatStudentData(
+                    studentsResult.data.students
+                )
 
-    // Shuffle array utility function
+                const classesResult = await getClass()
+
+                console.log('Classes:', classesResult.data)
+
+                const updatedClasses = classesResult.data.ClassName.map(
+                    (item: classDataProps) => {
+                        if (item.id_grade === 1) return { ...item, id_grade: 7 }
+                        if (item.id_grade === 2) return { ...item, id_grade: 8 }
+                        if (item.id_grade === 7) return { ...item, id_grade: 9 }
+                        return item
+                    }
+                )
+
+                setClassData(updatedClasses)
+
+                const distributed = distributeStudentsEqually(
+                    formattedStudents,
+                    updatedClasses
+                )
+
+                console.log('Distributed:', distributed)
+
+                setData(distributed)
+            } catch (error) {
+                console.error('API request error', error)
+            }
+        }
+
+        fetchData()
+    }, [])
+
     function shuffle<T>(array: T[]): T[] {
+        // Fisher-Yates shuffle to randomize the order of the array
         for (let i = array.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1))
             ;[array[i], array[j]] = [array[j], array[i]]
@@ -145,35 +150,66 @@ const FinalizeClassGenerator = () => {
         return array
     }
 
-    // Randomly distribute students evenly across the given classes
     function distributeStudentsEqually(
-        students: Student[],
-        classes: string[]
-    ): DistributedClasses {
-        const shuffledStudents = shuffle(students) // Shuffle students randomly
-        const classCount = classes.length
-        const result: DistributedClasses = {}
+        students: StudentDataProps[],
+        classes: classDataProps[]
+    ): StudentDataProps[] {
+        // First, group students by grade
+        const groupedByGrade: { [key: number]: StudentDataProps[] } = {}
 
-        // Initialize each class as an empty array
-        classes.forEach((cls) => (result[cls] = []))
+        students.forEach((student) => {
+            const grade = student.ClassName.Grade.grade
+            if (!groupedByGrade[grade]) {
+                groupedByGrade[grade] = []
+            }
+            groupedByGrade[grade].push(student)
+        })
 
-        // Distribute shuffled students evenly to each class
-        shuffledStudents.forEach((student, index) => {
-            const classIndex = index % classCount // Determine class assignment using modulo
-            result[classes[classIndex]].push({
-                ...student,
-                class: classes[classIndex],
-                class_id: classIndex + 1,
+        console.log('Grouped By Grade:', groupedByGrade) // Check the grouping
+
+        // Prepare an array to hold the distributed students
+        const result: StudentDataProps[] = []
+
+        // Distribute students for each grade
+        Object.keys(groupedByGrade).forEach((grade) => {
+            const studentsInGrade = groupedByGrade[parseInt(grade)]
+            const shuffledStudents = shuffle(studentsInGrade)
+            const classesForGrade = classes.filter(
+                (cls) => Number(cls.Grade?.grade) === parseInt(grade)
+            )
+
+            console.log('Classes for Grade', grade, classesForGrade) // Check available classes
+
+            const classCount = classesForGrade.length
+
+            if (classCount === 0) {
+                console.warn(`No classes found for grade ${grade}`)
+                return
+            }
+
+            // Distribute the shuffled students evenly into the available classes for that grade
+            shuffledStudents.forEach((student, index) => {
+                const classIndex = index % classCount
+                const currentClass = classesForGrade[classIndex] // Directly select class by index
+
+                if (currentClass) {
+                    result.push({
+                        ...student,
+                        ClassName: {
+                            id: currentClass.id as number,
+                            name: currentClass.name,
+                            Grade: { grade: Number(currentClass.Grade?.grade) },
+                        },
+                        class_id: currentClass.id as number,
+                    })
+                }
             })
         })
 
+        console.log('Distributed Students:', result) // Final check on the distributed result
+
         return result
     }
-
-    // Execute the distribution
-    const distributedClasses = distributeStudentsEqually(students, classes)
-
-    console.log(distributedClasses)
 
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         console.log(newValue)
@@ -182,7 +218,7 @@ const FinalizeClassGenerator = () => {
     }
 
     const rows = (id: number) =>
-        students
+        data
             .filter((student) => student.class_id === id)
             .map((student, index) => ({
                 id: index + 1,
@@ -190,32 +226,6 @@ const FinalizeClassGenerator = () => {
             }))
 
     const column = columnDataSiswa()
-
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const resultClass = await getClass()
-
-                const updatedResultClass = resultClass.data.class.map(
-                    (item: { id_grade: number }) => {
-                        if (item.id_grade === 1) {
-                            return { ...item, id_grade: 7 }
-                        } else if (item.id_grade === 2) {
-                            return { ...item, id_grade: 8 }
-                        } else if (item.id_grade === 7) {
-                            return { ...item, id_grade: 9 }
-                        }
-                        return item
-                    }
-                )
-
-                setClassData(updatedResultClass)
-            } catch (error) {
-                console.error('API request error', error)
-            }
-        }
-        fetchData()
-    }, [])
 
     const handleGradeChange = (value: number) => {
         console.log('handleGradeChange', value)
@@ -273,13 +283,13 @@ const FinalizeClassGenerator = () => {
 
                 <CustomTabPanel value={value} index={value}>
                     <Table
-                        data={value as unknown as classGeneratorProps[]}
+                        data={rows(value) as unknown as classGeneratorProps[]}
                         columnData={column}
                     />
                 </CustomTabPanel>
 
                 <div className="flex justify-end gap-4">
-                    <Button variant={'white'} size={'default'}>
+                    <Button variant={'white'} size={'default'}  onClick={() => window.location.reload()}>
                         Regenerate
                     </Button>
 

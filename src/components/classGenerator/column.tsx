@@ -90,7 +90,6 @@ export const columnData = (
             <Typography>
                 {' '}
                 {params.row.Teacher?.User.name}
-                {params.value}{' '}
             </Typography>
         ),
     },
