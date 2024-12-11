@@ -26,6 +26,23 @@ export const getAllScoreByClassAndSubject = async (
     }
 }
 
+export const getSummaryScoreByClass = async (
+    classID: number
+): Promise<AxiosResponse<ScoreClassSubject>> => {
+    try {
+        const response = await api.get(
+            `${routeSubject}/summaries/${classID}`
+        )
+        if (response.status !== 200) {
+            throw new Error('API request error')
+        }
+        return response
+    } catch (error) {
+        console.error('API request error', error)
+        return Promise.reject(error)
+    }
+}
+
 export const createStudentsScoreByClassAndSubject = async (
     classID: number,
     subjectID: number,

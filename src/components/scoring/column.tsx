@@ -103,16 +103,16 @@ export const columnDataScoringForm = (control: any): GridColDef[] => [
         field: 'score',
         headerName: 'Score',
         width: 200,
-        renderCell: (params: GridRenderCellParams<StudentScoringFormProps>) => {
+        renderCell: (params: GridRenderCellParams) => {
             return (
                 <div className="m-0 p-0">
                     <Controller
-                        name={`${params.row.StudentID}`}
+                        name={`scoring-${params.row.StudentID}`}
                         control={control}
                         render={({ field }) => (
                             <input
                                 {...field}
-                                id={`${params.row.id}`}
+                                id={`scoring-${params.row.StudentID}`}
                                 className="m-0 h-1/2 bg-transparent  p-1 outline outline-1 focus:bg-none"
                                 type={'number'}
                             />
@@ -133,17 +133,13 @@ export const columnDataSummary = (
         headerName: item,
         width: 300,
         renderCell: (params: GridRenderCellParams) => {
-            const scoringData = params.row.Scoring
+            const scoringData = params.row.Scores
 
             const matchedScore = scoringData.find(
                 (scoreItem: any) => scoreItem.SubjectName === item
             )
-
-            return matchedScore ? (
-                <Typography>{matchedScore.Score}</Typography>
-            ) : (
-                <Typography>No Score</Typography>
-            )
+            
+            return <Typography>{matchedScore.Score}</Typography>
         },
     }))
 

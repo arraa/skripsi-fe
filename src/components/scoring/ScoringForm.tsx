@@ -7,8 +7,6 @@ import ScoringSubjectForm from './AddScoringPerSubject';
 const ScoringForm = () => {
     const searchParams = useSearchParams();
     const type = searchParams.get('type');
-    const subjectID = searchParams.get('subject');
-    const classID = searchParams.get('class');
 
 
     return (

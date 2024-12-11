@@ -12,6 +12,7 @@ import dayGridPlugin from '@fullcalendar/daygrid' // Import plugins
 import timeGridPlugin from '@fullcalendar/timegrid'
 import { Box } from '@mui/material'
 import interactionPlugin from '@fullcalendar/interaction'
+import { useRouter } from 'next/navigation'
 
 const Calendar = (props: any) => {
     const [calendarLoaded, setCalendarLoaded] = useState(false)
@@ -47,12 +48,16 @@ const Calendar = (props: any) => {
         }
     }, [fullCalendarInstance])
 
-    const handleAddEvent = (titlse: string, daste: string) => {
-        const title = 'title'
-        const start = '2024-12-02T14:00:00'
-        const end = '2024-12-02T16:00:00'
+    const router = useRouter()
 
-        setEvents((prevEvents) => [...prevEvents, { title, start, end }])
+    const handleAddEvent = (titlse: string, daste: string) => {
+        // const title = 'title'
+        // const start = '2024-12-02T14:00:00'
+        // const end = '2024-12-02T16:00:00'
+
+        // setEvents((prevEvents) => [...prevEvents, { title, start, end }])
+
+        router.push('/calender/calender-form')
     }
 
     const handleRemoveEvent = (eventTitle: string) => {
