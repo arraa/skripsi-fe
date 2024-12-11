@@ -2,7 +2,7 @@ export const SIDEBAR = [
     {
         name: 'Home',
         link: '/',
-        img: '/icon/icon-silabus.svg',
+        img: '/icon/icon-home.png',
     },
     {
         name: 'Personal Data',
@@ -17,10 +17,10 @@ export const SIDEBAR = [
                 name: 'Teacher',
                 link: '/personal-data/teacher',
             },
-            {
-                name: 'Staff',
-                link: '/personal-data/staff',
-            },
+            // {
+            //     name: 'Staff',
+            //     link: '/personal-data/staff',
+            // },
         ],
     },
     {
@@ -74,8 +74,8 @@ export const SIDEBAR = [
         ],
     },
     {
-        name: 'Calender',
-        link: '/calender',
+        name: 'Calendar',
+        link: '/calendar',
         img: '/icon/icon-calendar.svg',
     },
 ];

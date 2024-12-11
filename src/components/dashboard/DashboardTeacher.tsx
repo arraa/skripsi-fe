@@ -233,11 +233,11 @@ const DashboardTeacher = (props: any) => {
                                 <div>90</div>
                             </div>
                             <div className="flex flex-row justify-around py-3">
-                                <div>7A</div>
+                                <div>7B</div>
                                 <div>90</div>
                             </div>
                             <div className="flex flex-row justify-around border-t-2  py-3">
-                                <div>7A</div>
+                                <div>7C</div>
                                 <div>90</div>
                             </div>
                             <div className="mt-2 flex w-full items-end justify-end">

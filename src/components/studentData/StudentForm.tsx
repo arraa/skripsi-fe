@@ -278,6 +278,7 @@ const StudentForm = () => {
                 }
                 try {
                     const respone = await createStudentbyExcel(newDataArray)
+                    
                 } catch (error: any) {
                     console.log('API request error', error.response)
                     throw error

@@ -18,7 +18,7 @@ export interface StudentDataProps {
     mother_job: string;
     mother_number_phone: string;
     ClassName: classDataProps
-    StudentID: number
+    StudentID?: number
 }
 
 export interface studentFormPageProps {
