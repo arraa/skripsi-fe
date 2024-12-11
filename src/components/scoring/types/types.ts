@@ -6,6 +6,18 @@ export interface StudentScoringPerSubject {
     Scores: ScoringItem[]
 }
 
+export interface StudentScoringSummary {
+    id?: number
+    StudentID?: number
+    StudentName: string
+    Scores: ScoringSummaryItem[]
+}
+
+export interface ScoringSummaryItem {
+    SubjectName: string
+    Score: number
+}
+
 export interface ScoringItem {
     SubjectID: number
     AssignmentID: number
