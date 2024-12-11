@@ -86,7 +86,7 @@ const AttendanceSummary = () => {
                     >
                         {classData &&
                             classData.map((classItem) => (
-                                <option key={classItem.id} value={classItem.id}>
+                                <option key={classItem.id} value={classItem.id} className='text-[#0C4177]' >
                                     Class&ensp; {classItem.Grade?.grade}
                                     {classItem.name}
                                 </option>

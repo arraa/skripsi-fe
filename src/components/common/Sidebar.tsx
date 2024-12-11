@@ -17,6 +17,10 @@ import { ExpandLess, ExpandMore } from '@mui/icons-material'
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { Montserrat } from 'next/font/google'
+
+const monseMontserrat = Montserrat({ subsets: ['latin'] })
+
 
 const drawerWidth = 215
 
@@ -39,13 +43,13 @@ export default function Sidebar() {
     console.log(pathname)
 
     const adjustedSidebar = SIDEBAR.map((item) => {
-        if (roles === 'teacher' && item.name === 'Attendance') {
-            return {
-                ...item,
-                link: '/attendance/today',
-                subMenu: undefined,
-            }
-        }
+        // if (roles === 'homeroom_teacher' && item.name === 'Attendance') {
+        //     return {
+        //         ...item,
+        //         link: '/attendance/today',
+        //         subMenu: undefined,
+        //     }
+        // }
         if (roles === 'teacher' && item.name === 'Scoring') {
             return {
                 ...item,
@@ -53,7 +57,21 @@ export default function Sidebar() {
                 subMenu: undefined,
             }
         }
-        if (roles === 'teacher' && item.name === 'Personal Data') {
+        if (
+            (roles === 'admin' || roles?.includes('staff')) &&
+            item.name === 'Scoring'
+        ) {
+            return {
+                ...item,
+                link: '/scoring/summary',
+                subMenu: undefined,
+            }
+        }
+        if (
+            (roles?.includes('teacher') ||
+                roles?.includes('homeroom_teacher')) &&
+            item.name === 'Personal Data'
+        ) {
             return {
                 ...item,
                 link: '/personal-data/student',
@@ -64,170 +82,185 @@ export default function Sidebar() {
     })
 
     const filteredSidebar = adjustedSidebar.filter((item) => {
-        if (item.name === 'Generator' || item.name === 'Attendance') {
+        if (item.name === 'Generator') {
+            return roles?.includes('admin') || roles?.includes('staff')
+        } else if (item.name === 'Attendance') {
             return (
-                roles === 'admin' || roles === 'staff' || roles === 'homeroom'
+                roles?.includes('admin') ||
+                roles?.includes('staff') ||
+                roles?.includes('homeroom_teacher')
             )
         }
         return true
     })
 
     return (
-        <Box sx={{ display: 'flex', marginLeft: '20px' }}>
-            <Drawer
-                sx={{
-                    width: drawerWidth,
-                    flexShrink: 0,
-                    '& .MuiDrawer-paper': {
-                        width: drawerWidth,
-                        boxSizing: 'border-box',
-                        backgroundColor: '#0C4177',
-                        color: 'white',
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        padding: '20px 0px',
-                    },
-                }}
-                variant="permanent"
-                anchor="left"
-            >
-                <Box
+        <div className={monseMontserrat.className}>
+            <Box sx={{ display: 'flex', marginLeft: '20px' }}>
+                <Drawer
                     sx={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        gap: '20px',
+                        width: drawerWidth,
+                        flexShrink: 0,
+                        '& .MuiDrawer-paper': {
+                            width: drawerWidth,
+                            boxSizing: 'border-box',
+                            backgroundColor: '#0C4177',
+                            color: 'white',
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            padding: '20px 0px',
+                        },
                     }}
+                    variant="permanent"
+                    anchor="left"
                 >
                     <Box
                         sx={{
                             display: 'flex',
-                            justifyContent: 'start',
-                            alignItems: 'end',
+                            flexDirection: 'column',
                             gap: '20px',
-                            paddingLeft: '25px',
                         }}
                     >
-                        <Image
-                            src="/icon/icon-edu-link.svg"
-                            width={35}
-                            height={35}
-                            alt="logo"
-                        />
-                        <Typography variant="h5" sx={{ marginBottom: '-5px' }}>
-                            EduLink
-                        </Typography>
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                justifyContent: 'start',
+                                alignItems: 'end',
+                                gap: '20px',
+                                paddingLeft: '25px',
+                            }}
+                        >
+                            <Image
+                                src="/icon/icon-edu-link.svg"
+                                width={35}
+                                height={35}
+                                alt="logo"
+                            />
+                            <Typography
+                                variant="h5"
+                                sx={{ marginBottom: '-5px' }}
+                            >
+                                EduLink
+                            </Typography>
+                        </Box>
+
+                        <List>
+                            <Divider
+                                variant="middle"
+                                sx={{ backgroundColor: 'white' }}
+                            />
+                            {filteredSidebar.map((data, index) => (
+                                <div key={index}>
+                                    <ListItem disablePadding>
+                                        <ListItemButton
+                                            onClick={() => handleClick(index)}
+                                        >
+                                            {data.subMenu ? (
+                                                <>
+                                                    <ListItemIcon
+                                                        sx={{
+                                                            display: 'flex',
+                                                            justifyContent:
+                                                                'center',
+                                                        }}
+                                                    >
+                                                        <Image
+                                                            src={data.img}
+                                                            width={15}
+                                                            height={15}
+                                                            alt={data.name}
+                                                        />
+                                                    </ListItemIcon>
+                                                    <ListItemText
+                                                        sx={{
+                                                            fontSize: '15px',
+                                                            whiteSpace:
+                                                                'nowrap',
+                                                        }}
+                                                        primary={data.name}
+                                                    />
+                                                    {open[index] ? (
+                                                        <ExpandLess />
+                                                    ) : (
+                                                        <ExpandMore />
+                                                    )}
+                                                </>
+                                            ) : (
+                                                <Link
+                                                    href={data.link}
+                                                    className="flex w-full items-center justify-evenly"
+                                                >
+                                                    {pathname === data.link && (
+                                                        <div className="absolute left-0 ml-3 h-2/3 w-[2px] bg-white"></div>
+                                                    )}
+                                                    <ListItemIcon
+                                                        sx={{
+                                                            display: 'flex',
+                                                            justifyContent:
+                                                                'center',
+                                                        }}
+                                                    >
+                                                        <Image
+                                                            src={data.img}
+                                                            width={15}
+                                                            height={15}
+                                                            alt={data.name}
+                                                        />
+                                                    </ListItemIcon>
+                                                    <ListItemText
+                                                        sx={{
+                                                            fontSize: '15px',
+                                                        }}
+                                                        primary={data.name}
+                                                    />
+                                                </Link>
+                                            )}
+                                        </ListItemButton>
+                                    </ListItem>
+                                    {data.subMenu && (
+                                        <Collapse
+                                            in={open[index]}
+                                            timeout="auto"
+                                            unmountOnExit
+                                        >
+                                            <List
+                                                component="div"
+                                                disablePadding
+                                            >
+                                                {data.subMenu.map(
+                                                    (sub, subIndex) => (
+                                                        <Link
+                                                            key={subIndex}
+                                                            href={sub.link}
+                                                            className="flex w-full items-center justify-evenly"
+                                                        >
+                                                            {pathname ===
+                                                                sub.link && (
+                                                                <div className="absolute left-0 ml-16 h-1/3 w-[2px] bg-white"></div>
+                                                            )}
+                                                            <ListItemButton
+                                                                sx={{ pl: 10 }}
+                                                            >
+                                                                <ListItemText
+                                                                    primary={
+                                                                        sub.name
+                                                                    }
+                                                                />
+                                                            </ListItemButton>
+                                                        </Link>
+                                                    )
+                                                )}
+                                            </List>
+                                        </Collapse>
+                                    )}
+                                </div>
+                            ))}
+                        </List>
                     </Box>
 
-                    <List>
-                        <Divider
-                            variant="middle"
-                            sx={{ backgroundColor: 'white' }}
-                        />
-                        {filteredSidebar.map((data, index) => (
-                            <div key={index}>
-                                <ListItem disablePadding>
-                                    <ListItemButton
-                                        onClick={() => handleClick(index)}
-                                    >
-                                        {data.subMenu ? (
-                                            <>
-                                                <ListItemIcon
-                                                    sx={{
-                                                        display: 'flex',
-                                                        justifyContent:
-                                                            'center',
-                                                    }}
-                                                >
-                                                    <Image
-                                                        src={data.img}
-                                                        width={15}
-                                                        height={15}
-                                                        alt={data.name}
-                                                    />
-                                                </ListItemIcon>
-                                                <ListItemText
-                                                    sx={{
-                                                        fontSize: '15px',
-                                                        whiteSpace: 'nowrap',
-                                                    }}
-                                                    primary={data.name}
-                                                />
-                                                {open[index] ? (
-                                                    <ExpandLess />
-                                                ) : (
-                                                    <ExpandMore />
-                                                )}
-                                            </>
-                                        ) : (
-                                            <Link
-                                                href={data.link}
-                                                className="flex w-full items-center justify-evenly"
-                                            >
-                                                {pathname === data.link && (
-                                                    <div className="absolute left-0 ml-3 h-2/3 w-[2px] bg-white"></div>
-                                                )}
-                                                <ListItemIcon
-                                                    sx={{
-                                                        display: 'flex',
-                                                        justifyContent:
-                                                            'center',
-                                                    }}
-                                                >
-                                                    <Image
-                                                        src={data.img}
-                                                        width={15}
-                                                        height={15}
-                                                        alt={data.name}
-                                                    />
-                                                </ListItemIcon>
-                                                <ListItemText
-                                                    sx={{ fontSize: '15px' }}
-                                                    primary={data.name}
-                                                />
-                                            </Link>
-                                        )}
-                                    </ListItemButton>
-                                </ListItem>
-                                {data.subMenu && (
-                                    <Collapse
-                                        in={open[index]}
-                                        timeout="auto"
-                                        unmountOnExit
-                                    >
-                                        <List component="div" disablePadding>
-                                            {data.subMenu.map(
-                                                (sub, subIndex) => (
-                                                    <Link
-                                                        key={subIndex}
-                                                        href={sub.link}
-                                                        className="flex w-full items-center justify-evenly"
-                                                    >
-                                                        {pathname ===
-                                                            sub.link && (
-                                                            <div className="absolute left-0 ml-16 h-1/3 w-[2px] bg-white"></div>
-                                                        )}
-                                                        <ListItemButton
-                                                            sx={{ pl: 10 }}
-                                                        >
-                                                            <ListItemText
-                                                                primary={
-                                                                    sub.name
-                                                                }
-                                                            />
-                                                        </ListItemButton>
-                                                    </Link>
-                                                )
-                                            )}
-                                        </List>
-                                    </Collapse>
-                                )}
-                            </div>
-                        ))}
-                    </List>
-                </Box>
-
-                <Box sx={{ paddingLeft: '25px' }}>profile</Box>
-            </Drawer>
-        </Box>
+                    <Box sx={{ paddingLeft: '25px' }}>profile</Box>
+                </Drawer>
+            </Box>
+        </div>
     )
 }

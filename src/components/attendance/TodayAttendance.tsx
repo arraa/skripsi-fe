@@ -104,7 +104,7 @@ const AttendanceToday = () => {
     const handleAddAttendance = () => {
         router.push(
             `/attendance/attendance-form?action=create&class_id=${selectedClass}`
-        );
+        )
     }
 
     return (
@@ -133,6 +133,7 @@ const AttendanceToday = () => {
                             <option
                                 key={index}
                                 value={`${index} ${new Date().getFullYear()}`}
+                                className="text-[#0C4177]"
                             >
                                 {month} {new Date().getFullYear()}
                             </option>
@@ -166,6 +167,7 @@ const AttendanceToday = () => {
                                     <option
                                         key={classItem.id}
                                         value={classItem.id}
+                                        className="text-[#0C4177]"
                                     >
                                         Grade&ensp; {classItem.Grade?.grade}
                                         {classItem.name}
