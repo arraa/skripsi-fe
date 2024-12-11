@@ -60,7 +60,8 @@ export default function Sidebar() {
                 link: '/attendance/today',
                 subMenu: undefined,
             }
-        } else if (roles === 'teacher' && item.name === 'Scoring') {
+        }
+        if (roles === 'teacher' && item.name === 'Scoring') {
             return {
                 ...item,
                 link: '/scoring/subject',

@@ -24,6 +24,8 @@ const ScoringPerSubject = () => {
         StudentScoringPerSubject[]
     >([])
 
+    console.log('selectedClass', selectedClass)
+
     const handleClassChange = (value: string) => {
         const classNameID = value.split(',')[1]
         const subjectID = value.split(',')[0]
@@ -110,21 +112,12 @@ const ScoringPerSubject = () => {
     const router = useRouter()
 
     const handleUpdate = (id: number) => {
-        setOpen(true)
-        // const classId = classData.find((item) => item.id === id)
-        // const teacherData = teacher.find(
-        //     (item) => item.Teacher.TeacherID === classId?.id_teacher
-        // )
-
-        // if (teacherData) {
-        //     setTeacherName(teacherData as teacher)
-        // }
-        // setNewClass(classId?.name as string)
-
-        console.log('handleClickOpen clicked', id)
+        router.push(
+            `/scoring/scoring-form?type=update&student=${id}`
+        )
     }
 
-    const columns = columnData(handleClickOpen, uniqueAssignmentTypes)
+    const columns = columnData(handleUpdate, uniqueAssignmentTypes)
     return (
         <Box sx={{ padding: 3, paddingLeft: 0, width: '80vw' }}>
             <div className="mb-2 flex items-center justify-between">
@@ -175,7 +168,6 @@ const ScoringPerSubject = () => {
                     </Button>
                 </div>
                 <Table data={scoreClassSubject} columnData={columns} />
-               
             </div>
             {/* </div> */}
         </Box>
