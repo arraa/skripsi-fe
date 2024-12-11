@@ -103,16 +103,16 @@ export const columnDataScoringForm = (control: any): GridColDef[] => [
         field: 'score',
         headerName: 'Score',
         width: 200,
-        renderCell: (params: GridRenderCellParams) => {
+        renderCell: (params: GridRenderCellParams<StudentScoringFormProps>) => {
             return (
                 <div className="m-0 p-0">
                     <Controller
-                        name={`scoring-${params.row.StudentID}`}
+                        name={`${params.row.StudentID}`}
                         control={control}
                         render={({ field }) => (
                             <input
                                 {...field}
-                                id={`scoring-${params.row.StudentID}`}
+                                id={`${params.row.id}`}
                                 className="m-0 h-1/2 bg-transparent  p-1 outline outline-1 focus:bg-none"
                                 type={'number'}
                             />

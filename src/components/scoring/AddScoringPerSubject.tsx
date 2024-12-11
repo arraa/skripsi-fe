@@ -109,7 +109,9 @@ const ScoringSubjectForm = () => {
         defaultValues: {},
     })
 
+
     const onSubmit = (data: StudentScoringPerSubject) => {
+        console.log('data', data)
         if (assignmentID !== 0) {
             const studentsScore: { studentID: number; score: number }[] =
                 Object.entries(data).map(([StudentID, Score]) => ({
