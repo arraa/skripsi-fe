@@ -37,3 +37,27 @@ export interface gradeDataProps {
     id: number
     grade: string
 }
+
+
+export interface classGeneratorStudentProps {
+    class_name_id: string
+    student_id: string
+}
+
+export interface TabPanelProps {
+    children?: React.ReactNode
+    index: number
+    value: number
+}
+
+
+export interface StyledTabProps {
+    label: string
+    value: number
+}
+
+export interface StyledTabsProps {
+    children?: React.ReactNode
+    value: number
+    onChange: (event: React.SyntheticEvent, newValue: number) => void
+}

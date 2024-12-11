@@ -9,23 +9,18 @@ import Table from '../common/Table'
 import {
     classDataProps,
     classGeneratorProps,
+    classGeneratorStudentProps,
     gradeDataProps,
+    StyledTabProps,
+    StyledTabsProps,
+    TabPanelProps,
 } from './types/types'
 import { getClass } from '@/app/api/class'
 import { StudentDataProps } from '../studentData/types/types'
 import { getStudent } from '@/app/api/student'
 import { formatStudentData } from '@/lib/formatData'
-
-// Define the distributed classes type
-interface DistributedClasses {
-    [key: string]: StudentDataProps[]
-}
-
-interface TabPanelProps {
-    children?: React.ReactNode
-    index: number
-    value: number
-}
+import { array, InferInput, object, string } from 'valibot'
+import { useForm } from 'react-hook-form'
 
 function CustomTabPanel(props: TabPanelProps) {
     const { children, value, index, ...other } = props
@@ -41,12 +36,6 @@ function CustomTabPanel(props: TabPanelProps) {
             {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
         </div>
     )
-}
-
-interface StyledTabsProps {
-    children?: React.ReactNode
-    value: number
-    onChange: (event: React.SyntheticEvent, newValue: number) => void
 }
 
 const StyledTabs = styled((props: StyledTabsProps) => (
@@ -72,11 +61,6 @@ const StyledTabs = styled((props: StyledTabsProps) => (
     },
 })
 
-interface StyledTabProps {
-    label: string
-    value: number
-}
-
 const StyledTab = styled((props: StyledTabProps) => (
     <Tab disableRipple {...props} />
 ))(({ theme }) => ({
@@ -93,16 +77,28 @@ const StyledTab = styled((props: StyledTabProps) => (
     },
 }))
 
+const ObjectSchema = array(
+    object({
+        class_name_id: string(),
+        student_id: string(),
+    })
+)
+
+type ObjectInput = InferInput<typeof ObjectSchema>
+
 const FinalizeClassGenerator = () => {
     const [selectedGrade, setSelectedGrade] = useState<number>(7)
     const [classData, setClassData] = useState<classDataProps[]>([])
     const [data, setData] = useState<StudentDataProps[]>([])
     const grade = [7, 8, 9]
-    const [value, setValue] = useState(1)
+    const [valueData, setValueData] = useState(1)
+    const [studentData, setStudentData] =
+        useState<classGeneratorStudentProps[]>([])
 
-    console.log('data', data)
 
     useEffect(() => {
+        console.log('useEffect')
+
         const fetchData = async () => {
             try {
                 const studentsResult = await getStudent()
@@ -111,8 +107,6 @@ const FinalizeClassGenerator = () => {
                 )
 
                 const classesResult = await getClass()
-
-                console.log('Classes:', classesResult.data)
 
                 const updatedClasses = classesResult.data.ClassName.map(
                     (item: classDataProps) => {
@@ -129,8 +123,6 @@ const FinalizeClassGenerator = () => {
                     formattedStudents,
                     updatedClasses
                 )
-
-                console.log('Distributed:', distributed)
 
                 setData(distributed)
             } catch (error) {
@@ -165,10 +157,13 @@ const FinalizeClassGenerator = () => {
             groupedByGrade[grade].push(student)
         })
 
-        console.log('Grouped By Grade:', groupedByGrade) // Check the grouping
-
         // Prepare an array to hold the distributed students
         const result: StudentDataProps[] = []
+
+        const updatedStudentData: {
+            class_name_id: string
+            student_id: string
+        }[] = []
 
         // Distribute students for each grade
         Object.keys(groupedByGrade).forEach((grade) => {
@@ -177,8 +172,6 @@ const FinalizeClassGenerator = () => {
             const classesForGrade = classes.filter(
                 (cls) => Number(cls.Grade?.grade) === parseInt(grade)
             )
-
-            console.log('Classes for Grade', grade, classesForGrade) // Check available classes
 
             const classCount = classesForGrade.length
 
@@ -202,19 +195,29 @@ const FinalizeClassGenerator = () => {
                         },
                         class_id: currentClass.id as number,
                     })
+
+                    updatedStudentData.push({
+                        class_name_id: currentClass.id?.toString() || '',
+                        student_id: student.StudentID.toString() || '',
+                    })
                 }
             })
         })
 
-        console.log('Distributed Students:', result) // Final check on the distributed result
+        setStudentData(updatedStudentData)
 
         return result
     }
 
+    const { handleSubmit, control, setValue } =
+        useForm<classGeneratorStudentProps>({
+            defaultValues: {},
+        })
+
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         console.log(newValue)
 
-        setValue(newValue)
+        setValueData(newValue)
     }
 
     const rows = (id: number) =>
@@ -225,12 +228,18 @@ const FinalizeClassGenerator = () => {
                 ...student,
             }))
 
-    const column = columnDataSiswa()
+    const column = columnDataSiswa(control, setValue, classData, studentData, setStudentData)
 
     const handleGradeChange = (value: number) => {
         console.log('handleGradeChange', value)
         setSelectedGrade(value)
     }
+
+    const onSubmit = (data: classGeneratorStudentProps) => {
+        console.log('onSubmit',studentData, data)
+    }
+
+    console.log('studentData', studentData)
 
     return (
         <Box sx={{ padding: 3, paddingLeft: 0, width: '80vw' }}>
@@ -259,43 +268,60 @@ const FinalizeClassGenerator = () => {
                 </div>
             </div>
 
-            <div className="flex  flex-col gap-4 rounded-3xl bg-white p-5 text-[#0c427770] shadow-md">
-                <Box>
-                    <StyledTabs
-                        value={value}
-                        onChange={handleChange}
-                        aria-label="basic tabs example"
-                    >
-                        {classData
-                            .filter(
-                                (classItem) =>
-                                    classItem.id_grade === selectedGrade
-                            )
-                            .map((classItem) => (
-                                <StyledTab
-                                    key={classItem.id}
-                                    label={`${selectedGrade} ${classItem.name}`}
-                                    value={classItem.id as number}
-                                />
-                            ))}
-                    </StyledTabs>
-                </Box>
+            <form onSubmit={handleSubmit(onSubmit)}>
+                <div className="flex  flex-col gap-4 rounded-3xl bg-white p-5 text-[#0c427770] shadow-md">
+                    <Box>
+                        <StyledTabs
+                            value={valueData}
+                            onChange={handleChange}
+                            aria-label="basic tabs example"
+                        >
+                            {classData
+                                .filter(
+                                    (classItem) =>
+                                        classItem.id_grade === selectedGrade
+                                )
+                                .map((classItem) => (
+                                    <StyledTab
+                                        key={classItem.id}
+                                        label={`${selectedGrade} ${classItem.name}`}
+                                        value={classItem.id as number}
+                                    />
+                                ))}
+                        </StyledTabs>
+                    </Box>
 
-                <CustomTabPanel value={value} index={value}>
-                    <Table
-                        data={rows(value) as unknown as classGeneratorProps[]}
-                        columnData={column}
-                    />
-                </CustomTabPanel>
+                    <CustomTabPanel value={valueData} index={valueData}>
+                        <Table
+                            data={
+                                rows(
+                                    valueData
+                                ) as unknown as classGeneratorProps[]
+                            }
+                            columnData={column}
+                            heighRow={75}
+                        />
+                    </CustomTabPanel>
 
-                <div className="flex justify-end gap-4">
-                    <Button variant={'white'} size={'default'}  onClick={() => window.location.reload()}>
-                        Regenerate
-                    </Button>
+                    <div className="flex justify-end gap-4">
+                        <Button
+                            variant={'white'}
+                            size={'default'}
+                            onClick={() => window.location.reload()}
+                        >
+                            Regenerate
+                        </Button>
 
-                    <Button size={'default'}>Finalize</Button>
+                        <Button
+                            type="submit"
+                            size={'submit'}
+                            onSubmit={handleSubmit(onSubmit)}
+                        >
+                            Finalize
+                        </Button>
+                    </div>
                 </div>
-            </div>
+            </form>
         </Box>
     )
 }

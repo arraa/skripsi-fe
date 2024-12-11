@@ -175,9 +175,6 @@ const ScoringPerSubject = () => {
                     </Button>
                 </div>
                 <Table data={scoreClassSubject} columnData={columns} />
-                <div className="flex justify-end">
-                    <Button size={'default'}>Generate Class</Button>
-                </div>
             </div>
             {/* </div> */}
         </Box>
