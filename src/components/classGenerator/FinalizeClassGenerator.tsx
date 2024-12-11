@@ -17,7 +17,7 @@ import {
 } from './types/types'
 import { getClass } from '@/app/api/class'
 import { StudentDataProps } from '../studentData/types/types'
-import { getStudent } from '@/app/api/student'
+import { getStudent, updateClassStudent } from '@/app/api/student'
 import { formatStudentData } from '@/lib/formatData'
 import { array, InferInput, object, string } from 'valibot'
 import { useForm } from 'react-hook-form'
@@ -92,9 +92,9 @@ const FinalizeClassGenerator = () => {
     const [data, setData] = useState<StudentDataProps[]>([])
     const grade = [7, 8, 9]
     const [valueData, setValueData] = useState(1)
-    const [studentData, setStudentData] =
-        useState<classGeneratorStudentProps[]>([])
-
+    const [studentData, setStudentData] = useState<
+        classGeneratorStudentProps[]
+    >([])
 
     useEffect(() => {
         console.log('useEffect')
@@ -161,8 +161,8 @@ const FinalizeClassGenerator = () => {
         const result: StudentDataProps[] = []
 
         const updatedStudentData: {
-            class_name_id: string
-            student_id: string
+            class_name_id: number
+            student_id: number
         }[] = []
 
         // Distribute students for each grade
@@ -197,8 +197,8 @@ const FinalizeClassGenerator = () => {
                     })
 
                     updatedStudentData.push({
-                        class_name_id: currentClass.id?.toString() || '',
-                        student_id: student.StudentID.toString() || '',
+                        class_name_id: currentClass.id || 0,
+                        student_id: student.StudentID || 0,
                     })
                 }
             })
@@ -228,7 +228,13 @@ const FinalizeClassGenerator = () => {
                 ...student,
             }))
 
-    const column = columnDataSiswa(control, setValue, classData, studentData, setStudentData)
+    const column = columnDataSiswa(
+        control,
+        setValue,
+        classData,
+        studentData,
+        setStudentData
+    )
 
     const handleGradeChange = (value: number) => {
         console.log('handleGradeChange', value)
@@ -236,7 +242,15 @@ const FinalizeClassGenerator = () => {
     }
 
     const onSubmit = (data: classGeneratorStudentProps) => {
-        console.log('onSubmit',studentData, data)
+        console.log('onSubmit', studentData, data)
+        updateClassStudent(studentData)
+            .then(() => {
+                alert('Class has been Created')
+
+            })
+            .catch((error) => {
+                console.error('API request error', error)
+            })
     }
 
     console.log('studentData', studentData)

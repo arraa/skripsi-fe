@@ -121,7 +121,7 @@ export const columnDataSiswa = (
     {
         field: 'class',
         headerName: 'Class',
-        width: 300,
+        width: 150,
         renderCell: (params: GridRenderCellParams) => {
             return (
                 <Box

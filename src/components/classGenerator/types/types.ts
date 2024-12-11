@@ -40,8 +40,8 @@ export interface gradeDataProps {
 
 
 export interface classGeneratorStudentProps {
-    class_name_id: string
-    student_id: string
+    class_name_id: number
+    student_id: number
 }
 
 export interface TabPanelProps {
