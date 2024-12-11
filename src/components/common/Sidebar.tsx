@@ -18,9 +18,9 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { Montserrat } from 'next/font/google'
+import { logout } from '@/app/api/auth'
 
 const monseMontserrat = Montserrat({ subsets: ['latin'] })
-
 
 const drawerWidth = 215
 
@@ -38,6 +38,18 @@ export default function Sidebar() {
         setOpen((prevOpen) => ({ ...prevOpen, [index]: !prevOpen[index] }))
     }
 
+    const handleLogout = async () => {
+        try {
+            const response = await logout()
+
+            console.log(response)
+
+            if (response.status === 200) {
+                sessionStorage.clear()
+                window.location.href = '/auth/login'
+            }
+        } catch (error) {}
+    }
     const pathname = usePathname()
 
     console.log(pathname)
@@ -258,7 +270,18 @@ export default function Sidebar() {
                         </List>
                     </Box>
 
-                    <Box sx={{ paddingLeft: '25px' }}>profile</Box>
+                    <div
+                        onClick={handleLogout}
+                        className="mb-5 flex gap-4 pl-11 text-lg font-bold"
+                    >
+                        <Image
+                            src={'/icon/icon-logout.png'}
+                            width={25}
+                            height={25}
+                            alt={'logout'}
+                        />
+                        Logout
+                    </div>
                 </Drawer>
             </Box>
         </div>

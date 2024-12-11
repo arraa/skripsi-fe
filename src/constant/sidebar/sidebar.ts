@@ -2,7 +2,7 @@ export const SIDEBAR = [
     {
         name: 'Home',
         link: '/',
-        img: '/icon/icon-silabus.svg',
+        img: '/icon/icon-home.png',
     },
     {
         name: 'Personal Data',

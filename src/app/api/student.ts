@@ -76,7 +76,7 @@ export const createStudentbyExcel = async (
     }
 
     try {
-        const response = await api.post('//student/create-all', data)
+        const response = await api.post('/student/create-all', data)
 
         return response
     } catch (error) {
