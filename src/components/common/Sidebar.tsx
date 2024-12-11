@@ -55,13 +55,13 @@ export default function Sidebar() {
     console.log(pathname)
 
     const adjustedSidebar = SIDEBAR.map((item) => {
-        // if (roles === 'homeroom_teacher' && item.name === 'Attendance') {
-        //     return {
-        //         ...item,
-        //         link: '/attendance/today',
-        //         subMenu: undefined,
-        //     }
-        // }
+        if ((roles === 'admin' || roles === 'staff' )&& item.name === 'Attendance') {
+            return {
+                ...item,
+                link: '/attendance//summary',
+                subMenu: undefined,
+            }
+        }
         if (roles === 'teacher' && item.name === 'Scoring') {
             return {
                 ...item,
@@ -70,7 +70,7 @@ export default function Sidebar() {
             }
         }
         if (
-            (roles === 'admin' || roles?.includes('staff')) &&
+            (roles === 'admin' || roles === 'staff') &&
             item.name === 'Scoring'
         ) {
             return {
@@ -80,8 +80,8 @@ export default function Sidebar() {
             }
         }
         if (
-            (roles?.includes('teacher') ||
-                roles?.includes('homeroom_teacher')) &&
+            (roles === ('teacher') ||
+                roles === ('homeroom_teacher')) &&
             item.name === 'Personal Data'
         ) {
             return {
