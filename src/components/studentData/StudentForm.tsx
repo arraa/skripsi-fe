@@ -251,7 +251,7 @@ const StudentForm = () => {
                         date_of_birth: formatDateForm(date_of_birth) || '',
                         religion: religion || '',
                         address: address || '',
-                        number_phone: formatPhoneNumber(number_phone),
+                        number_phone: formatPhoneNumber(number_phone.toString()),
                         email: email || '',
                         accepted_date: formatDateForm(accepted_date) || '',
                         school_origin: school_origin || '',
@@ -259,11 +259,11 @@ const StudentForm = () => {
                         father_name: father_name || '',
                         father_job: father_job || '',
                         father_number_phone:
-                            formatPhoneNumber(father_number_phone),
+                            formatPhoneNumber(father_number_phone.toString()),
                         mother_name: mother_name || '',
                         mother_job: mother_job || '',
                         mother_number_phone:
-                            formatPhoneNumber(mother_number_phone),
+                            formatPhoneNumber(mother_number_phone.toString()),
                         ClassName: {
                             id: 0,
                             name: '',
