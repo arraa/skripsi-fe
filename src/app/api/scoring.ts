@@ -28,3 +28,18 @@ export const validateCreateOrGetAsgType = async (
         return Promise.reject(new Error('API request error'))
     }
 }
+
+export const getClassListTeachingSubject = async (): Promise<AxiosResponse> => {
+    try {
+        const response = await api.get(
+            'scoring/get-all-class-teaching-subject-teacher'
+        )
+        if (response.status !== 200) {
+            throw new Error('API request error')
+        }
+        return response
+    } catch (error) {
+        console.error('API request error', error)
+        return Promise.reject(new Error('API request error'))
+    }
+}

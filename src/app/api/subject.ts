@@ -34,6 +34,24 @@ export const getAllSubjectClassName = async (): Promise<
     }
 }
 
+export const getScoringCLassList = async (): Promise<
+    AxiosResponse
+> => {
+    try {
+        const response = await api.get(
+            'scoring/get-all-class-teaching-subject-teacher'
+        )
+        if (response.status !== 200) {
+            throw new Error('API request error')
+        }
+        return response
+    } catch (error) {
+        console.error('API request error', error)
+        return Promise.reject(new Error('API request error'))
+    }
+}
+
+// TODO: remove this if not used
 export const getSubjectClassNameById = async (
     subjectID: number,
     classID: number
@@ -55,9 +73,11 @@ export const getSubjectClassNameById = async (
 export const createSubjectScoringStudentsClass = async (
     subjectID: number,
     classID: number
-): Promise<AxiosResponse<SubjectClassApiProps>> => {
+): Promise<AxiosResponse<SubjectClassDataProps>> => {
     try {
-        const response = await api.post(`${routeSubject}/${subjectID}/${classID}`)
+        const response = await api.post(
+            `${routeSubject}/${subjectID}/${classID}`
+        )
         if (response.status !== 200) {
             throw new Error('API request error')
         }
