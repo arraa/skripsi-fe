@@ -19,31 +19,90 @@ const Calendar = (props: any) => {
     const [fullCalendarInstance, setFullCalendarInstance] = useState<any>(null)
     const [events, setEvents] = useState([
         // Monday
-        { title: '7A - Math', start: '2024-12-02T08:00:00', end: '2024-12-02T09:00:00' },
-        { title: '8A - Chemistry', start: '2024-12-02T09:30:00', end: '2024-12-02T10:30:00' },
-        { title: '9A - Physics', start: '2024-12-02T11:00:00', end: '2024-12-02T12:00:00' },
-    
+        {
+            title: '7A - Math',
+            start: '2024-12-02T08:00:00',
+            end: '2024-12-02T09:00:00',
+        },
+        {
+            title: '8A - Chemistry',
+            start: '2024-12-02T09:30:00',
+            end: '2024-12-02T10:30:00',
+        },
+        {
+            title: '9A - Physics',
+            start: '2024-12-02T11:00:00',
+            end: '2024-12-02T12:00:00',
+        },
+
         // Tuesday
-        { title: '7B - Math', start: '2024-12-04T08:00:00', end: '2024-12-04T09:00:00' },
-        { title: '8B - Chemistry', start: '2024-12-04T09:30:00', end: '2024-12-04T10:30:00' },
-        { title: '9B - Physics', start: '2024-12-04T11:00:00', end: '2024-12-04T12:00:00' },
-    
+        {
+            title: '7B - Math',
+            start: '2024-12-04T08:00:00',
+            end: '2024-12-04T09:00:00',
+        },
+        {
+            title: '8B - Chemistry',
+            start: '2024-12-04T09:30:00',
+            end: '2024-12-04T10:30:00',
+        },
+        {
+            title: '9B - Physics',
+            start: '2024-12-04T11:00:00',
+            end: '2024-12-04T12:00:00',
+        },
+
         // Wednesday
-        { title: '7C - Math', start: '2024-12-05T08:00:00', end: '2024-12-05T09:00:00' },
-        { title: '8C - Chemistry', start: '2024-12-05T09:30:00', end: '2024-12-05T10:30:00' },
-        { title: '9C - Physics', start: '2024-12-05T11:00:00', end: '2024-12-05T12:00:00' },
-    
+        {
+            title: '7C - Math',
+            start: '2024-12-05T08:00:00',
+            end: '2024-12-05T09:00:00',
+        },
+        {
+            title: '8C - Chemistry',
+            start: '2024-12-05T09:30:00',
+            end: '2024-12-05T10:30:00',
+        },
+        {
+            title: '9C - Physics',
+            start: '2024-12-05T11:00:00',
+            end: '2024-12-05T12:00:00',
+        },
+
         // Thursday
-        { title: '7D - Math', start: '2024-12-06T08:00:00', end: '2024-12-06T09:00:00' },
-        { title: '8D - Chemistry', start: '2024-12-06T09:30:00', end: '2024-12-06T10:30:00' },
-        { title: '9D - Physics', start: '2024-12-06T11:00:00', end: '2024-12-06T12:00:00' },
-    
-        
-        { title: '7D - Math', start: '2024-12-03T08:00:00', end: '2024-12-03T09:00:00' },
-        { title: '8D - Chemistry', start: '2024-12-03T09:30:00', end: '2024-12-03T10:30:00' },
-        { title: '9D - Physics', start: '2024-12-03T11:00:00', end: '2024-12-03T12:00:00' },
-    ]);
-    
+        {
+            title: '7D - Math',
+            start: '2024-12-06T08:00:00',
+            end: '2024-12-06T09:00:00',
+        },
+        {
+            title: '8D - Chemistry',
+            start: '2024-12-06T09:30:00',
+            end: '2024-12-06T10:30:00',
+        },
+        {
+            title: '9D - Physics',
+            start: '2024-12-06T11:00:00',
+            end: '2024-12-06T12:00:00',
+        },
+
+        {
+            title: '7D - Math',
+            start: '2024-12-03T08:00:00',
+            end: '2024-12-03T09:00:00',
+        },
+        {
+            title: '8D - Chemistry',
+            start: '2024-12-03T09:30:00',
+            end: '2024-12-03T10:30:00',
+        },
+        {
+            title: '9D - Physics',
+            start: '2024-12-03T11:00:00',
+            end: '2024-12-03T12:00:00',
+        },
+    ])
+
     const [roles, setRoles] = useState<string>('')
 
     useEffect(() => {
@@ -72,7 +131,7 @@ const Calendar = (props: any) => {
 
         // setEvents((prevEvents) => [...prevEvents, { title, start, end }])
 
-        router.push('/calender/calender-form')
+        router.push('/calendar/calendar-form')
     }
 
     const handleRemoveEvent = (eventTitle: string) => {
