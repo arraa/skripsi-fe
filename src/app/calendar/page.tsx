@@ -1,6 +1,6 @@
-import Calendar from '@/components/calender/Calendar'
+import Calendar from '@/components/calendar/Calendar'
 
-export default function calender() {
+export default function calendar() {
     return (
         <>
             <Calendar />

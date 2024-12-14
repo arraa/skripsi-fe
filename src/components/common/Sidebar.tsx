@@ -25,11 +25,12 @@ const monseMontserrat = Montserrat({ subsets: ['latin'] })
 const drawerWidth = 215
 
 export default function Sidebar() {
-    const [roles, setRoles] = useState<string | null>(null)
+    const [roles, setRoles] = useState<string>('')
+
 
     useEffect(() => {
         const storedRoles = sessionStorage.getItem('role')
-        setRoles(storedRoles)
+        if(storedRoles)setRoles(storedRoles)
     }, [])
 
     const [open, setOpen] = useState<{ [key: number]: boolean }>({})

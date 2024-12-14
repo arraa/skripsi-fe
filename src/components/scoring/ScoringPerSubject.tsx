@@ -8,7 +8,7 @@ import { StudentScoringPerSubject, SubjectClassDataProps } from './types/types'
 import Delete from '../common/dialog/Delete'
 import { columnData } from './column'
 import { useRouter } from 'next/navigation'
-import { getAllSubjectClassName } from '@/app/api/subject'
+import { getAllSubjectClassName, getScoringCLassList } from '@/app/api/subject'
 import { getAllScoreByClassAndSubject } from '@/app/api/score'
 
 const ScoringPerSubject = () => {
@@ -39,11 +39,11 @@ const ScoringPerSubject = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const resultSubjectClass = await getAllSubjectClassName()
+                const resultSubjectClass = await getScoringCLassList()
                 if (resultSubjectClass.status !== 200) {
                     throw new Error('API request error')
                 }
-                const classData = resultSubjectClass.data.subjects.map(
+                const classData = resultSubjectClass.data.class_list.map(
                     (subject: SubjectClassDataProps) => ({
                         subject_id: subject.subject_id,
                         class_name_id: subject.class_name_id,

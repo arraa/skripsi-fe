@@ -143,11 +143,11 @@ const CalendarForm = () => {
                     <div>
                         {actionType === 'create' ? (
                             <h1 className="my-8 text-xl text-[#0C4177]">
-                                New calender
+                                New calendar
                             </h1>
                         ) : (
                             <h1 className="my-8 text-xl text-[#0C4177]">
-                                Edit calender
+                                Edit calendar
                             </h1>
                         )}
                     </div>
