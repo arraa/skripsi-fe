@@ -35,3 +35,10 @@ export interface gradeDataProps {
     id: number;
     grade: string;
 }
+
+export interface subjectListProps {
+    id: number
+    name: string
+    durationPerWeek:number
+    durationPerSession:number
+}

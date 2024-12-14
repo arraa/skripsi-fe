@@ -2,7 +2,8 @@ interface SubjectDataProps {
     subject_id: number
     grade: number
     subject_name: string
-    subject_duration_minutes: number
+    subject_duration_Week: number
+    subject_duration_Session: number
 }
 
 interface SubjecListApiProps {

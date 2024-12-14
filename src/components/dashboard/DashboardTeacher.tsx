@@ -136,7 +136,7 @@ const DashboardTeacher = (props: any) => {
                 {roles === 'homeroom' && (
                     <Link
                         href="/attendance/today"
-                        className="flex h-fit items-center justify-center rounded-md bg-[#0C4177] px-20 py-3 text-center font-bold  text-white"
+                        className="flex h-fit items-center justify-center rounded-md bg-[#31426E] px-20 py-3 text-center font-bold  text-white"
                     >
                         CLASS ATTENDANCE
                     </Link>

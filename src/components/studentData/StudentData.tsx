@@ -73,11 +73,12 @@ const StudentData = () => {
                     const uniqueClassNames = Array.from(
                         new Map(
                             data.map((student: StudentDataProps) => [
-                                student.ClassName.name,
+                                `${student.ClassName.name}-${student.ClassName.Grade.grade}`,  // Combine name and grade as the key
                                 student.ClassName,
                             ])
                         ).values()
                     )
+                    
 
                     console.log(data)
 
