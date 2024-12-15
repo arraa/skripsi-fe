@@ -239,7 +239,7 @@ const FinalizeScheduleGenerator = () => {
     const handlePrint = useReactToPrint({ contentRef })
 
     return (
-        <Box sx={{ padding: 3, paddingLeft: 0, width: '80vw' }}>
+        <Box sx={{ padding: 3, paddingLeft: 0, width: '84vw' }}>
             <div className="hidden">
                 <div ref={contentRef}>
                     <PrintSchedule data={dummyData} />

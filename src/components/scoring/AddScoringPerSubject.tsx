@@ -109,10 +109,9 @@ const ScoringSubjectForm = () => {
         defaultValues: {},
     })
 
-
     const onSubmit = (data: StudentScoringPerSubject) => {
-        console.log('data', data)
-        if (assignmentID !== 0) {
+        console.log('data', data, assignmentID)
+        if (assignmentID !== 0 && !Object.values(data).includes(undefined)) {
             const studentsScore: { studentID: number; score: number }[] =
                 Object.entries(data).map(([StudentID, Score]) => ({
                     studentID: Number(StudentID),
@@ -126,16 +125,21 @@ const ScoringSubjectForm = () => {
             )
                 .then((res) => {
                     console.log('response', res)
+                    window.location.href = '/scoring/subject'
                 })
                 .catch((error) => {
-                    throw new Error('Failed to submit score data')
+                    alert('Failed to submit score data')
                 })
+        } else if (assignmentID === 0) {
+            alert('Please select assignment type')
+        } else if (Object.values(data).includes(undefined)) {
+            alert('Please input the score')
         }
     }
     const rows = columnDataScoringForm(control)
 
     return (
-        <Box sx={{ padding: 3, paddingLeft: 0, width: '80vw' }}>
+        <Box sx={{ padding: 3, paddingLeft: 0, width: '84vw' }}>
             <div className="mb-2 flex items-center justify-between">
                 <h1 className="my-8 text-3xl font-bold text-[#0C4177]">
                     Class Score {subjectData?.grade_class_name}{' '}
@@ -143,10 +147,10 @@ const ScoringSubjectForm = () => {
                 </h1>
             </div>
             {/* <div className=' h-[80vh] bg-white'> */}
-            <div className="flex h-[80vh] flex-col gap-4 rounded-3xl bg-white p-5 text-[#0c427770] shadow-md">
+            <div className="flex flex-col gap-4 rounded-3xl bg-white p-5 text-[#0c427770] shadow-md">
                 <form
                     onSubmit={handleSubmit(onSubmit)}
-                    className="max-h-[80vh] text-[#353535]"
+                    className="text-[#353535]"
                 >
                     <div className=" flex w-full justify-start text-base  text-[#0c42777a] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2  ">
                         <div className="relative w-1/4">
@@ -155,9 +159,10 @@ const ScoringSubjectForm = () => {
                                     <button
                                         id="custom-dropdown"
                                         className="w-full rounded-lg border  p-2 text-left"
-                                        onClick={() =>
+                                        onClick={(e) => {
+                                            e.preventDefault()
                                             setShowCustomInput((prev) => !prev)
-                                        }
+                                        }}
                                     >
                                         {selectedOption ||
                                             'Input Assignment Type...'}
@@ -209,9 +214,10 @@ const ScoringSubjectForm = () => {
                                                         />
                                                     </div>
                                                     <Button
-                                                        onClick={() =>
+                                                        onClick={(e) => {
+                                                            e.preventDefault()
                                                             handleValidateCreateOrGetAsgType()
-                                                        }
+                                                        }}
                                                         size={'full'}
                                                     >
                                                         {' '}
@@ -233,11 +239,7 @@ const ScoringSubjectForm = () => {
                     />
 
                     <div className="mb-4 flex justify-end">
-                        <Button
-                            onSubmit={handleSubmit(onSubmit)}
-                            type="submit"
-                            size={'submit'}
-                        >
+                        <Button type="submit" size={'submit'}>
                             Submit
                         </Button>
                     </div>

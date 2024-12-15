@@ -246,7 +246,6 @@ const FinalizeClassGenerator = () => {
         updateClassStudent(studentData)
             .then(() => {
                 alert('Class has been Created')
-
             })
             .catch((error) => {
                 console.error('API request error', error)
@@ -256,7 +255,7 @@ const FinalizeClassGenerator = () => {
     console.log('studentData', studentData)
 
     return (
-        <Box sx={{ padding: 3, paddingLeft: 0, width: '80vw' }}>
+        <Box sx={{ padding: 3, paddingLeft: 0, width: '84vw' }}>
             <div className="mb-2 flex items-center justify-between">
                 <h1 className="my-8 text-3xl font-bold text-[#0C4177]">
                     Generate Class

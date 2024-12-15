@@ -65,7 +65,14 @@ export const createStudent = async (
         return response
     } catch (error) {
         console.error('Error:', error)
-        return Promise.reject(new Error(String(error)))
+        return Promise.reject(
+            new Error(
+                String(
+                    (error as { response: { data: { error: string } } })
+                        .response.data.error
+                )
+            )
+        )
     }
 }
 
@@ -82,7 +89,14 @@ export const createStudentbyExcel = async (
         return response
     } catch (error) {
         console.log('create excel error:', error)
-        return Promise.reject(new Error(String(error)))
+        return Promise.reject(
+            new Error(
+                String(
+                    (error as { response: { data: { error: string } } })
+                        .response.data.error
+                )
+            )
+        )
     }
 }
 

@@ -147,8 +147,6 @@ export const columnDataSiswa = (
                                             ? Number(event.target.value)
                                             : params.row.ClassName.id
 
-                                        console.log(selectedValue)
-
                                         setValue(
                                             `class_name_id-${params.row.id}`,
                                             selectedValue

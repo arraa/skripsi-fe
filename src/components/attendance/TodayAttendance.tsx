@@ -35,17 +35,14 @@ const month = [
 ]
 
 const AttendanceToday = () => {
-    const grade = [7, 8, 9]
     const [classData, setClassData] = useState<classDataProps[]>([])
     const [attendance, setAttendance] = useState<AttendanceProps[]>([])
-    const [NewClass, setNewClass] = useState<string>('')
-    const [open, setOpen] = useState(false)
+
     const [selectedClass, setSelectedClass] = useState<number>(0)
     const [selectedDate, setselectedDate] = useState<dateProps>({
         month: new Date().getMonth(),
         year: new Date().getFullYear(),
     })
-    const [openDelete, setOpenDelete] = useState(false)
 
     const handleClassChange = (value: number) => {
         setSelectedClass(value)
@@ -108,9 +105,9 @@ const AttendanceToday = () => {
     }
 
     return (
-        <Box sx={{ padding: 3, paddingLeft: 0, width: '80vw' }}>
+        <Box sx={{ padding: 3, paddingLeft: 0, width: '84vw' }}>
             <div className="mb-2 flex items-center justify-between">
-                <h1 className="my-8 text-3xl font-bold text-[#0C4177]">
+                <h1 className="mb-6 mt-2  text-3xl font-bold text-[#0C4177]">
                     Attendance
                 </h1>
                 <div className="flex cursor-pointer bg-[#31426E]  text-white sm:rounded-md">
