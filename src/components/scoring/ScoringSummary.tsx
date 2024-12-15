@@ -73,18 +73,18 @@ const ScoringSummary = () => {
                 setScoreSummary(
                     response.data.score
                         ? response.data.score.map((item, idx) => {
-                              return {
-                                  id: idx,
-                                  StudentID: item.StudentID,
-                                  StudentName: item.StudentName,
-                                  Scores: item.Scores.map((score) => {
-                                      return {
-                                          SubjectName: score.SubjectName,
-                                          Score: score.Score,
-                                      }
-                                  }),
-                              }
-                          })
+                            return {
+                                id: idx,
+                                StudentID: item.StudentID,
+                                StudentName: item.StudentName,
+                                Scores: item.Scores.map((score) => {
+                                    return {
+                                        SubjectName: score.SubjectName,
+                                        Score: score.Score,
+                                    }
+                                }),
+                            }
+                        })
                         : []
                 )
             })
