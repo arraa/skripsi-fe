@@ -144,7 +144,7 @@ const ClassGenerator = () => {
     console.log('rows', teacherData)
 
     return (
-        <Box sx={{ padding: 3, paddingLeft: 0, width: '80vw' }}>
+        <Box sx={{ padding: 3, paddingLeft: 0, width: '84vw' }}>
             <AddClass
                 className={NewClass}
                 setOpen={handleClose}

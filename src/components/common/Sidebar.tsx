@@ -273,7 +273,7 @@ export default function Sidebar() {
 
                     <div
                         onClick={handleLogout}
-                        className="mb-5 flex gap-4 pl-11 text-lg font-bold"
+                        className="mb-5 flex cursor-pointer gap-4 pl-11 text-lg font-bold"
                     >
                         <Image
                             src={'/icon/icon-logout.png'}

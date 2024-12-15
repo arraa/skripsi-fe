@@ -29,7 +29,7 @@ import { getStudentClassNameID } from '@/app/api/student'
 
 const ObjectSchema = array(
     object({
-        reason: string(),
+        reason: pipe(string(), minLength(1, 'Attendance is required')),
     })
 )
 
@@ -49,7 +49,6 @@ const AttendanceForm = () => {
     const [studentAttendanceList, setStudentAttendanceList] = useState<
         AttendanceListFormProps[]
     >([])
-    const [open, setOpen] = useState(false)
     const [formattedDate, setFormattedDate] = useState('')
 
     useEffect(() => {
@@ -69,6 +68,8 @@ const AttendanceForm = () => {
         })
 
     const onSubmit = (data: AttendanceFormData) => {
+        console.log('data', data)
+
         const submittedData = studentAttendanceList.map((student) => {
             const reasonKey = `reason-${student.id}`
             const reason = data[reasonKey]?.reason || ''
@@ -89,16 +90,22 @@ const AttendanceForm = () => {
             updateAttendance(outputData)
                 .then(() => {
                     alert('Attendance has been updated')
+                    window.location.href = '/attendance/today'
                 })
                 .catch((error) => {
+                    alert('Attendance failed to submitted')
+
                     console.error('API request error', error)
                 })
         } else {
             createAttendance(outputData)
                 .then(() => {
                     alert('Attendance has been submitted')
+                    window.location.href = '/attendance/today'
                 })
                 .catch((error) => {
+                    alert('Attendance failed to submitted')
+
                     console.error('API request error', error)
                 })
         }
@@ -197,19 +204,19 @@ const AttendanceForm = () => {
     const rows = columnDataAttendanceForm(status, control, setValue)
 
     return (
-        <Box sx={{ padding: 3, paddingLeft: 0, width: '80vw' }}>
+        <Box sx={{ paddingY: 3, px: 2, paddingLeft: 0, width: '84vw' }}>
             <div className="mb-2 flex items-center justify-between">
-                <h1 className="my-8 text-3xl font-bold text-[#0C4177]">
+                <h1 className="mb-6 mt-2  text-3xl font-bold text-[#0C4177]">
                     Attendance Class
                 </h1>
             </div>
             {/* <div className=' h-[80vh] bg-white'> */}
-            <div className="flex h-[80vh] flex-col gap-4 rounded-3xl bg-white p-5 text-[#0c427770] shadow-md">
+            <div className="flex flex-col gap-4 rounded-3xl bg-white p-5 text-[#0c427770] shadow-md">
                 <form
                     onSubmit={handleSubmit(onSubmit)}
                     className="text-[#353535]"
                 >
-                    <div className="mb-4 ml-3 mt-10 flex justify-start text-xl font-bold text-[#0c42777a] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2  ">
+                    <div className="mb-4 ml-3  flex justify-start text-xl font-bold text-[#0c42777a] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2  ">
                         {formattedDate}
                     </div>
 

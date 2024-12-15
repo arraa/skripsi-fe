@@ -144,44 +144,44 @@ export const columnDataSummary = (
     }))
 
     return [
-        {
-            field: 'actions',
-            type: 'actions',
-            headerName: 'Actions',
-            width: 150,
-            cellClassName: 'actions',
-            renderCell: (params: GridRenderCellParams) => {
-                return (
-                    <Box
-                        display="flex"
-                        flexDirection="row"
-                        alignItems={'center'}
-                        justifyContent={'center'}
-                        gap={2}
-                    >
-                        <div onClick={() => handleUpdate(params.row.id)}>
-                            <GridActionsCellItem
-                                sx={{
-                                    boxShadow: 3,
-                                    borderRadius: 1,
-                                    padding: '5px',
-                                }}
-                                key={'edit'}
-                                icon={
-                                    <Image
-                                        src="/icon/icon-edit.svg"
-                                        alt="edit icon"
-                                        width={18}
-                                        height={18}
-                                    />
-                                }
-                                label="edit"
-                            />
-                        </div>
-                    </Box>
-                )
-            },
-        },
+        // {
+        //     field: 'actions',
+        //     type: 'actions',
+        //     headerName: 'Actions',
+        //     width: 150,
+        //     cellClassName: 'actions',
+        //     renderCell: (params: GridRenderCellParams) => {
+        //         return (
+        //             <Box
+        //                 display="flex"
+        //                 flexDirection="row"
+        //                 alignItems={'center'}
+        //                 justifyContent={'center'}
+        //                 gap={2}
+        //             >
+        //                 <div onClick={() => handleUpdate(params.row.id)}>
+        //                     <GridActionsCellItem
+        //                         sx={{
+        //                             boxShadow: 3,
+        //                             borderRadius: 1,
+        //                             padding: '5px',
+        //                         }}
+        //                         key={'edit'}
+        //                         icon={
+        //                             <Image
+        //                                 src="/icon/icon-edit.svg"
+        //                                 alt="edit icon"
+        //                                 width={18}
+        //                                 height={18}
+        //                             />
+        //                         }
+        //                         label="edit"
+        //                     />
+        //                 </div>
+        //             </Box>
+        //         )
+        //     },
+        // },
         {
             field: 'StudentName',
             headerName: 'Full Name',

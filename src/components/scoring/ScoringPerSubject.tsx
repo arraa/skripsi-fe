@@ -74,23 +74,23 @@ const ScoringPerSubject = () => {
                 setScoreClassSubject(
                     response.data.score
                         ? response.data.score.map((item, idx) => {
-                            return {
-                                id: idx,
-                                StudentID: item.StudentID,
-                                ScoringID: item.ScoringID,
-                                StudentName: item.StudentName,
-                                Scores: item.Scores.map((score) => {
-                                    return {
-                                        SubjectID: score.SubjectID,
-                                        AssignmentID: score.AssignmentID,
-                                        TeacherID: score.TeacherID,
-                                        AssignmentType: score.AssignmentType,
-                                        SubjectName: score.SubjectName,
-                                        Score: score.Score,
-                                    }
-                                }),
-                            }
-                        })
+                              return {
+                                  id: idx,
+                                  StudentID: item.StudentID,
+                                  ScoringID: item.ScoringID,
+                                  StudentName: item.StudentName,
+                                  Scores: item.Scores.map((score) => {
+                                      return {
+                                          SubjectID: score.SubjectID,
+                                          AssignmentID: score.AssignmentID,
+                                          TeacherID: score.TeacherID,
+                                          AssignmentType: score.AssignmentType,
+                                          SubjectName: score.SubjectName,
+                                          Score: score.Score,
+                                      }
+                                  }),
+                              }
+                          })
                         : []
                 )
             })
@@ -99,12 +99,12 @@ const ScoringPerSubject = () => {
 
     const uniqueAssignmentTypes = scoreClassSubject
         ? scoreClassSubject
-            .slice()
-            .sort((a, b) => b.Scores.length - a.Scores.length)
-            .flatMap((item) =>
-                item.Scores.map((Scores) => Scores.AssignmentType)
-            )
-            .filter((value, index, self) => self.indexOf(value) === index)
+              .slice()
+              .sort((a, b) => b.Scores.length - a.Scores.length)
+              .flatMap((item) =>
+                  item.Scores.map((Scores) => Scores.AssignmentType)
+              )
+              .filter((value, index, self) => self.indexOf(value) === index)
         : []
 
     const handleClickOpen = (classId: number) => {}
@@ -112,16 +112,14 @@ const ScoringPerSubject = () => {
     const router = useRouter()
 
     const handleUpdate = (id: number) => {
-        router.push(
-            `/scoring/scoring-form?type=update&student=${id}`
-        )
+        router.push(`/scoring/scoring-form?type=update&student=${id}`)
     }
 
     const columns = columnData(handleUpdate, uniqueAssignmentTypes)
     return (
-        <Box sx={{ padding: 3, paddingLeft: 0, width: '80vw' }}>
+        <Box sx={{ paddingY: 3, px: 2, paddingLeft: 0, width: '84vw' }}>
             <div className="mb-2 flex items-center justify-between">
-                <h1 className="my-6 text-3xl font-bold text-[#0C4177]">
+                <h1 className="mb-6 mt-2  text-3xl font-bold text-[#0C4177]">
                     Scoring
                 </h1>
                 <div className="flex cursor-pointer bg-[#31426E]  text-white sm:rounded-md">
@@ -152,9 +150,7 @@ const ScoringPerSubject = () => {
                     </select>
                 </div>
             </div>
-            {/* <div className=' h-[80vh] bg-white'> */}
-            <div className="flex h-[80vh] flex-col gap-4 rounded-3xl p-5 text-[#0c427770] shadow-md">
-                {/* if you filter not ready you can change data={data} */}
+            <div className="flex  flex-col gap-4 rounded-3xl p-5 text-[#0c427770] shadow-md">
                 <div className="flex justify-end">
                     <Button
                         size={'default'}

@@ -21,7 +21,6 @@ const ScoringSummary = () => {
     )
     const router = useRouter()
 
-
     const uniqueAssignmentTypes = Array.from(
         new Set(
             scoreSummary.flatMap((student) =>
@@ -35,9 +34,7 @@ const ScoringSummary = () => {
     }
 
     const handleUpdate = (id: number) => {
-        router.push(
-            `/scoring/scoring-form?type=summary&student=${id}`
-        )
+        router.push(`/scoring/scoring-form?type=summary&student=${id}`)
         console.log('handleClickOpen clicked', id)
     }
 
@@ -76,18 +73,18 @@ const ScoringSummary = () => {
                 setScoreSummary(
                     response.data.score
                         ? response.data.score.map((item, idx) => {
-                            return {
-                                id: idx,
-                                StudentID: item.StudentID,
-                                StudentName: item.StudentName,
-                                Scores: item.Scores.map((score) => {
-                                    return {
-                                        SubjectName: score.SubjectName,
-                                        Score: score.Score,
-                                    }
-                                }),
-                            }
-                        })
+                              return {
+                                  id: idx,
+                                  StudentID: item.StudentID,
+                                  StudentName: item.StudentName,
+                                  Scores: item.Scores.map((score) => {
+                                      return {
+                                          SubjectName: score.SubjectName,
+                                          Score: score.Score,
+                                      }
+                                  }),
+                              }
+                          })
                         : []
                 )
             })
@@ -95,9 +92,9 @@ const ScoringSummary = () => {
     }, [selectedClass])
 
     return (
-        <Box sx={{ padding: 3, paddingLeft: 0, width: '80vw' }}>
+        <Box sx={{ paddingY: 3, px: 2, paddingLeft: 0, width: '84vw' }}>
             <div className="mb-2 flex items-center justify-between">
-                <h1 className="my-8 text-3xl font-bold text-[#0C4177]">
+                <h1 className="mb-6 mt-2 text-3xl font-bold text-[#0C4177]">
                     Summary Scoring
                 </h1>
                 <div className="flex cursor-pointer bg-[#31426E]  text-white sm:rounded-md">
@@ -124,7 +121,7 @@ const ScoringSummary = () => {
                     </select>
                 </div>
             </div>
-            <div className="flex h-[80vh] flex-col gap-4 rounded-3xl p-5 text-[#0c427770] shadow-md">
+            <div className="flex flex-col gap-4 rounded-3xl p-5 text-[#0c427770] shadow-md">
                 <Table data={scoreSummary} columnData={columns} />
             </div>
         </Box>

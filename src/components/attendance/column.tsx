@@ -125,6 +125,7 @@ export const columnDataAttendanceForm = (
                     flexDirection="row"
                     alignItems="center"
                     justifyContent="center"
+                    marginTop={1}
                 >
                     <Controller
                         name={`reason-${params.row.id}`}
