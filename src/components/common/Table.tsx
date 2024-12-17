@@ -10,10 +10,10 @@ interface TableProps {
 const Table = (props: TableProps) => {
     const { data, columnData, searchValue, heighRow, maxHeight } = props
 
-    const height = maxHeight  || '74vh'
+    const height = `h-[${maxHeight}]`  || 'h-[74vh]'
 
     return (
-        <div className={`h-[${height}]`}>
+        <div className={height}>
             <DataGrid
                 rowHeight={heighRow || undefined}
                 rows={data}
@@ -35,7 +35,7 @@ const Table = (props: TableProps) => {
                 }}
                 sx={{
                     backgroundColor: '#fff',
-                    maxWidth: '76vw',
+                    maxWidth: '79vw',
                     border: 'none',
                     boxShadow: 'none',
                     color: '#0c427770',

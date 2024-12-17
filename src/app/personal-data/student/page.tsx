@@ -1,10 +1,5 @@
-import StudentData from '@/components/studentData/StudentData';
-import { AuthProvider } from '@/app/context/provider';
+import StudentData from '@/components/studentData/StudentData'
 
 export default async function PersonalData() {
-    return (
-        <AuthProvider>
-            <StudentData />
-        </AuthProvider>
-    );
+    return <StudentData />
 }

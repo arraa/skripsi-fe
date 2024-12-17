@@ -8,7 +8,7 @@ import { StudentScoringPerSubject, SubjectClassDataProps } from './types/types'
 import Delete from '../common/dialog/Delete'
 import { columnData } from './column'
 import { useRouter } from 'next/navigation'
-import { getAllSubjectClassName } from '@/app/api/subject'
+import { getAllSubjectClassName, getScoringCLassList } from '@/app/api/subject'
 import { getAllScoreByClassAndSubject } from '@/app/api/score'
 
 const ScoringPerSubject = () => {
@@ -24,6 +24,8 @@ const ScoringPerSubject = () => {
         StudentScoringPerSubject[]
     >([])
 
+    console.log('selectedClass', selectedClass)
+
     const handleClassChange = (value: string) => {
         const classNameID = value.split(',')[1]
         const subjectID = value.split(',')[0]
@@ -37,11 +39,11 @@ const ScoringPerSubject = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const resultSubjectClass = await getAllSubjectClassName()
+                const resultSubjectClass = await getScoringCLassList()
                 if (resultSubjectClass.status !== 200) {
                     throw new Error('API request error')
                 }
-                const classData = resultSubjectClass.data.subjects.map(
+                const classData = resultSubjectClass.data.class_list.map(
                     (subject: SubjectClassDataProps) => ({
                         subject_id: subject.subject_id,
                         class_name_id: subject.class_name_id,
@@ -110,25 +112,14 @@ const ScoringPerSubject = () => {
     const router = useRouter()
 
     const handleUpdate = (id: number) => {
-        setOpen(true)
-        // const classId = classData.find((item) => item.id === id)
-        // const teacherData = teacher.find(
-        //     (item) => item.Teacher.TeacherID === classId?.id_teacher
-        // )
-
-        // if (teacherData) {
-        //     setTeacherName(teacherData as teacher)
-        // }
-        // setNewClass(classId?.name as string)
-
-        console.log('handleClickOpen clicked', id)
+        router.push(`/scoring/scoring-form?type=update&student=${id}`)
     }
 
-    const columns = columnData(handleClickOpen, uniqueAssignmentTypes)
+    const columns = columnData(handleUpdate, uniqueAssignmentTypes)
     return (
-        <Box sx={{ padding: 3, paddingLeft: 0, width: '80vw' }}>
+        <Box sx={{ paddingY: 3, px: 2, paddingLeft: 0, width: '84vw' }}>
             <div className="mb-2 flex items-center justify-between">
-                <h1 className="my-8 text-3xl font-bold text-[#0C4177]">
+                <h1 className="mb-6 mt-2  text-3xl font-bold text-[#0C4177]">
                     Scoring
                 </h1>
                 <div className="flex cursor-pointer bg-[#31426E]  text-white sm:rounded-md">
@@ -159,9 +150,7 @@ const ScoringPerSubject = () => {
                     </select>
                 </div>
             </div>
-            {/* <div className=' h-[80vh] bg-white'> */}
-            <div className="flex h-[80vh] flex-col gap-4 rounded-3xl p-5 text-[#0c427770] shadow-md">
-                {/* if you filter not ready you can change data={data} */}
+            <div className="flex  flex-col gap-4 rounded-3xl p-5 text-[#0c427770] shadow-md">
                 <div className="flex justify-end">
                     <Button
                         size={'default'}
@@ -175,9 +164,6 @@ const ScoringPerSubject = () => {
                     </Button>
                 </div>
                 <Table data={scoreClassSubject} columnData={columns} />
-                <div className="flex justify-end">
-                    <Button size={'default'}>Generate Class</Button>
-                </div>
             </div>
             {/* </div> */}
         </Box>

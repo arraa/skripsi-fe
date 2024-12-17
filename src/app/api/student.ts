@@ -1,8 +1,9 @@
 import { StudentDataProps } from '@/components/studentData/types/types'
 import { api } from './axios'
 import { AxiosResponse } from 'axios'
-import { formatPhoneNumber } from '../../lib/formatData';
-import { StudentAttendanceListProps } from '@/components/attendance/type/types';
+import { formatPhoneNumber } from '../../lib/formatData'
+import { StudentAttendanceListProps } from '@/components/attendance/type/types'
+import { classGeneratorStudentProps } from '@/components/classGenerator/types/types'
 
 export const getStudent = async (): Promise<AxiosResponse> => {
     try {
@@ -64,7 +65,14 @@ export const createStudent = async (
         return response
     } catch (error) {
         console.error('Error:', error)
-        return Promise.reject(new Error(String(error)))
+        return Promise.reject(
+            new Error(
+                String(
+                    (error as { response: { data: { error: string } } })
+                        .response.data.error
+                )
+            )
+        )
     }
 }
 
@@ -76,12 +84,19 @@ export const createStudentbyExcel = async (
     }
 
     try {
-        const response = await api.post('//student/create-all', data)
+        const response = await api.post('/student/create-all', data)
 
         return response
     } catch (error) {
         console.log('create excel error:', error)
-        return Promise.reject(new Error(String(error)))
+        return Promise.reject(
+            new Error(
+                String(
+                    (error as { response: { data: { error: string } } })
+                        .response.data.error
+                )
+            )
+        )
     }
 }
 
@@ -104,6 +119,28 @@ export const updateStudent = async (
 
     try {
         const response = await api.put(`/student/update/${getid}`, data)
+        return response
+    } catch (error) {
+        console.error('Update error:', error) // Log the error
+        return Promise.reject(new Error(String(error)))
+    }
+}
+
+export const updateClassStudent = async (
+    data: classGeneratorStudentProps[]
+): Promise<AxiosResponse> => {
+    const dataStudent = {
+        'student-data': data,
+    }
+
+
+    console.log('dataStudent', dataStudent)
+
+    try {
+        const response = await api.put(
+            '/student/update-all-student-class-id',
+            dataStudent
+        )
         return response
     } catch (error) {
         console.error('Update error:', error) // Log the error

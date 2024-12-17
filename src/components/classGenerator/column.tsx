@@ -1,10 +1,12 @@
-import { Box, Typography } from '@mui/material';
+import { Box, Select, Typography } from '@mui/material'
 import {
     GridActionsCellItem,
     GridColDef,
     GridRenderCellParams,
-} from '@mui/x-data-grid';
-import Image from 'next/image';
+} from '@mui/x-data-grid'
+import Image from 'next/image'
+import { Controller } from 'react-hook-form'
+import { classDataProps, classGeneratorStudentProps } from './types/types'
 
 export const columnData = (
     handleClickOpen: (id: number) => void,
@@ -19,8 +21,8 @@ export const columnData = (
         renderCell: (params: GridRenderCellParams) => {
             return (
                 <Box
-                    display='flex'
-                    flexDirection='row'
+                    display="flex"
+                    flexDirection="row"
                     alignItems={'center'}
                     justifyContent={'center'}
                     gap={2}
@@ -35,13 +37,13 @@ export const columnData = (
                             key={'edit'}
                             icon={
                                 <Image
-                                    src='/icon/icon-edit.svg'
-                                    alt='edit icon'
+                                    src="/icon/icon-edit.svg"
+                                    alt="edit icon"
                                     width={18}
                                     height={18}
                                 />
                             }
-                            label='edit'
+                            label="edit"
                         />
                     </div>
                     {params.row.isLastRow && (
@@ -55,18 +57,18 @@ export const columnData = (
                                 key={'delete'}
                                 icon={
                                     <Image
-                                        src='/icon/icon-delete.svg'
-                                        alt='delete icon'
+                                        src="/icon/icon-delete.svg"
+                                        alt="delete icon"
                                         width={18}
                                         height={18}
                                     />
                                 }
-                                label='Delete'
+                                label="Delete"
                             />
                         </div>
                     )}
                 </Box>
-            );
+            )
         },
     },
     {
@@ -87,16 +89,20 @@ export const columnData = (
         headerName: 'Teacher',
         width: 300,
         renderCell: (params: GridRenderCellParams) => (
-            <Typography>
-                {' '}
-                {params.row.Teacher?.User.name}
-                {params.value}{' '}
-            </Typography>
+            <Typography> {params.row.Teacher?.User.name}</Typography>
         ),
     },
-];
+]
 
-export const columnDataSiswa = (): GridColDef[] => [
+export const columnDataSiswa = (
+    control: any,
+    setValue: any,
+    classData: classDataProps[],
+    studentData: classGeneratorStudentProps[],
+    setStudentData: React.Dispatch<
+        React.SetStateAction<classGeneratorStudentProps[]>
+    >
+): GridColDef[] => [
     {
         field: 'id',
         headerName: 'No.',
@@ -115,6 +121,68 @@ export const columnDataSiswa = (): GridColDef[] => [
     {
         field: 'class',
         headerName: 'Class',
-        width: 100,
+        width: 150,
+        renderCell: (params: GridRenderCellParams) => {
+            return (
+                <Box
+                    display="flex"
+                    flexDirection="row"
+                    alignItems="center"
+                    justifyContent="center"
+                >
+                    <Controller
+                        name={`class_name_id-${params.row.id}`}
+                        control={control}
+                        defaultValue={params.row.ClassName.id} // Set default to params.row.id_class
+                        render={({ field }) => {
+                            return (
+                                <Select
+                                    {...field}
+                                    value={
+                                        field.value ||
+                                        params.row.ClassName.id
+                                    } // Use field.value or fallback to params.row.id_class
+                                    onChange={(event) => {
+                                        const selectedValue = event.target.value
+                                            ? Number(event.target.value)
+                                            : params.row.ClassName.id
+
+                                        setValue(
+                                            `class_name_id-${params.row.id}`,
+                                            selectedValue
+                                        )
+
+                                        // Update studentData when class changes
+                                        const updatedStudentData =
+                                            studentData.map((student) =>
+                                                student.student_id ===
+                                                params.row.StudentID.toString()
+                                                    ? {
+                                                        ...student,
+                                                        class_name_id: selectedValue.toString(),
+                                                    }
+                                                    : student
+                                            )
+                                        setStudentData(updatedStudentData)
+                                    }}
+                                    title={`class_name_id-${params.row.id}`}
+                                    native
+                                    aria-label={`class_name_id-${params.row.id}`}
+                                >
+                                    <option value="" disabled>
+                                        Select
+                                    </option>
+                                    {classData.map((item) => (
+                                        <option key={item.id} value={item.id}>
+                                            {item.Grade?.grade} - {item.name}
+                                        </option>
+                                    ))}
+                                </Select>
+                            )
+                        }}
+                    />
+                </Box>
+            )
+        },
     },
-];
+]

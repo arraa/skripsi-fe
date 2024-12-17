@@ -20,11 +20,12 @@ import type { InferInput } from 'valibot'
 import { useForm } from 'react-hook-form'
 import { ControllerField } from '../common/form/textField'
 import { ControllerSelectField } from '../common/form/selectField'
-import { minLength, object, pipe, string } from 'valibot'
+import { check, email, maxLength, minLength, object, pipe, string } from 'valibot'
 import { AxiosResponse } from 'axios'
 import { useSearchParams } from 'next/navigation'
 import {
     Box,
+    InputLabel,
     MenuItem,
     OutlinedInput,
     Select,
@@ -41,9 +42,20 @@ const ObjectSchema = object({
     place_of_birth: pipe(string(), minLength(1, 'Place of Birth is required')),
     date_of_birth: pipe(string(), minLength(1, 'Date of Birth is required')),
     religion: pipe(string(), minLength(1, 'Religion is required')),
-    address: pipe(string(), minLength(1, 'Address is required')),
-    num_phone: pipe(string(), minLength(1, 'Phone Number is required')),
-    email: pipe(string(), minLength(1, 'Email is required')),
+    address: pipe(string(), minLength(1, 'Address is required'),  maxLength(200, 'Teacher Address too long')),
+    num_phone: pipe(
+        string(),
+        minLength(1, 'Phone Number is required'),
+        check(
+            (value) => /^(08|\+62)\d{8,14}$/.test(value),
+            'Phone number must start with 08 or +62 and contain 8-14 digits.'
+        )
+    ),
+    email: pipe(
+        string(),
+        minLength(1, 'Email is required'),
+        email('Invalid Email')
+    ),
     teaching_hour: pipe(string(), minLength(1, 'Teaching Hour is required')),
 })
 
@@ -73,7 +85,7 @@ const TeacherForm = () => {
             address: '',
             num_phone: '',
             email: '',
-            teaching_hour: '0',
+            teaching_hour: '',
         },
     })
 
@@ -93,7 +105,7 @@ const TeacherForm = () => {
                 address: data.address || '',
                 num_phone: data.num_phone || '',
                 email: data.email || '',
-                teaching_hour: String(data.teaching_hour) || '0',
+                teaching_hour: String(data.teaching_hour) || '',
             })
         }
     }, [data, reset])
@@ -158,7 +170,7 @@ const TeacherForm = () => {
             address: data.address || '',
             num_phone: data.num_phone || '',
             email: data.email || '',
-            teaching_hour: data.teaching_hour || '0', // or any default value
+            teaching_hour: data.teaching_hour || '', // or any default value
             subject: selectedSubject,
         }
 
@@ -186,12 +198,12 @@ const TeacherForm = () => {
                     <h1 className="my-8 w-full text-3xl font-bold text-[#0C4177]">
                         Add New Teacher
                     </h1>
-                    <div className=" flex w-full justify-end ">
+                    {/* <div className=" flex w-full justify-end ">
                         <Button onClick={handleDialog}>
                             &#43;
                             <span className="hidden pl-3 sm:flex">Import</span>
                         </Button>
-                    </div>
+                    </div> */}
                 </div>
             ) : (
                 <h1 className="my-8 text-3xl font-bold text-[#0C4177]">
@@ -199,12 +211,12 @@ const TeacherForm = () => {
                 </h1>
             )}
 
-            <div className="min-h-screen w-full rounded-3xl bg-white p-5 text-[#0c427770] shadow-md">
+            <div className="min-h-[80vh] w-full rounded-3xl bg-white p-5 text-[#0c427770] shadow-md">
                 {/* <ImportData
-          setOpen={handleDialog}
-          handleImport={handleFileUpload}
-          open={open}
-        /> */}
+                    setOpen={handleDialog}
+                    handleImport={handleFileUpload}
+                    open={open}
+                /> */}
 
                 <form
                     onSubmit={handleSubmit(onSubmit)}
@@ -302,23 +314,52 @@ const TeacherForm = () => {
                             errors={errors.teaching_hour}
                             value={data?.teaching_hour}
                         />
-                        {/* <InputLabel id="demo-multiple-name-label">
-                            Name
-                        </InputLabel> */}
-                        <Select
-                            labelId="demo-multiple-name-label"
-                            id="demo-multiple-name"
-                            multiple
-                            value={selectedSubject}
-                            onChange={handleChange}
-                            input={<OutlinedInput label="Subject" />}
-                        >
-                            {subjectList.map((item) => (
-                                <MenuItem key={item.id} value={item.id}>
-                                    {`${item.grade} - ${item.name}`}
-                                </MenuItem>
-                            ))}
-                        </Select>
+                        <div className="flex w-full flex-col gap-2">
+                            <InputLabel id="demo-multiple-name-label">
+                                Subject
+                            </InputLabel>
+                            <Select
+                                labelId="demo-multiple-name-label"
+                                id="demo-multiple-name"
+                                multiple
+                                sx={{
+                                    fieldset: {
+                                        border: 'none',
+                                    },
+                                    backgroundColor: 'rgb(63 121 180 / 0.1)',
+                                }}
+                                placeholder="Please choose teacher’s subject"
+                                value={selectedSubject}
+                                onChange={handleChange}
+                                // renderValue={(selected) =>
+                                //     selected === []? (
+                                //         <span
+                                //             className='text-black'
+                                //         >
+                                //             Please choose teacher’s subject
+                                //         </span>
+                                //     ) : (
+                                //         selected
+                                //             .map((id) => {
+                                //                 const subject =
+                                //                     subjectList.find(
+                                //                         (item) => item.id === id
+                                //                     )
+                                //                 return subject
+                                //                     ? `${subject.grade} - ${subject.name}`
+                                //                     : ''
+                                //             })
+                                //             .join(', ')
+                                //     )
+                                // }
+                            >
+                                {subjectList.map((item) => (
+                                    <MenuItem key={item.id} value={item.id}>
+                                        {`${item.grade} - ${item.name}`}
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                        </div>
                     </div>
 
                     <div className="mb-4 mt-10 flex justify-end">

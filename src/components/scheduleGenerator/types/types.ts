@@ -1,4 +1,4 @@
-export interface teacher {
+export interface TeacherProps {
     Teacher: {
         TeacherID: number;
         id_user: number;
@@ -17,21 +17,28 @@ export interface teacher {
     };
 }
 
-export interface classDataProps {
+export interface ClassDataProps {
     id?: number;
     id_grade: number;
     id_teacher: number;
     name: string;
-    Grade?: gradeDataProps;
+    Grade?: GradeDataProps;
 }
 
-export interface classGeneratorProps {
+export interface ClassGeneratorProps {
     no: number;
     name: string;
     gender: string;
     class: string;
 }
-export interface gradeDataProps {
+export interface GradeDataProps {
     id: number;
     grade: string;
+}
+
+export interface SubjectListProps {
+    id: number
+    name: string
+    durationPerWeek:number
+    durationPerSession:number
 }

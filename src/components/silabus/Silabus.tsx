@@ -303,9 +303,9 @@ const Silabus = () => {
     }
 
     return (
-        <Box sx={{ paddingY: 3, px:2, paddingLeft: 0, width: '80vw' }}>
+        <Box sx={{ paddingY: 3, px: 2, paddingLeft: 0, width: '84vw' }}>
             <div className="mb-2 flex items-center justify-between">
-                <h1 className="my-6 text-3xl font-bold text-[#0C4177]">
+                <h1 className="mb-6 mt-2  text-3xl font-bold text-[#0C4177]">
                     Silabus
                 </h1>
                 <div className="flex cursor-pointer bg-[#31426E]  text-white sm:rounded-md">

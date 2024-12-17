@@ -26,7 +26,7 @@ const ObjectSchema = object({
     date: pipe(string(), minLength(1, 'Date is required')),
 })
 
-const CalenderForm = () => {
+const CalendarForm = () => {
     const searchParams = useSearchParams()
     const actionType = searchParams.get('action')
     const id = searchParams.get('student')
@@ -132,7 +132,7 @@ const CalenderForm = () => {
     return (
         <Box sx={{ padding: 3, width: '100%' }}>
             <h1 className="my-8 text-3xl font-bold text-[#0C4177]">
-                Update Student
+                Add Event
             </h1>
 
             <div className="min-h-screen w-full rounded-3xl bg-white p-5 text-[#0c427770] shadow-md">
@@ -143,11 +143,11 @@ const CalenderForm = () => {
                     <div>
                         {actionType === 'create' ? (
                             <h1 className="my-8 text-xl text-[#0C4177]">
-                                New Calender
+                                New calendar
                             </h1>
                         ) : (
                             <h1 className="my-8 text-xl text-[#0C4177]">
-                                Edit Calender
+                                Edit calendar
                             </h1>
                         )}
                     </div>
@@ -306,4 +306,4 @@ const CalenderForm = () => {
     )
 }
 
-export default CalenderForm
+export default CalendarForm

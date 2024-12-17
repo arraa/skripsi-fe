@@ -67,7 +67,7 @@ const AttendanceSummary = () => {
     }, [selectedClass])
 
     return (
-        <Box sx={{ padding: 3, paddingLeft: 0, width: '80vw' }}>
+        <Box sx={{ padding: 3, paddingLeft: 0, width: '84vw' }}>
             <div className="mb-2 flex items-center justify-between">
                 <h1 className="my-8 text-3xl font-bold text-[#0C4177]">
                     Attendance
@@ -86,7 +86,11 @@ const AttendanceSummary = () => {
                     >
                         {classData &&
                             classData.map((classItem) => (
-                                <option key={classItem.id} value={classItem.id}>
+                                <option
+                                    key={classItem.id}
+                                    value={classItem.id}
+                                    className="text-[#0C4177]"
+                                >
                                     Class&ensp; {classItem.Grade?.grade}
                                     {classItem.name}
                                 </option>

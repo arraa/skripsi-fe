@@ -12,6 +12,7 @@ import { useRouter } from 'next/navigation'
 import { getStudent } from '@/app/api/student'
 import { formatStudentData } from '@/lib/formatData'
 import { classDataProps } from '../classGenerator/types/types'
+import { includes } from 'valibot'
 
 const StudentData = () => {
     const [data, setData] = useState<StudentDataProps[]>([])
@@ -23,6 +24,9 @@ const StudentData = () => {
             setRoles(storedRoles)
         }
     }, [])
+
+    console.log('roles', roles.includes('admin'))
+
     const [classData, setClassData] = useState<classDataProps[]>([])
     const [searchValue, setSearchValue] = useState('')
     const [selectedClass, setSelectedClass] = useState<number>()
@@ -73,11 +77,12 @@ const StudentData = () => {
                     const uniqueClassNames = Array.from(
                         new Map(
                             data.map((student: StudentDataProps) => [
-                                student.ClassName.name,
+                                `${student.ClassName.name}-${student.ClassName.Grade.grade}`,  // Combine name and grade as the key
                                 student.ClassName,
                             ])
                         ).values()
                     )
+                    
 
                     console.log(data)
 
@@ -116,17 +121,17 @@ const StudentData = () => {
     }
 
     return (
-        <Box sx={{ paddingY: 3, px: 2, paddingLeft: 0, width: '80vw' }}>
+        <Box sx={{ paddingY: 3, px: 2, paddingLeft: 0, width: '84vw' }}>
             <Delete
                 setOpen={handleClose}
                 name={'Student'}
                 onDelete={deletedStudent}
                 open={open}
             />
-            <h1 className="mb-6 mt-3 text-3xl font-bold text-[#0C4177]">
-                Personal Data
+            <h1 className="mb-6 mt-2 text-3xl font-bold text-[#0C4177]">
+                Student Personal Data
             </h1>
-            <div className="flex h-screen flex-col rounded-3xl  bg-white px-5 py-4 text-[#0c427770] shadow-md">
+            <div className="flex flex-col rounded-3xl  bg-white px-5 py-4 text-[#0c427770] shadow-md">
                 <div className="mb-2 flex items-center justify-between">
                     <div className="flex gap-4">
                         <SearchBar
@@ -156,7 +161,7 @@ const StudentData = () => {
                         </div>
                     </div>
 
-                    {roles != 'teacher' && (
+                    {(roles.includes('admin') || roles.includes('staff')) && (
                         <button
                             onClick={handleAddStudent}
                             className="flex bg-[#31426E] px-5 pb-2 pt-3 text-white sm:rounded-md"
