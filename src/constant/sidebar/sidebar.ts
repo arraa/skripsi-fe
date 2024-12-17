@@ -17,10 +17,10 @@ export const SIDEBAR = [
                 name: 'Teacher',
                 link: '/personal-data/teacher',
             },
-            // {
-            //     name: 'Staff',
-            //     link: '/personal-data/staff',
-            // },
+            {
+                name: 'Staff',
+                link: '/personal-data/staff',
+            },
         ],
     },
     {
