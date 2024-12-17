@@ -1,10 +1,5 @@
-import ScoringPerSubject from '@/components/scoring/ScoringPerSubject';
-import { AuthProvider } from '../context/provider';
+import ScoringPerSubject from '@/components/scoring/ScoringPerSubject'
 
 export default function scoring() {
-    return (
-        <AuthProvider>
-            <ScoringPerSubject/>
-        </AuthProvider>
-    );
+    return <ScoringPerSubject />
 }
