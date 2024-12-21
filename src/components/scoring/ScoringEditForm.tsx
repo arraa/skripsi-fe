@@ -113,6 +113,7 @@ const ScoringEditForm = () => {
                 })
                 .catch((error) => {
                     console.error('error', error)
+                    alert('Score update failed')
                 })
         }
     }
