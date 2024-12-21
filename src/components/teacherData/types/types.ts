@@ -31,6 +31,5 @@ export interface classDataProps {
 
 export interface subjectListProps {
     id: number
-    grade: number
     name: string
 }

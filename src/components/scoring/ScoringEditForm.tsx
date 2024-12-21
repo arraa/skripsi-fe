@@ -1,300 +1,121 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { ScoringItem, StudentScoringPerSubject } from './types/types'
-import * as XLSX from 'xlsx'
+import { StudentScoringEditFormProps } from './types/types'
 import { Button } from '../common/button/button'
-import {
-    createStudent,
-    createStudentbyExcel,
-    updateStudent,
-} from '@/app/api/student'
-import { valibotResolver } from '@hookform/resolvers/valibot'
-import type { InferInput } from 'valibot'
 import { Controller, useForm } from 'react-hook-form'
-import { ControllerField } from '../common/form/textField'
-import { ControllerSelectField } from '../common/form/selectField'
-import {
-    array,
-    minLength,
-    minValue,
-    number,
-    object,
-    pipe,
-    string,
-} from 'valibot'
-import { getClass } from '@/app/api/class'
-import ImportData from '../common/dialog/ImportData'
-import { useRouter, useSearchParams } from 'next/navigation'
+// import {
+//     array,
+//     minLength,
+//     minValue,
+//     number,
+//     object,
+//     pipe,
+//     string,
+// } from 'valibot'
+// import { valibotResolver } from '@hookform/resolvers/valibot'
+// import type { InferInput } from 'valibot'
+import { useSearchParams } from 'next/navigation'
 import { Box } from '@mui/material'
-import { getStudentById } from '@/app/api/student'
 import {
-    formatDateForm,
-    formatPhoneNumber,
-    formatStudentData,
-} from '@/lib/formatData'
-import { religionList } from '@/constant/religionList'
-import ScoringForm from './AddScoringPerSubject'
+    getStudentScoresByStudentSubjectClassID,
+    updateStudentScoresByStudentSubjectClassID,
+} from '@/app/api/score'
 
-type ObjectInput = InferInput<typeof ObjectSchema>
+// TODO: add validation for the form
+// type ObjectInput = InferInput<typeof ObjectSchema>
 
-const ObjectSchema = object({
-    StudentName: pipe(string(), minLength(1, 'Student Name is required')),
-    Scoring: array(
-        object({
-            AssignmentType: pipe(
-                string(),
-                minLength(1, 'Assignment Type is required')
-            ),
-            SubjectName: pipe(
-                string(),
-                minLength(1, 'Subject Name is required')
-            ),
-            Score: pipe(number(), minValue(0, 'Score is required')),
-        })
-    ),
-})
+// const ObjectSchema = object({
+//     StudentName: pipe(string(), minLength(1, 'Student Name is required')),
+//     Scoring: array(
+//         object({
+//             AssignmentType: pipe(
+//                 string(),
+//                 minLength(1, 'Assignment Type is required')
+//             ),
+//             SubjectName: pipe(
+//                 string(),
+//                 minLength(1, 'Subject Name is required')
+//             ),
+//             Score: pipe(number(), minValue(0, 'Score is required')),
+//         })
+//     ),
+// })
 
 const ScoringEditForm = () => {
-    const dataSiswa: StudentScoringPerSubject = {
-        id: 1,
-        StudentID: 1,
-        ScoringID: 101,
-        StudentName: 'Alice Johnson',
-        Scores: [
-            // Math
-            {
-                SubjectID: 201,
-                AssignmentID: 301,
-                TeacherID: 401,
-                AssignmentType: 'Quiz 1',
-                SubjectName: 'Math',
-                Score: 85,
-            },
-            {
-                SubjectID: 202,
-                AssignmentID: 302,
-                TeacherID: 401,
-                AssignmentType: 'Quiz 2',
-                SubjectName: 'Math',
-                Score: 90,
-            },
-            {
-                SubjectID: 301,
-                AssignmentID: 401,
-                TeacherID: 501,
-                AssignmentType: 'Quiz 3',
-                SubjectName: 'Math',
-                Score: 88,
-            },
-            {
-                SubjectID: 302,
-                AssignmentID: 402,
-                TeacherID: 501,
-                AssignmentType: 'Quiz 4',
-                SubjectName: 'Math',
-                Score: 92,
-            },
-            {
-                SubjectID: 401,
-                AssignmentID: 501,
-                TeacherID: 601,
-                AssignmentType: 'PTS',
-                SubjectName: 'Math',
-                Score: 83,
-            },
-            {
-                SubjectID: 402,
-                AssignmentID: 502,
-                TeacherID: 601,
-                AssignmentType: 'PAS',
-                SubjectName: 'Math',
-                Score: 87,
-            },
-            {
-                SubjectID: 201,
-                AssignmentID: 301,
-                TeacherID: 401,
-                AssignmentType: 'Quiz 1',
-                SubjectName: 'Science',
-                Score: 90,
-            },
-            {
-                SubjectID: 202,
-                AssignmentID: 302,
-                TeacherID: 401,
-                AssignmentType: 'Quiz 2',
-                SubjectName: 'Science',
-                Score: 90,
-            },
-            {
-                SubjectID: 301,
-                AssignmentID: 401,
-                TeacherID: 501,
-                AssignmentType: 'Quiz 3',
-                SubjectName: 'Science',
-                Score: 90,
-            },
-            {
-                SubjectID: 302,
-                AssignmentID: 402,
-                TeacherID: 501,
-                AssignmentType: 'Quiz 4',
-                SubjectName: 'Science',
-                Score: 90,
-            },
-            {
-                SubjectID: 401,
-                AssignmentID: 501,
-                TeacherID: 601,
-                AssignmentType: 'PTS',
-                SubjectName: 'Science',
-                Score: 90,
-            },
-            {
-                SubjectID: 402,
-                AssignmentID: 502,
-                TeacherID: 601,
-                AssignmentType: 'PAS',
-                SubjectName: 'Science',
-                Score: 87,
-            },
-            {
-                SubjectID: 201,
-                AssignmentID: 301,
-                TeacherID: 401,
-                AssignmentType: 'Quiz 1',
-                SubjectName: 'English',
-                Score: 30,
-            },
-            {
-                SubjectID: 202,
-                AssignmentID: 302,
-                TeacherID: 401,
-                AssignmentType: 'Quiz 2',
-                SubjectName: 'English',
-                Score: 30,
-            },
-            {
-                SubjectID: 301,
-                AssignmentID: 401,
-                TeacherID: 501,
-                AssignmentType: 'Quiz 3',
-                SubjectName: 'English',
-                Score: 30,
-            },
-            {
-                SubjectID: 302,
-                AssignmentID: 402,
-                TeacherID: 501,
-                AssignmentType: 'Quiz 4',
-                SubjectName: 'English',
-                Score: 30,
-            },
-            {
-                SubjectID: 401,
-                AssignmentID: 501,
-                TeacherID: 601,
-                AssignmentType: 'PTS',
-                SubjectName: 'English',
-                Score: 30,
-            },
-            {
-                SubjectID: 402,
-                AssignmentID: 502,
-                TeacherID: 601,
-                AssignmentType: 'PAS',
-                SubjectName: 'English',
-                Score: 30,
-            },
-        ],
-    }
+    const [dataSiswa, setDataSiswa] = useState<StudentScoringEditFormProps>({
+        StudentName: '',
+        SubjectName: '',
+        Scores: [],
+    })
 
-    const uniqueAssignmentTypes = Array.from(
-        new Set(dataSiswa.Scores.map((score) => score.AssignmentType))
-    )
-
-    const uniqueSummaryTypes = Array.from(
-        new Set(dataSiswa.Scores.map((score) => score.SubjectName))
-    )
-    const router = useRouter()
     const searchParams = useSearchParams()
-    const actionType = searchParams.get('type')
-    const id = searchParams.get('student')
-
-    const [open, setOpen] = useState(false)
+    const studentID = searchParams.get('student_id')
+    const classID = searchParams.get('class_id')
+    const subjectID = searchParams.get('subject_id')
 
     const {
         control,
         handleSubmit,
         reset,
         formState: { errors },
-    } = useForm<ObjectInput>({
-        resolver: valibotResolver(ObjectSchema),
+    } = useForm({
+        // resolver: valibotResolver(ObjectSchema),
         defaultValues: {
-            StudentName: dataSiswa.StudentName,
-            Scoring: [
+            StudentName: '',
+            SubjectName: '',
+            Scores: [
                 {
+                    AssignmentID: 0,
                     AssignmentType: '',
-                    SubjectName: '',
                     Score: 0,
                 },
             ],
         },
     })
 
-    const groupedScoring = dataSiswa.Scores.reduce<
-        Record<string, ScoringItem[]>
-    >((acc, item) => {
-        acc[item.SubjectName] = acc[item.SubjectName] || []
-        acc[item.SubjectName].push(item)
-        return acc
-    }, {})
-
     useEffect(() => {
-        // Create a default values object based on groupedScoring
-        const defaultValues = {
-            StudentName: dataSiswa.StudentName,
-            Scoring: [] as {
-                AssignmentType: string
-                SubjectName: string
-                Score: number
-            }[], // Empty array to hold scoring data
-        }
-
-        // Loop through groupedScoring and populate default values for each assignment's score
-        Object.entries(groupedScoring).forEach(([subjectName, assignments]) => {
-            assignments.forEach((assignment) => {
-                defaultValues.Scoring.push({
-                    AssignmentType: assignment.AssignmentType,
-                    SubjectName: subjectName,
-                    Score: assignment.Score,
+        if (studentID && subjectID && classID) {
+            getStudentScoresByStudentSubjectClassID(
+                studentID,
+                subjectID,
+                classID
+            )
+                .then((response) => {
+                    const newData = {
+                        StudentName: response.score.student_name,
+                        SubjectName: response.score.subject_name,
+                        Scores: response.score.scores.map((score) => ({
+                            AssignmentID: score.assignment_id,
+                            AssignmentType: score.assignment_type,
+                            SubjectName: response.score.subject_name,
+                            Score: score.score,
+                        })),
+                    }
+                    setDataSiswa(newData)
+                    reset(newData)
                 })
-            })
-        })
+                .catch((error) => {
+                    console.error('error', error)
+                })
+        }
+    }, [studentID, subjectID, classID, reset])
 
-        console.log('Default Values:', defaultValues)
-        reset(defaultValues)
-    }, [reset])
-
-    const onSubmit = (formData: ObjectInput) => {
-        console.log('Submitted Data:', formData)
-        const updatedScoring = uniqueAssignmentTypes.map((type) => ({
-            AssignmentType: type,
-            Score:
-                formData.Scoring.find(
-                    (scoring) => scoring.AssignmentType === type
-                )?.Score || 0,
-        }))
-
-        if (actionType === 'summary') {
-            router.push('/scoring/summary')
-        } else {
-            router.push('/scoring/subject')
+    const onSubmit = (data: StudentScoringEditFormProps) => {
+        if (classID && subjectID) {
+            updateStudentScoresByStudentSubjectClassID(
+                parseInt(classID),
+                parseInt(subjectID),
+                data
+            )
+                .then(() => {
+                    alert('Score updated successfully')
+                })
+                .catch((error) => {
+                    console.error('error', error)
+                })
         }
     }
-
-    console.log('errors', groupedScoring.Math)
 
     return (
         <Box sx={{ padding: 3, width: '100%' }}>
@@ -312,169 +133,72 @@ const ScoringEditForm = () => {
                             {dataSiswa.StudentName}
                         </h1>
                     </div>
-                    {actionType === 'summary' ? (
-                        <>
-                            {Object.entries(groupedScoring).map(
-                                ([subjectName, assignments]) => (
-                                    <div key={subjectName} className="mb-6">
-                                        <h2 className="mb-4 text-lg font-semibold">
-                                            {subjectName}
-                                        </h2>
-                                        <div className="grid grid-cols-2 gap-x-16 gap-y-6">
-                                            {assignments.map(
-                                                (assignment, index) => (
-                                                    <div
-                                                        key={index}
-                                                        className="flex flex-col gap-2"
-                                                    >
-                                                        <label
-                                                            htmlFor={`Scoring.${dataSiswa.Scores.findIndex(
-                                                                (s) =>
-                                                                    s.AssignmentID ===
-                                                                        assignment.AssignmentID &&
-                                                                    s.SubjectName ===
-                                                                        subjectName
-                                                            )}.Score`}
-                                                        >
-                                                            {
-                                                                assignment.AssignmentType
-                                                            }
-                                                        </label>
-                                                        <Controller
-                                                            name={`Scoring.${dataSiswa.Scores.findIndex(
-                                                                (s) =>
-                                                                    s.AssignmentID ===
-                                                                        assignment.AssignmentID &&
-                                                                    s.SubjectName ===
-                                                                        subjectName
-                                                            )}.Score`}
-                                                            control={control}
-                                                            defaultValue={
-                                                                assignment.Score ??
-                                                                0
-                                                            }
-                                                            render={({
-                                                                field,
-                                                            }) => (
-                                                                <input
-                                                                    {...field}
-                                                                    id={`Scoring.${dataSiswa.Scores.findIndex(
-                                                                        (s) =>
-                                                                            s.AssignmentID ===
-                                                                            assignment.AssignmentID
-                                                                    )}.Score`}
-                                                                    className="rounded-md bg-[#3F79B4]/10 p-4 focus:outline-[#2D2D2D]/75"
-                                                                    type={
-                                                                        'number'
-                                                                    }
-                                                                    onChange={(
-                                                                        e
-                                                                    ) => {
-                                                                        field.onChange(
-                                                                            parseFloat(
-                                                                                e
-                                                                                    .target
-                                                                                    .value
-                                                                            )
-                                                                        ) // Parse string to number
-                                                                    }}
-                                                                />
-                                                            )}
-                                                        />
-                                                        {errors && (
-                                                            <p className="text-xs italic text-red-500">
-                                                                {
-                                                                    errors
-                                                                        .Scoring?.[
-                                                                            index
-                                                                        ]?.Score
-                                                                        ?.message
-                                                                }
-                                                            </p>
-                                                        )}
-                                                    </div>
-                                                )
-                                            )}
-                                        </div>
-                                    </div>
-                                )
-                            )}{' '}
-                        </>
-                    ) : (
-                        <>
-                            <div className="mb-6">
-                                <h2 className="mb-4 text-lg font-semibold">
-                                    {groupedScoring.Math[0].SubjectName}
-                                </h2>
-                                <div className="grid grid-cols-2 gap-x-16 gap-y-6">
-                                    {groupedScoring.Math.map(
-                                        (assignment, index) => (
-                                            <div
-                                                key={index}
-                                                className="flex flex-col gap-2"
-                                            >
-                                                <label
-                                                    htmlFor={`Scoring.${dataSiswa.Scores.findIndex(
+                    <>
+                        <div className="mb-6">
+                            <h2 className="mb-4 text-lg font-semibold">
+                                {dataSiswa.SubjectName}
+                            </h2>
+                            <div className="grid grid-cols-2 gap-x-16 gap-y-6">
+                                {dataSiswa.Scores.map((asg, index) => (
+                                    <div
+                                        key={index}
+                                        className="flex flex-col gap-2"
+                                    >
+                                        <label
+                                            htmlFor={`Scoring.${dataSiswa.Scores.findIndex(
+                                                (s) =>
+                                                    s.AssignmentID ===
+                                                    asg.AssignmentID
+                                            )}.Score`}
+                                        >
+                                            {asg.AssignmentType}
+                                        </label>
+                                        <Controller
+                                            name={`Scores.${dataSiswa.Scores.findIndex(
+                                                (s) =>
+                                                    s.AssignmentID ===
+                                                    asg.AssignmentID
+                                            )}.Score`}
+                                            control={control}
+                                            defaultValue={asg.Score ?? 0}
+                                            render={({ field }) => (
+                                                <input
+                                                    {...field}
+                                                    id={`Scoring.${dataSiswa.Scores.findIndex(
                                                         (s) =>
                                                             s.AssignmentID ===
-                                                            assignment.AssignmentID
+                                                            asg.AssignmentID
                                                     )}.Score`}
-                                                >
-                                                    {assignment.AssignmentType}
-                                                </label>
-                                                <Controller
-                                                    name={`Scoring.${dataSiswa.Scores.findIndex(
-                                                        (s) =>
-                                                            s.AssignmentID ===
-                                                            assignment.AssignmentID
-                                                    )}.Score`}
-                                                    control={control}
-                                                    defaultValue={
-                                                        assignment.Score ?? 0
+                                                    className="rounded-md bg-[#3F79B4]/10 p-4 focus:outline-[#2D2D2D]/75"
+                                                    type={'number'}
+                                                    value={
+                                                        field.value as number
                                                     }
-                                                    render={({ field }) => (
-                                                        <input
-                                                            {...field}
-                                                            id={`Scoring.${dataSiswa.Scores.findIndex(
-                                                                (s) =>
-                                                                    s.AssignmentID ===
-                                                                    assignment.AssignmentID
-                                                            )}.Score`}
-                                                            className="rounded-md bg-[#3F79B4]/10 p-4 focus:outline-[#2D2D2D]/75"
-                                                            type={'number'}
-                                                            onChange={(e) => {
-                                                                field.onChange(
-                                                                    parseFloat(
-                                                                        e.target
-                                                                            .value
-                                                                    )
-                                                                ) // Parse string to number
-                                                            }}
-                                                        />
-                                                    )}
+                                                    onChange={(e) => {
+                                                        field.onChange(
+                                                            parseFloat(
+                                                                e.target.value
+                                                            )
+                                                        ) // Parse string to number
+                                                    }}
                                                 />
-                                                {errors && (
-                                                    <p className="text-xs italic text-red-500">
-                                                        {
-                                                            errors.Scoring?.[
-                                                                index
-                                                            ]?.Score?.message
-                                                        }
-                                                    </p>
-                                                )}
-                                            </div>
-                                        )
-                                    )}
-                                </div>
+                                            )}
+                                        />
+                                        {errors && (
+                                            <p className="text-xs italic text-red-500">
+                                                {
+                                                    errors.Scores?.[index]
+                                                        ?.Score?.message
+                                                }
+                                            </p>
+                                        )}
+                                    </div>
+                                ))}
                             </div>
-                        </>
-                    )}
+                        </div>
+                    </>
                     <div className="mb-4 mt-10 flex justify-end">
-                        <Button
-                            onSubmit={handleSubmit(onSubmit)}
-                            type="submit"
-                            size={'submit'}
-                        >
+                        <Button type="submit" size={'submit'}>
                             Submit
                         </Button>
                     </div>
