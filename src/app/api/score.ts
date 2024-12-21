@@ -1,6 +1,9 @@
 import { AxiosResponse } from 'axios'
 import { api } from './axios'
-import { StudentScoringEditFormProps, StudentScoringPerSubject } from '@/components/scoring/types/types'
+import {
+    StudentScoringEditFormProps,
+    StudentScoringPerSubject,
+} from '@/components/scoring/types/types'
 
 const routeSubject = '/scoring'
 
@@ -30,9 +33,7 @@ export const getSummaryScoreByClass = async (
     classID: number
 ): Promise<AxiosResponse<ScoreClassSubject>> => {
     try {
-        const response = await api.get(
-            `${routeSubject}/summaries/${classID}`
-        )
+        const response = await api.get(`${routeSubject}/summaries/${classID}`)
         if (response.status !== 200) {
             throw new Error('API request error')
         }
@@ -95,9 +96,7 @@ export const updateStudentScoresByStudentSubjectClassID = async (
     try {
         const response = await api.put(
             `scoring/student/${subjectID}/${classID}`,
-            {
-                score: data,
-            }
+            data
         )
         if (response.status !== 200) {
             throw new Error('API request error')
