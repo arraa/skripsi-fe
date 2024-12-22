@@ -102,8 +102,9 @@ const ScoringEditForm = () => {
     }, [studentID, subjectID, classID, reset])
 
     const onSubmit = (data: StudentScoringEditFormProps) => {
-        if (classID && subjectID) {
+        if (classID && subjectID && studentID) {
             updateStudentScoresByStudentSubjectClassID(
+                parseInt(studentID),
                 parseInt(classID),
                 parseInt(subjectID),
                 data

@@ -89,13 +89,14 @@ export const getStudentScoresByStudentSubjectClassID = async (
 }
 
 export const updateStudentScoresByStudentSubjectClassID = async (
+    studentID: number,
     classID: number,
     subjectID: number,
     data: StudentScoringEditFormProps
 ): Promise<AxiosResponse> => {
     try {
         const response = await api.put(
-            `scoring/student/${subjectID}/${classID}`,
+            `scoring/student/${studentID}/${subjectID}/${classID}`,
             data
         )
         if (response.status !== 200) {
