@@ -20,7 +20,15 @@ import type { InferInput } from 'valibot'
 import { useForm } from 'react-hook-form'
 import { ControllerField } from '../common/form/textField'
 import { ControllerSelectField } from '../common/form/selectField'
-import { check, email, maxLength, minLength, object, pipe, string } from 'valibot'
+import {
+    check,
+    email,
+    maxLength,
+    minLength,
+    object,
+    pipe,
+    string,
+} from 'valibot'
 import { AxiosResponse } from 'axios'
 import { useSearchParams } from 'next/navigation'
 import {
@@ -42,7 +50,11 @@ const ObjectSchema = object({
     place_of_birth: pipe(string(), minLength(1, 'Place of Birth is required')),
     date_of_birth: pipe(string(), minLength(1, 'Date of Birth is required')),
     religion: pipe(string(), minLength(1, 'Religion is required')),
-    address: pipe(string(), minLength(1, 'Address is required'),  maxLength(200, 'Teacher Address too long')),
+    address: pipe(
+        string(),
+        minLength(1, 'Address is required'),
+        maxLength(200, 'Teacher Address too long')
+    ),
     num_phone: pipe(
         string(),
         minLength(1, 'Phone Number is required'),
@@ -138,7 +150,6 @@ const TeacherForm = () => {
                 setSubjectList(
                     response.data.subjects.map((item) => ({
                         id: item.subject_id,
-                        grade: item.grade,
                         name: item.subject_name,
                     }))
                 )
@@ -355,7 +366,7 @@ const TeacherForm = () => {
                             >
                                 {subjectList.map((item) => (
                                     <MenuItem key={item.id} value={item.id}>
-                                        {`${item.grade} - ${item.name}`}
+                                        {item.name}
                                     </MenuItem>
                                 ))}
                             </Select>
