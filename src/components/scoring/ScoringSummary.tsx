@@ -121,7 +121,7 @@ const ScoringSummary = () => {
                     </select>
                 </div>
             </div>
-            <div className="flex flex-col gap-4 rounded-3xl p-5 text-[#0c427770] shadow-md">
+            <div className="flex flex-col gap-4 rounded-3xl p-5 text-[#0C4177] shadow-md">
                 <Table data={scoreSummary} columnData={columns} />
             </div>
         </Box>

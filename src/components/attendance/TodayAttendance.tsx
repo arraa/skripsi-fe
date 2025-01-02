@@ -138,7 +138,7 @@ const AttendanceToday = () => {
                     </select>
                 </div>
             </div>
-            <div className="flex h-[80vh] flex-col gap-4 rounded-3xl bg-white p-5 text-[#0c427770] shadow-md">
+            <div className="flex h-[80vh] flex-col gap-4 rounded-3xl bg-white p-5 text-[#0C4177] shadow-md">
                 <div className="flex items-center justify-between">
                     <Button onClick={handleAddAttendance} size={'default'}>
                         add Attendance

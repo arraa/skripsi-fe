@@ -272,7 +272,7 @@ const FinalizeClassGenerator = () => {
                             <option
                                 key={classItem}
                                 value={classItem}
-                                className="text-[#0c427770] "
+                                className="text-[#0C4177] "
                             >
                                 Grade&ensp; {classItem}
                             </option>
@@ -282,7 +282,7 @@ const FinalizeClassGenerator = () => {
             </div>
 
             <form onSubmit={handleSubmit(onSubmit)}>
-                <div className="flex  flex-col gap-4 rounded-3xl bg-white p-5 text-[#0c427770] shadow-md">
+                <div className="flex  flex-col gap-4 rounded-3xl bg-white p-5 text-[#0C4177] shadow-md">
                     <Box>
                         <StyledTabs
                             value={valueData}

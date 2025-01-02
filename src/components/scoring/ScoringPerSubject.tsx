@@ -142,7 +142,7 @@ const ScoringPerSubject = () => {
                                     `${item.subject_id}`,
                                     `${item.class_name_id}`,
                                 ]}
-                                className="text-[#0c427770]"
+                                className="text-[#0C4177]"
                             >
                                 {item.grade_class_name} - {item.subject_name}
                             </option>
@@ -150,7 +150,7 @@ const ScoringPerSubject = () => {
                     </select>
                 </div>
             </div>
-            <div className="flex  flex-col gap-4 rounded-3xl p-5 text-[#0c427770] shadow-md">
+            <div className="flex  flex-col gap-4 rounded-3xl p-5 text-[#0C4177] shadow-md">
                 <div className="flex justify-end">
                     <Button
                         size={'default'}

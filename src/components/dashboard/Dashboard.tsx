@@ -45,7 +45,7 @@ const Dashboard = (props: any) => {
         <>
             {roles === 'staff' || roles === 'admin' ? (
                 <Box sx={{ padding: 2, width: '87vw' }}>
-                    <div className="h-[95vh]   rounded-3xl bg-white p-5 text-[#0c427770] shadow-md">
+                    <div className="h-[95vh]   rounded-3xl bg-white p-5 text-[#0C4177] shadow-md">
                         <CalendarComponent
                             {...props}
                             plugins={[
