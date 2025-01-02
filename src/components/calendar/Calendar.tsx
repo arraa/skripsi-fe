@@ -169,19 +169,19 @@ const Calendar = (props: any) => {
     const headerToolbar =
         roles === 'staff' || roles === 'admin'
             ? {
-                start: 'addEventButton', // Show 'Add Event' button for staff/admin
-                center: 'title', // Calendar title
-                end: 'prev,next today', // Default navigation buttons
-            }
+                  start: 'addEventButton', // Show 'Add Event' button for staff/admin
+                  center: 'title', // Calendar title
+                  end: 'prev,next today', // Default navigation buttons
+              }
             : {
-                start: '', // No custom button for other roles
-                center: 'title',
-                end: 'prev,next today',
-            }
+                  start: '', // No custom button for other roles
+                  center: 'title',
+                  end: 'prev,next today',
+              }
 
     return (
         <Box sx={{ padding: 2, width: '87vw' }}>
-            <div className="h-[95vh]   rounded-3xl bg-white p-5 text-[#0c427770] shadow-md">
+            <div className="h-[95vh]   rounded-3xl bg-white p-5 text-[#0C4177] shadow-md">
                 <CalendarComponent
                     {...props}
                     plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]} // Pass plugins here

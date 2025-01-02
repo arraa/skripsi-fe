@@ -20,7 +20,15 @@ import type { InferInput } from 'valibot'
 import { useForm } from 'react-hook-form'
 import { ControllerField } from '../common/form/textField'
 import { ControllerSelectField } from '../common/form/selectField'
-import { check, email, maxLength, minLength, object, pipe, string } from 'valibot'
+import {
+    check,
+    email,
+    maxLength,
+    minLength,
+    object,
+    pipe,
+    string,
+} from 'valibot'
 import { AxiosResponse } from 'axios'
 import { useSearchParams } from 'next/navigation'
 import {
@@ -42,7 +50,11 @@ const ObjectSchema = object({
     place_of_birth: pipe(string(), minLength(1, 'Place of Birth is required')),
     date_of_birth: pipe(string(), minLength(1, 'Date of Birth is required')),
     religion: pipe(string(), minLength(1, 'Religion is required')),
-    address: pipe(string(), minLength(1, 'Address is required'),  maxLength(200, 'Teacher Address too long')),
+    address: pipe(
+        string(),
+        minLength(1, 'Address is required'),
+        maxLength(200, 'Teacher Address too long')
+    ),
     num_phone: pipe(
         string(),
         minLength(1, 'Phone Number is required'),
@@ -211,7 +223,7 @@ const TeacherForm = () => {
                 </h1>
             )}
 
-            <div className="min-h-[80vh] w-full rounded-3xl bg-white p-5 text-[#0c427770] shadow-md">
+            <div className="min-h-[80vh] w-full rounded-3xl bg-white p-5 text-[#0C4177] shadow-md">
                 {/* <ImportData
                     setOpen={handleDialog}
                     handleImport={handleFileUpload}

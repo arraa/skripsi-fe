@@ -91,7 +91,7 @@ const TeacherData = () => {
             <h1 className="mb-6 mt-2 text-3xl font-bold text-[#0C4177]">
                 Teacher Personal Data
             </h1>
-            <div className="flex  flex-col rounded-3xl  bg-white px-5 py-4 text-[#0c427770] shadow-md ">
+            <div className="flex  flex-col rounded-3xl  bg-white px-5 py-4 text-[#0C4177] shadow-md ">
                 <div className="mb-2 flex items-center justify-between">
                     <div className="flex gap-4">
                         <SearchBar

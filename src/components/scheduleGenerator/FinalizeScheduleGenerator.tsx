@@ -259,7 +259,7 @@ const FinalizeScheduleGenerator = () => {
                 </div>
             </div>
 
-            <div className="flex  flex-col gap-4 rounded-3xl bg-white p-5 text-[#0c427770] shadow-md">
+            <div className="flex  flex-col gap-4 rounded-3xl bg-white p-5 text-[#0C4177] shadow-md">
                 <div className="flex justify-between">
                     <StyledTabs
                         value={value}

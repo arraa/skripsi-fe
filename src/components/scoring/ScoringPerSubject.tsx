@@ -74,23 +74,23 @@ const ScoringPerSubject = () => {
                 setScoreClassSubject(
                     response.data.score
                         ? response.data.score.map((item, idx) => {
-                            return {
-                                id: idx,
-                                StudentID: item.StudentID,
-                                ScoringID: item.ScoringID,
-                                StudentName: item.StudentName,
-                                Scores: item.Scores.map((score) => {
-                                    return {
-                                        SubjectID: score.SubjectID,
-                                        AssignmentID: score.AssignmentID,
-                                        TeacherID: score.TeacherID,
-                                        AssignmentType: score.AssignmentType,
-                                        SubjectName: score.SubjectName,
-                                        Score: score.Score,
-                                    }
-                                }),
-                            }
-                        })
+                              return {
+                                  id: idx,
+                                  StudentID: item.StudentID,
+                                  ScoringID: item.ScoringID,
+                                  StudentName: item.StudentName,
+                                  Scores: item.Scores.map((score) => {
+                                      return {
+                                          SubjectID: score.SubjectID,
+                                          AssignmentID: score.AssignmentID,
+                                          TeacherID: score.TeacherID,
+                                          AssignmentType: score.AssignmentType,
+                                          SubjectName: score.SubjectName,
+                                          Score: score.Score,
+                                      }
+                                  }),
+                              }
+                          })
                         : []
                 )
             })
@@ -99,12 +99,12 @@ const ScoringPerSubject = () => {
 
     const uniqueAssignmentTypes = scoreClassSubject
         ? scoreClassSubject
-            .slice()
-            .sort((a, b) => b.Scores.length - a.Scores.length)
-            .flatMap((item) =>
-                item.Scores.map((Scores) => Scores.AssignmentType)
-            )
-            .filter((value, index, self) => self.indexOf(value) === index)
+              .slice()
+              .sort((a, b) => b.Scores.length - a.Scores.length)
+              .flatMap((item) =>
+                  item.Scores.map((Scores) => Scores.AssignmentType)
+              )
+              .filter((value, index, self) => self.indexOf(value) === index)
         : []
 
     const handleClickOpen = (classId: number) => {}
@@ -142,7 +142,7 @@ const ScoringPerSubject = () => {
                                     `${item.subject_id}`,
                                     `${item.class_name_id}`,
                                 ]}
-                                className="text-[#0c427770]"
+                                className="text-[#0C4177]"
                             >
                                 {item.grade_class_name} - {item.subject_name}
                             </option>
@@ -150,7 +150,7 @@ const ScoringPerSubject = () => {
                     </select>
                 </div>
             </div>
-            <div className="flex  flex-col gap-4 rounded-3xl p-5 text-[#0c427770] shadow-md">
+            <div className="flex  flex-col gap-4 rounded-3xl p-5 text-[#0C4177] shadow-md">
                 <div className="flex justify-end">
                     <Button
                         size={'default'}

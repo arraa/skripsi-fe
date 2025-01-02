@@ -165,7 +165,7 @@ const ClassGenerator = () => {
                 </h1>
             </div>
             {/* <div className=' h-[80vh] bg-white'> */}
-            <div className="flex h-[80vh] flex-col gap-4 rounded-3xl p-5 text-[#0c427770] shadow-md">
+            <div className="flex h-[80vh] flex-col gap-4 rounded-3xl p-5 text-[#0C4177] shadow-md">
                 {/* if you filter not ready you can change data={data} */}
                 <div className="flex justify-end">
                     <Button onClick={handleGenerateClass} size={'default'}>
