@@ -74,23 +74,23 @@ const ScoringPerSubject = () => {
                 setScoreClassSubject(
                     response.data.score
                         ? response.data.score.map((item, idx) => {
-                            return {
-                                id: idx,
-                                StudentID: item.StudentID,
-                                ScoringID: item.ScoringID,
-                                StudentName: item.StudentName,
-                                Scores: item.Scores.map((score) => {
-                                    return {
-                                        SubjectID: score.SubjectID,
-                                        AssignmentID: score.AssignmentID,
-                                        TeacherID: score.TeacherID,
-                                        AssignmentType: score.AssignmentType,
-                                        SubjectName: score.SubjectName,
-                                        Score: score.Score,
-                                    }
-                                }),
-                            }
-                        })
+                              return {
+                                  id: idx,
+                                  StudentID: item.StudentID,
+                                  ScoringID: item.ScoringID,
+                                  StudentName: item.StudentName,
+                                  Scores: item.Scores.map((score) => {
+                                      return {
+                                          SubjectID: score.SubjectID,
+                                          AssignmentID: score.AssignmentID,
+                                          TeacherID: score.TeacherID,
+                                          AssignmentType: score.AssignmentType,
+                                          SubjectName: score.SubjectName,
+                                          Score: score.Score,
+                                      }
+                                  }),
+                              }
+                          })
                         : []
                 )
             })
@@ -99,12 +99,12 @@ const ScoringPerSubject = () => {
 
     const uniqueAssignmentTypes = scoreClassSubject
         ? scoreClassSubject
-            .slice()
-            .sort((a, b) => b.Scores.length - a.Scores.length)
-            .flatMap((item) =>
-                item.Scores.map((Scores) => Scores.AssignmentType)
-            )
-            .filter((value, index, self) => self.indexOf(value) === index)
+              .slice()
+              .sort((a, b) => b.Scores.length - a.Scores.length)
+              .flatMap((item) =>
+                  item.Scores.map((Scores) => Scores.AssignmentType)
+              )
+              .filter((value, index, self) => self.indexOf(value) === index)
         : []
 
     const handleClickOpen = (classId: number) => {}
