@@ -17,17 +17,17 @@ export const SIDEBAR = [
                 name: 'Teacher',
                 link: '/personal-data/teacher',
             },
-            // {
-            //     name: 'Staff',
-            //     link: '/personal-data/staff',
-            // },
+            {
+                name: 'Staff',
+                link: '/personal-data/staff',
+            },
         ],
     },
-    {
-        name: 'Silabus',
-        link: '/silabus',
-        img: '/icon/icon-silabus.svg',
-    },
+    // {
+    //     name: 'Silabus',
+    //     link: '/silabus',
+    //     img: '/icon/icon-silabus.svg',
+    // },
     {
         name: 'Attendance',
         link: '/attendance',

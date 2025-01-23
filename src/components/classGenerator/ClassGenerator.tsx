@@ -64,6 +64,273 @@ const ClassGenerator = () => {
         console.log('handleClickOpen clicked', classId)
     }
 
+    const datadummy = [
+        {
+            CreatedAt: '2025-01-03T13:29:41.18305+07:00',
+            DeletedAt: null,
+            Grade: {
+                CreatedAt: '2025-01-03T13:29:41.179875+07:00',
+                DeletedAt: null,
+                UpdatedAt: '2025-01-03T13:29:41.179875+07:00',
+                grade: 7,
+                id: 1,
+            },
+            Teacher: {
+                ClassNames: null,
+                CreatedAt: '2025-01-03T13:29:41.174816+07:00',
+                DeletedAt: null,
+                TeacherID: 1,
+                TeacherSubject: [{}, {}, {}, {}],
+                UpdatedAt: '2025-01-03T13:29:41.174816+07:00',
+                User: {
+                    id: 1,
+                    name: 'John Doe',
+                    gender: 'Male',
+                    place_of_birth: 'Jakarta',
+                    date_of_birth:
+                        '2025-01-03T13:29:40.812406+07:00',
+                },
+                id: 0,
+                id_user: 1,
+                teacher_id: 1,
+                teaching_hour: 20,
+                user_id: 1,
+            },
+            UpdatedAt: '2025-01-03T13:29:41.18305+07:00',
+            id: 1,
+            id_grade: 1,
+            id_teacher: 1,
+            name: 'A',
+        },
+        {
+            CreatedAt: '2025-01-03T13:29:41.18305+07:00',
+            DeletedAt: null,
+            Grade: {
+                CreatedAt: '2025-01-03T13:29:41.179875+07:00',
+                DeletedAt: null,
+                UpdatedAt: '2025-01-03T13:29:41.179875+07:00',
+                grade: 7,
+                id: 4,
+            },
+            Teacher: {
+                ClassNames: null,
+                CreatedAt: '2025-01-03T13:29:41.174816+07:00',
+                DeletedAt: null,
+                TeacherID: 4,
+                TeacherSubject: [{}, {}, {}, {}],
+                UpdatedAt: '2025-01-03T13:29:41.174816+07:00',
+                User: {
+                    id: 4,
+                    name: 'Emily White',
+                    gender: 'Female',
+                    place_of_birth: 'Medan',
+                    date_of_birth:
+                        '2025-01-03T13:29:40.812406+07:00',
+                },
+                id: 3,
+                id_user: 4,
+                teacher_id: 4,
+                teaching_hour: 22,
+                user_id: 4,
+            },
+            UpdatedAt: '2025-01-03T13:29:41.18305+07:00',
+            id: 4,
+            id_grade: 4,
+            id_teacher: 4,
+            name: 'D',
+        },
+        {
+            CreatedAt: '2025-01-03T13:29:41.18305+07:00',
+            DeletedAt: null,
+            Grade: {
+                CreatedAt: '2025-01-03T13:29:41.179875+07:00',
+                DeletedAt: null,
+                UpdatedAt: '2025-01-03T13:29:41.179875+07:00',
+                grade: 7,
+                id: 6,
+            },
+            Teacher: {
+                ClassNames: null,
+                CreatedAt: '2025-01-03T13:29:41.174816+07:00',
+                DeletedAt: null,
+                TeacherID: 6,
+                TeacherSubject: [{}, {}, {}, {}],
+                UpdatedAt: '2025-01-03T13:29:41.174816+07:00',
+                User: {
+                    id: 6,
+                    name: 'Robert Green',
+                    gender: 'Male',
+                    place_of_birth: 'Medan',
+                    date_of_birth:
+                        '2025-01-03T13:29:40.812406+07:00',
+                },
+                id: 5,
+                id_user: 6,
+                teacher_id: 6,
+                teaching_hour: 16,
+                user_id: 6,
+            },
+            UpdatedAt: '2025-01-03T13:29:41.18305+07:00',
+            id: 6,
+            id_grade: 6,
+            id_teacher: 6,
+            name: 'B',
+        },
+     
+        {
+            CreatedAt: '2025-01-03T13:29:41.18305+07:00',
+            DeletedAt: null,
+            Grade: {
+                CreatedAt: '2025-01-03T13:29:41.179875+07:00',
+                DeletedAt: null,
+                UpdatedAt: '2025-01-03T13:29:41.179875+07:00',
+                grade: 8,
+                id: 2,
+            },
+            Teacher: {
+                ClassNames: null,
+                CreatedAt: '2025-01-03T13:29:41.174816+07:00',
+                DeletedAt: null,
+                TeacherID: 2,
+                TeacherSubject: [{}, {}, {}, {}],
+                UpdatedAt: '2025-01-03T13:29:41.174816+07:00',
+                User: {
+                    id: 2,
+                    name: 'Jane Smith',
+                    gender: 'Female',
+                    place_of_birth: 'Bandung',
+                    date_of_birth:
+                        '2025-01-03T13:29:40.812406+07:00',
+                },
+                id: 1,
+                id_user: 2,
+                teacher_id: 2,
+                teaching_hour: 25,
+                user_id: 2,
+            },
+            UpdatedAt: '2025-01-03T13:29:41.18305+07:00',
+            id: 2,
+            id_grade: 2,
+            id_teacher: 2,
+            name: 'A',
+        },
+        {
+            CreatedAt: '2025-01-03T13:29:41.18305+07:00',
+            DeletedAt: null,
+            Grade: {
+                CreatedAt: '2025-01-03T13:29:41.179875+07:00',
+                DeletedAt: null,
+                UpdatedAt: '2025-01-03T13:29:41.179875+07:00',
+                grade: 8,
+                id: 5,
+            },
+            Teacher: {
+                ClassNames: null,
+                CreatedAt: '2025-01-03T13:29:41.174816+07:00',
+                DeletedAt: null,
+                TeacherID: 5,
+                TeacherSubject: [{}, {}, {}, {}],
+                UpdatedAt: '2025-01-03T13:29:41.174816+07:00',
+                User: {
+                    id: 5,
+                    name: 'Sarah Brown',
+                    gender: 'Female',
+                    place_of_birth: 'Yogyakarta',
+                    date_of_birth:
+                        '2025-01-03T13:29:40.812406+07:00',
+                },
+                id: 4,
+                id_user: 5,
+                teacher_id: 5,
+                teaching_hour: 18,
+                user_id: 5,
+            },
+            UpdatedAt: '2025-01-03T13:29:41.18305+07:00',
+            id: 5,
+            id_grade: 5,
+            id_teacher: 5,
+            name: 'B',
+        },
+        {
+            CreatedAt: '2025-01-03T13:29:41.18305+07:00',
+            DeletedAt: null,
+            Grade: {
+                CreatedAt: '2025-01-03T13:29:41.179875+07:00',
+                DeletedAt: null,
+                UpdatedAt: '2025-01-03T13:29:41.179875+07:00',
+                grade: 8,
+                id: 7,
+            },
+            Teacher: {
+                ClassNames: null,
+                CreatedAt: '2025-01-03T13:29:41.174816+07:00',
+                DeletedAt: null,
+                TeacherID: 7,
+                TeacherSubject: [{}, {}, {}, {}],
+                UpdatedAt: '2025-01-03T13:29:41.174816+07:00',
+                User: {
+                    id: 7,
+                    name: 'Anna Lee',
+                    gender: 'Female',
+                    place_of_birth: 'Bali',
+                    date_of_birth:
+                        '2025-01-03T13:29:40.812406+07:00',
+                },
+                id: 6,
+                id_user: 7,
+                teacher_id: 7,
+                teaching_hour: 20,
+                user_id: 7,
+            },
+            UpdatedAt: '2025-01-03T13:29:41.18305+07:00',
+            id: 7,
+            id_grade: 7,
+            id_teacher: 7,
+            name: 'C',
+        },
+        {
+            CreatedAt: '2025-01-03T13:29:41.18305+07:00',
+            DeletedAt: null,
+            Grade: {
+                CreatedAt: '2025-01-03T13:29:41.179875+07:00',
+                DeletedAt: null,
+                UpdatedAt: '2025-01-03T13:29:41.179875+07:00',
+                grade: 9,
+                id: 3,
+            },
+            Teacher: {
+                ClassNames: null,
+                CreatedAt: '2025-01-03T13:29:41.174816+07:00',
+                DeletedAt: null,
+                TeacherID: 3,
+                TeacherSubject: [{}, {}, {}, {}],
+                UpdatedAt: '2025-01-03T13:29:41.174816+07:00',
+                User: {
+                    id: 3,
+                    name: 'Michael Lee',
+                    gender: 'Male',
+                    place_of_birth: 'Surabaya',
+                    date_of_birth:
+                        '2025-01-03T13:29:40.812406+07:00',
+                },
+                id: 2,
+                id_user: 3,
+                teacher_id: 3,
+                teaching_hour: 15,
+                user_id: 3,
+            },
+            UpdatedAt: '2025-01-03T13:29:41.18305+07:00',
+            id: 3,
+            id_grade: 3,
+            id_teacher: 3,
+            name: 'A',
+        },
+     
+       
+       
+    ]
+
+
     const handleClickOpen = (classId: number) => {
         setSelectedClassId(classId.toString())
         setOpenDelete(true)
@@ -172,7 +439,7 @@ const ClassGenerator = () => {
                         Add Class
                     </Button>
                 </div>
-                <Table data={rows} columnData={columns} />
+                <Table data={datadummy} columnData={columns} />
                 <div className="flex justify-end">
                     <Link
                         href={'/generator/class/finalize'}

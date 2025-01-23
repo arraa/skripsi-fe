@@ -486,7 +486,7 @@ const StudentForm = () => {
                         <ControllerField
                             control={control}
                             name="address"
-                            label="address"
+                            label="Address"
                             placeholder="Please input student’s address"
                             errors={errors.address}
                             value={data?.address}
@@ -494,7 +494,7 @@ const StudentForm = () => {
                         <ControllerField
                             control={control}
                             name="number_phone"
-                            label="Number Phone"
+                            label="Phone Number"
                             placeholder="Please input student’s Number Phone"
                             errors={errors.number_phone}
                             value={data?.number_phone}
