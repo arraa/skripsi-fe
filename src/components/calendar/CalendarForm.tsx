@@ -167,17 +167,17 @@ const CalendarForm = () => {
                                             value={
                                                 field.value
                                                     ? dayjs(
-                                                          field.value,
-                                                          'YYYY-MM-DD'
-                                                      )
+                                                        field.value,
+                                                        'YYYY-MM-DD'
+                                                    )
                                                     : null
                                             }
                                             onChange={(newValue) => {
                                                 console.log(newValue)
                                                 const formattedDate = newValue
                                                     ? dayjs(newValue).format(
-                                                          'YYYY-MM-DD'
-                                                      )
+                                                        'YYYY-MM-DD'
+                                                    )
                                                     : ''
                                                 field.onChange(formattedDate) // Update with a string value
                                             }}
@@ -218,16 +218,16 @@ const CalendarForm = () => {
                                             value={
                                                 field.value
                                                     ? dayjs(
-                                                          field.value,
-                                                          'HH:mm'
-                                                      )
+                                                        field.value,
+                                                        'HH:mm'
+                                                    )
                                                     : null
                                             } // Convert string to Day.js
                                             onChange={(newValue) => {
                                                 const formattedTime = newValue
                                                     ? dayjs(newValue).format(
-                                                          'HH:mm'
-                                                      )
+                                                        'HH:mm'
+                                                    )
                                                     : ''
                                                 field.onChange(formattedTime) // Store as a string in the form state
                                             }}
@@ -260,16 +260,16 @@ const CalendarForm = () => {
                                             value={
                                                 field.value
                                                     ? dayjs(
-                                                          field.value,
-                                                          'HH:mm'
-                                                      )
+                                                        field.value,
+                                                        'HH:mm'
+                                                    )
                                                     : null
                                             } // Convert string to Day.js
                                             onChange={(newValue) => {
                                                 const formattedTime = newValue
                                                     ? dayjs(newValue).format(
-                                                          'HH:mm'
-                                                      )
+                                                        'HH:mm'
+                                                    )
                                                     : ''
                                                 field.onChange(formattedTime) // Store as a string in the form state
                                             }}

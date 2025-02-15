@@ -599,8 +599,8 @@ const ScheduleGeneratorForm = () => {
                                                                     {
                                                                         errors
                                                                             .rows?.[
-                                                                            index
-                                                                        ]
+                                                                                index
+                                                                            ]
                                                                             ?.TeacherHour
                                                                             ?.message
                                                                     }
@@ -731,8 +731,8 @@ const ScheduleGeneratorForm = () => {
                                                                     {
                                                                         errors
                                                                             .rows?.[
-                                                                            index
-                                                                        ]
+                                                                                index
+                                                                            ]
                                                                             ?.classID
                                                                             ?.message
                                                                     }
