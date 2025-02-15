@@ -150,7 +150,6 @@ const TeacherForm = () => {
                 setSubjectList(
                     response.data.subjects.map((item) => ({
                         id: item.subject_id,
-                        grade: item.grade,
                         name: item.subject_name,
                     }))
                 )
@@ -367,7 +366,7 @@ const TeacherForm = () => {
                             >
                                 {subjectList.map((item) => (
                                     <MenuItem key={item.id} value={item.id}>
-                                        {`${item.grade} - ${item.name}`}
+                                        {item.name}
                                     </MenuItem>
                                 ))}
                             </Select>

@@ -7,14 +7,11 @@ import { SetStateAction, useEffect, useMemo, useState } from 'react'
 import { Button } from '../common/button/button'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useForm } from 'react-hook-form'
-import { array, InferInput, minLength, object, pipe, string } from 'valibot'
-import { getAllStudentAttendanceByClassIDAndDate } from '@/app/api/attendance'
+import { array, object, string } from 'valibot'
 import { columnDataScoringForm } from './column'
 import {
     StudentScoringPerSubject,
-    StudentScoringPerSubjectForm,
 } from './types/types'
-import { AttendanceListFormProps } from '../attendance/type/types'
 import { validateCreateOrGetAsgType } from '@/app/api/scoring'
 import { getSubjectClassNameById } from '@/app/api/subject'
 import { createStudentsScoreByClassAndSubject } from '@/app/api/score'
@@ -24,8 +21,6 @@ const ObjectSchema = array(
         reason: string(),
     })
 )
-
-type ObjectInput = InferInput<typeof ObjectSchema>
 
 const ScoringSubjectForm = () => {
     const searchParams = useSearchParams()

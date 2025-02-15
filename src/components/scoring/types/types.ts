@@ -48,3 +48,13 @@ export interface SubjectClassDataProps {
     grade_class_name: string
     subject_name: string
 }
+
+export interface StudentScoringEditFormProps {
+    StudentName: string
+    SubjectName: string
+    Scores: {
+        AssignmentID: number
+        AssignmentType: string
+        Score: number
+    }[]
+}

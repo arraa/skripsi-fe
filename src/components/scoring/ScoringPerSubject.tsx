@@ -73,9 +73,9 @@ const ScoringPerSubject = () => {
             ).then((response) => {
                 setScoreClassSubject(
                     response.data.score
-                        ? response.data.score.map((item, idx) => {
+                        ? response.data.score.map((item) => {
                             return {
-                                id: idx,
+                                id: item.StudentID,
                                 StudentID: item.StudentID,
                                 ScoringID: item.ScoringID,
                                 StudentName: item.StudentName,
@@ -112,7 +112,7 @@ const ScoringPerSubject = () => {
     const router = useRouter()
 
     const handleUpdate = (id: number) => {
-        router.push(`/scoring/scoring-form?type=update&student=${id}`)
+        router.push(`/scoring/scoring-form?type=update&student_id=${id}&class_id=${selectedClass?.ClassID}&subject_id=${selectedClass?.SubjectID}`)
     }
 
     const columns = columnData(handleUpdate, uniqueAssignmentTypes)

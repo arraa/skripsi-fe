@@ -36,7 +36,7 @@ import {
     useState,
 } from 'react'
 import { Button } from '../common/button/button'
-import { subjectListProps } from './types/types'
+import { SubjectListProps } from './types/types'
 import { getAllSubject } from '@/app/api/subject'
 
 const teacherData = [
@@ -335,7 +335,7 @@ const ObjectSchema = object({
 })
 
 const ScheduleGeneratorForm = () => {
-    const [subjectList, setSubjectList] = useState<subjectListProps[]>([])
+    const [subjectList, setSubjectList] = useState<SubjectListProps[]>([])
 
     const {
         control,
@@ -399,8 +399,8 @@ const ScheduleGeneratorForm = () => {
                     uniqueSubjects.map((item) => ({
                         id: item.subject_id,
                         name: item.subject_name,
-                        durationPerSession: item.subject_duration_Session / 60,
-                        durationPerWeek: item.subject_duration_Week / 60,
+                        durationPerSession: item.subject_duration_session / 60,
+                        durationPerWeek: item.subject_duration_per_week / 60,
                     }))
                 )
             })

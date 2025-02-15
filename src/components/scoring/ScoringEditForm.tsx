@@ -386,8 +386,8 @@ const ScoringEditForm = () => {
                                                                 {
                                                                     errors
                                                                         .Scoring?.[
-                                                                        index
-                                                                    ]?.Score
+                                                                            index
+                                                                        ]?.Score
                                                                         ?.message
                                                                 }
                                                             </p>

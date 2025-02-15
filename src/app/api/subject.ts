@@ -51,7 +51,6 @@ export const getScoringCLassList = async (): Promise<
     }
 }
 
-// TODO: remove this if not used
 export const getSubjectClassNameById = async (
     subjectID: number,
     classID: number

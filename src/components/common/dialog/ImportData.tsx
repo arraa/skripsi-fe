@@ -87,9 +87,9 @@ export default function ImportData(props: ImportData) {
                         <hr className="mt-1 border-[#0c42777c]"></hr>
                     </DialogTitle>
                     <DialogContent>
-                        <div className='w-full flex justify-center items-center'>
+                        <div className='flex w-full items-center justify-center'>
                             <a
-                                className=" text-center size-full rounded-md border border-[#0C4177] bg-white px-4 py-2 font-bold text-[#0C4177]"
+                                className=" size-full rounded-md border border-[#0C4177] bg-white px-4 py-2 text-center font-bold text-[#0C4177]"
                                 href="/data_siswa_25.xlsx"
                                 download="data_siswa_25.xlsx"
                             >
