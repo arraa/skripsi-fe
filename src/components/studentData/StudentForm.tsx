@@ -410,7 +410,7 @@ const StudentForm = () => {
                 </h1>
             )}
 
-            <div className="min-h-screen w-full rounded-3xl bg-white p-5 text-[#0c427770] shadow-md">
+            <div className="min-h-screen w-full rounded-3xl bg-white p-5 text-[#0C4177] shadow-md">
                 <ImportData
                     setOpen={handleDialog}
                     handleImport={handleFileUpload}
@@ -486,7 +486,7 @@ const StudentForm = () => {
                         <ControllerField
                             control={control}
                             name="address"
-                            label="address"
+                            label="Address"
                             placeholder="Please input student’s address"
                             errors={errors.address}
                             value={data?.address}
@@ -494,7 +494,7 @@ const StudentForm = () => {
                         <ControllerField
                             control={control}
                             name="number_phone"
-                            label="Number Phone"
+                            label="Phone Number"
                             placeholder="Please input student’s Number Phone"
                             errors={errors.number_phone}
                             value={data?.number_phone}

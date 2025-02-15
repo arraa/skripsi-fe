@@ -222,7 +222,7 @@ const TeacherForm = () => {
                 </h1>
             )}
 
-            <div className="min-h-[80vh] w-full rounded-3xl bg-white p-5 text-[#0c427770] shadow-md">
+            <div className="min-h-[80vh] w-full rounded-3xl bg-white p-5 text-[#0C4177] shadow-md">
                 {/* <ImportData
                     setOpen={handleDialog}
                     handleImport={handleFileUpload}

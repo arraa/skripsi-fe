@@ -6,7 +6,14 @@ import TableContainer from '@mui/material/TableContainer'
 import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
 import Paper from '@mui/material/Paper'
-import { Box, Chip, IconButton, MenuItem, OutlinedInput, Select } from '@mui/material'
+import {
+    Box,
+    Chip,
+    IconButton,
+    MenuItem,
+    OutlinedInput,
+    Select,
+} from '@mui/material'
 import { Controller, useForm } from 'react-hook-form'
 import {
     array,
@@ -425,7 +432,6 @@ const ScheduleGeneratorForm = () => {
                             selectedClasses: any[],
                             currentTeacherId: number
                         ) => {
- 
                             const filteredSelectedClasses =
                                 selectedClasses.filter((selectedClass) => {
                                     const isAssignedToSameTeacher =
@@ -475,7 +481,7 @@ const ScheduleGeneratorForm = () => {
                         return (
                             <div
                                 key={subject.id}
-                                className="min-h-screen rounded-3xl bg-white p-5 text-[#0c427770] shadow-md"
+                                className="min-h-screen rounded-3xl bg-white p-5 text-[#0C4177] shadow-md"
                             >
                                 <div>
                                     <h1 className="my-8 text-xl text-[#0C4177]">
@@ -691,7 +697,6 @@ const ScheduleGeneratorForm = () => {
                                                                                                 label={
                                                                                                     className
                                                                                                 }
-                                                                                           
                                                                                             />
                                                                                         )
                                                                                     )}

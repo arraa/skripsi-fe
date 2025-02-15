@@ -99,7 +99,7 @@ const AttendanceSummary = () => {
                 </div>
             </div>
             {/* <div className=' h-[80vh] bg-white'> */}
-            <div className="flex h-[80vh] flex-col gap-4 rounded-3xl bg-white p-5 text-[#0c427770] shadow-md">
+            <div className="flex h-[80vh] flex-col gap-4 rounded-3xl bg-white p-5 text-[#0C4177] shadow-md">
                 <Table data={attendanceData} columnData={columnDataSummary()} />
             </div>
         </Box>

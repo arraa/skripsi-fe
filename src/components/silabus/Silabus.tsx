@@ -329,7 +329,7 @@ const Silabus = () => {
                 </div>
             </div>
 
-            <div className="flex  flex-col rounded-3xl  bg-white px-5 text-[#0c427770] shadow-md">
+            <div className="flex  flex-col rounded-3xl  bg-white px-5 text-[#0C4177] shadow-md">
                 <div className="px-10 pt-8 ">
                     <StyledTabs
                         value={value}

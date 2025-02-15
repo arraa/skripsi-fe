@@ -58,7 +58,7 @@ export default function Delete(props: DeleteProps) {
             </DialogTitle>
             <DialogContent>
                 <DialogContentText id='alert-dialog-description'>
-                    Are you sure want to delete student ?
+                    Are you sure want to delete this data ?
                 </DialogContentText>
             </DialogContent>
             <DialogActions>

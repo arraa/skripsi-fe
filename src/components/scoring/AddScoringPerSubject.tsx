@@ -142,7 +142,7 @@ const ScoringSubjectForm = () => {
                 </h1>
             </div>
             {/* <div className=' h-[80vh] bg-white'> */}
-            <div className="flex flex-col gap-4 rounded-3xl bg-white p-5 text-[#0c427770] shadow-md">
+            <div className="flex flex-col gap-4 rounded-3xl bg-white p-5 text-[#0C4177] shadow-md">
                 <form
                     onSubmit={handleSubmit(onSubmit)}
                     className="text-[#353535]"

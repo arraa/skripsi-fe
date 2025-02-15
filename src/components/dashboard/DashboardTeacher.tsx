@@ -133,7 +133,7 @@ const DashboardTeacher = (props: any) => {
                     Hi, Teacher!
                 </div>
 
-                {roles === 'homeroom' && (
+                {roles === 'homeroom_teacher' && (
                     <Link
                         href="/attendance/today"
                         className="flex h-fit items-center justify-center rounded-md bg-[#31426E] px-20 py-3 text-center font-bold  text-white"
@@ -145,7 +145,7 @@ const DashboardTeacher = (props: any) => {
             <div className="flex flex-col justify-between gap-y-10">
                 <div className="flex w-full flex-row gap-x-2">
                     <div className="flex h-[40vh] w-full justify-between  rounded-3xl bg-white p-5 px-10 text-[#0C4177] shadow-lg">
-                        <div className="w-[49%]">
+                        <div className="w-full">
                             <CalendarComponent
                                 {...props}
                                 plugins={[
@@ -157,11 +157,19 @@ const DashboardTeacher = (props: any) => {
                                 dateClick={handleDateClick}
                             />
                         </div>
-                        <div className="w-[48%]">
+                    </div>
+                </div>
+                <div className="flex justify-between ">
+                    <div className="flex h-[40vh]  w-[48%] flex-col justify-between  rounded-3xl bg-white p-5 px-14 text-[#0C4177] shadow-lg">
+                        <div className="flex w-full justify-between">
                             <div className="mb-3 text-2xl font-bold text-[#0c4277]">
-                                {formatDateHeader(events[0].start)}
+                                Class Schedule
                             </div>
-
+                            <div className="mb-3 text-2xl font-bold text-[#0c4277]">
+                                {formatDateHeader(new Date().toISOString())}
+                            </div>
+                        </div>
+                        <div className="h-[80%] w-[80%]">
                             {/* Render the list of events */}
                             {events.map((event, index) => (
                                 <Box
@@ -177,47 +185,11 @@ const DashboardTeacher = (props: any) => {
                                         {formatTime(event.end)}
                                     </div>
 
-                                    <div className="font-bold text-[#0c4277] ">
+                                    <div className="font-bold text-[#0c4277] w-1/2">
                                         {event.title}
                                     </div>
                                 </Box>
                             ))}
-                        </div>
-                    </div>
-                </div>
-                <div className="flex justify-between ">
-                    <div className="flex h-[40vh]  w-[48%] flex-col justify-between  rounded-3xl bg-white p-5 px-14 text-[#0C4177] shadow-lg">
-                        <div className="flex items-center justify-between">
-                            <div className="text-2xl font-bold ">
-                                Learning Plan
-                            </div>
-                            <div className="text-xl">Pertemuan 1 - 7A</div>
-                        </div>
-                        <div>
-                            <div className="text-xl font-bold ">
-                                Tujuan Pembelajaran
-                            </div>
-                            <div>
-                                B.1 Membaca, menuliskan dan membandingkan
-                                bilangan rasional, bilangan bulat positif dan
-                                bilangan bulat negative
-                            </div>
-                            <div>
-                                B.2 Membaca, mengidentifikasi, menuliskan dan
-                                membandingkan bilangan desimal,pecahan
-                            </div>
-                            <div>
-                                B.3 Mengidentifikasikan jenis-jenis bilangan
-                                dari himpunan bilangan yang diberikan
-                            </div>
-                        </div>
-                        <div>
-                            <div className="text-xl font-bold ">
-                                Metode Pembelajaran
-                            </div>
-                            <div>
-                                Penjelasan Materi, Soal Latihan, Mini Quiz
-                            </div>
                         </div>
                     </div>
 
