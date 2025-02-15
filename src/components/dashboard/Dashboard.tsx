@@ -2,16 +2,16 @@
 
 import dynamic from 'next/dynamic'
 import { useState, useEffect, useRef } from 'react'
-// import dayGridPlugin from '@fullcalendar/daygrid'
-// import timeGridPlugin from '@fullcalendar/timegrid'
+import dayGridPlugin from '@fullcalendar/daygrid'
+import timeGridPlugin from '@fullcalendar/timegrid'
 import { Box } from '@mui/material'
-// import interactionPlugin from '@fullcalendar/interaction'
+import interactionPlugin from '@fullcalendar/interaction'
 import DashboardTeacher from './DashboardTeacher'
 
 // Import the FullCalendar component dynamically
-// const CalendarComponent = dynamic(() => import('@fullcalendar/react'), {
-//     ssr: false, // Disable server-side rendering
-// })
+const CalendarComponent = dynamic(() => import('@fullcalendar/react'), {
+    ssr: false, // Disable server-side rendering
+})
 
 const Dashboard = (props: any) => {
     const [roles, setRoles] = useState<string | null>(null)
@@ -41,40 +41,40 @@ const Dashboard = (props: any) => {
         console.log('Date clicked:', info.dateStr)
     }
 
-    // return (
-    //     <>
-    //         {roles === 'staff' || roles === 'admin' ? (
-    //             <Box sx={{ padding: 2, width: '87vw' }}>
-    //                 <div className="h-[95vh]   rounded-3xl bg-white p-5 text-[#0c427770] shadow-md">
-    //                     <CalendarComponent
-    //                         {...props}
-    //                         plugins={[
-    //                             dayGridPlugin,
-    //                             timeGridPlugin,
-    //                             interactionPlugin,
-    //                         ]}
-    //                         headerToolbar={{
-    //                             end: 'prev,next today',
-    //                         }}
-    //                         eventTimeFormat={{
-    //                             hour: 'numeric',
-    //                             minute: '2-digit',
-    //                             meridiem: 'short',
-    //                         }}
-    //                         dayMaxEvents={3}
-    //                         events={events}
-    //                         ref={calendarRef}
-    //                         dateClick={handleDateClick}
-    //                         selectable={true}
-    //                         unselectAuto={false}
-    //                     />
-    //                 </div>
-    //             </Box>
-    //         ) : (
-    //             <DashboardTeacher />
-    //         )}
-    //     </>
-    // )
+    return (
+        <>
+            {roles === 'staff' || roles === 'admin' ? (
+                <Box sx={{ padding: 2, width: '87vw' }}>
+                    <div className="h-[95vh]   rounded-3xl bg-white p-5 text-[#0C4177] shadow-md">
+                        <CalendarComponent
+                            {...props}
+                            plugins={[
+                                dayGridPlugin,
+                                timeGridPlugin,
+                                interactionPlugin,
+                            ]}
+                            headerToolbar={{
+                                end: 'prev,next today',
+                            }}
+                            eventTimeFormat={{
+                                hour: 'numeric',
+                                minute: '2-digit',
+                                meridiem: 'short',
+                            }}
+                            dayMaxEvents={3}
+                            events={events}
+                            ref={calendarRef}
+                            dateClick={handleDateClick}
+                            selectable={true}
+                            unselectAuto={false}
+                        />
+                    </div>
+                </Box>
+            ) : (
+                <DashboardTeacher />
+            )}
+        </>
+    )
 }
 
 export default Dashboard

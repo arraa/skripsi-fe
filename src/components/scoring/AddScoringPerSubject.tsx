@@ -7,14 +7,9 @@ import { SetStateAction, useEffect, useMemo, useState } from 'react'
 import { Button } from '../common/button/button'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useForm } from 'react-hook-form'
-import { array, InferInput, minLength, object, pipe, string } from 'valibot'
-import { getAllStudentAttendanceByClassIDAndDate } from '@/app/api/attendance'
+import { array, object, string } from 'valibot'
 import { columnDataScoringForm } from './column'
-import {
-    StudentScoringPerSubject,
-    StudentScoringPerSubjectForm,
-} from './types/types'
-import { AttendanceListFormProps } from '../attendance/type/types'
+import { StudentScoringPerSubject } from './types/types'
 import { validateCreateOrGetAsgType } from '@/app/api/scoring'
 import { getSubjectClassNameById } from '@/app/api/subject'
 import { createStudentsScoreByClassAndSubject } from '@/app/api/score'
@@ -25,8 +20,6 @@ const ObjectSchema = array(
         reason: string(),
     })
 )
-
-type ObjectInput = InferInput<typeof ObjectSchema>
 
 const ScoringSubjectForm = () => {
     const searchParams = useSearchParams()
@@ -89,6 +82,8 @@ const ScoringSubjectForm = () => {
         }
     }
 
+    console.log(assignmentID)
+
     const handleValidateCreateOrGetAsgType = async () => {
         if (selectedOption === 'Tambahkan opsi') {
             validateCreateOrGetAsgType(customOption)
@@ -97,7 +92,7 @@ const ScoringSubjectForm = () => {
                         throw new Error('Failed to validate custom option')
                     } else {
                         console.log('Custom option validated:', result)
-                        const data = result.data.assignment.AssignmentId
+                        const data = result.data.assignment.AssignmentID
 
                         console.log('data', data)
                         setAssignmentID(data)
@@ -156,11 +151,9 @@ const ScoringSubjectForm = () => {
         const studentsScore = Object.entries(dataForm).map(
             ([StudentID, Scores]) => ({
                 studentID: Scores.StudentID,
-                score: Scores.Scores ,
+                score: Scores.Scores,
             })
         )
-
-
 
         console.log(studentsScore)
 
@@ -188,7 +181,7 @@ const ScoringSubjectForm = () => {
                 </h1>
             </div>
             {/* <div className=' h-[80vh] bg-white'> */}
-            <div className="flex flex-col gap-4 rounded-3xl bg-white p-5 text-[#0c427770] shadow-md">
+            <div className="flex flex-col gap-4 rounded-3xl bg-white p-5 text-[#0C4177] shadow-md">
                 <form
                     onSubmit={handleSubmit(handleOpenDialog)}
                     className="text-[#353535]"

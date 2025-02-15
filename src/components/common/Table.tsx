@@ -38,7 +38,7 @@ const Table = (props: TableProps) => {
                     maxWidth: '79vw',
                     border: 'none',
                     boxShadow: 'none',
-                    color: '#0c427770',
+                    color: '#0C4177',
                     '& .MuiDataGrid-columnHeaderTitle': {
                         fontWeight: 'bold',
                     },

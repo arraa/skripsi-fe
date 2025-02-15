@@ -23,11 +23,11 @@ export const SIDEBAR = [
             },
         ],
     },
-    {
-        name: 'Silabus',
-        link: '/silabus',
-        img: '/icon/icon-silabus.svg',
-    },
+    // {
+    //     name: 'Silabus',
+    //     link: '/silabus',
+    //     img: '/icon/icon-silabus.svg',
+    // },
     {
         name: 'Attendance',
         link: '/attendance',

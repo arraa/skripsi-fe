@@ -4,7 +4,7 @@ import { api } from './axios'
 const routeAssignment = '/assignment'
 
 interface AssignmentDataApi {
-    AssignmentId: number
+    AssignmentID: number
     assignment_type: string
 }
 

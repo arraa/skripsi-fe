@@ -122,5 +122,8 @@ export const columnData = (
         field: 'teaching_hour',
         headerName: 'Teaching Hour',
         width: 160,
+        renderCell: (params: GridRenderCellParams) => (
+            <Typography>{params.row.teaching_hour}</Typography>
+        ),
     },
 ];
