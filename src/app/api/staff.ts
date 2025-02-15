@@ -1,0 +1,199 @@
+import { AxiosResponse } from 'axios'
+import { api } from './axios'
+import {
+    GetStaffByIDApiProps,
+    StaffDataProps,
+} from '@/components/staffData/types/types'
+import { date } from 'valibot'
+import { formatPhoneNumber } from '@/lib/formatData'
+
+const routeStaff = '/staff'
+
+const formatDate = (date: string | Date): string => {
+    const d = new Date(date)
+    if (isNaN(d.getTime())) {
+        return 'Invalid Date'
+    }
+    const year = d.getFullYear()
+    const month = String(d.getMonth() + 1).padStart(2, '0')
+    const day = String(d.getDate()).padStart(2, '0')
+
+    return `${year}-${month}-${day}`
+}
+
+// const formatStudentData = (data: any) => {
+//   if (Array.isArray(data)) {
+//     return data.map((student) => ({
+//       ...student,
+//       date_of_birth: formatDate(student.date_of_birth),
+//       accepted_date: formatDate(student.accepted_date),
+//     }));
+//   }
+
+//   return {
+//     ...data,
+//     date_of_birth: formatDate(data.date_of_birth),
+//     accepted_date: formatDate(data.accepted_date),
+//   };
+// };
+
+export const getStaff = async () => {
+    try {
+        const response = await api.get(routeStaff)
+        return response
+    } catch (error: any) {
+        console.error('API request error', error)
+        return error.response
+    }
+}
+
+export const getStaffById = async (
+    id: string
+): Promise<AxiosResponse<GetStaffByIDApiProps>> => {
+    try {
+        const response = await api.get(`${routeStaff}/${id}`)
+        return response
+    } catch (error: any) {
+        console.error('API request error', error)
+        return error.response
+    }
+}
+
+export const createStaff = async (props: StaffDataProps) => {
+    const data = {
+        staff_id: props.staff_id,
+        user_id: props.user_id,
+        name: props.name,
+        gender: props.gender,
+        place_of_birth: props.place_of_birth,
+        date_of_birth: props.date_of_birth,
+        religion: props.religion,
+        address: props.address,
+        num_phone: formatPhoneNumber(props.num_phone),
+        email: props.email,
+        position: props.position,
+    }
+
+    try {
+        const response = await api.post(`${routeStaff}/create`, data)
+        console.log('Update response:', response.data) // Log the response
+        return response.data // Ensure to return the response data
+    } catch (error: any) {
+        console.error('Update error:', error)
+        return error.response
+    }
+}
+
+export const updateStaff = async (
+    getid: string,
+    props: StaffDataProps
+): Promise<AxiosResponse> => {
+    const { name, gender, date_of_birth } = props
+
+    if (!name || !gender || !date_of_birth) {
+        throw new Error('Missing required fields')
+    }
+
+    const data = {
+        ...props,
+        number_phone: formatPhoneNumber(props.num_phone),
+    }
+
+    try {
+        const response = await api.put(`${routeStaff}/update/${getid}`, data)
+        return response
+    } catch (error) {
+        console.error('Update error:', error)
+        return Promise.reject(new Error(String(error)))
+    }
+}
+
+// export const createStudentbyExcel = async (props: StudentDataProps[]) => {
+
+//   const data = {
+//     'student-data': props
+//   }
+
+//   try {
+//     const response = await api.post('//student/create-all', data);
+//     console.log('create excel response:', response.data);
+
+//     return response.data;
+//   } catch (error : any) {
+//     console.log('create excel error:', error.response.data.error); // Log the error
+//     // return error.response.data.error
+//     throw error;
+//   }
+// };
+
+// export const updateStudent = async (getid: string, props: StudentDataProps) => {
+//   const {
+//     StudentID,
+//     name,
+//     gender,
+//     id_class,
+//     place_of_birth,
+//     date_of_birth,
+//     religion,
+//     address,
+//     number_phone,
+//     email,
+//     accepted_date,
+//     school_origin,
+//     father_name,
+//     father_job,
+//     father_number_phone,
+//     mother_name,
+//     mother_job,
+//     mother_number_phone,
+//   } = props;
+
+//   const data = {
+//     name,
+//     gender,
+//     id_class,
+//     place_of_birth,
+//     date_of_birth,
+//     religion,
+//     address,
+//     number_phone: number_phone.toString(),
+//     email,
+//     accepted_date,
+//     school_origin,
+//     father_name,
+//     father_job,
+//     father_number_phone: father_number_phone.toString(),
+//     mother_name,
+//     mother_job,
+//     mother_number_phone: mother_number_phone.toString(),
+//   };
+
+//   try {
+//     const response = await api.put(`/student/update/${getid}`, data);
+//     console.log('Update response:', response.data); // Log the response
+//     return response.data; // Ensure to return the response data
+//   } catch (error) {
+//     console.error('Update error:', error); // Log the error
+//     throw error; // Rethrow the error for handling in the calling function
+//   }
+// };
+
+export const deleteStaff = async (
+    id: string | null
+): Promise<AxiosResponse> => {
+    if (id) {
+        try {
+            const response = await api.delete(`${routeStaff}/delete/${id}`)
+
+            if (response.status === 200) {
+                return response
+            } else {
+                throw new Error('Failed to delete staff')
+            }
+        } catch (error) {
+            console.error('API request error', error)
+            return Promise.reject(new Error(String(error)))
+        }
+    }
+    return Promise.reject(new Error('No staff id provided'))
+}

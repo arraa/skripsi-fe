@@ -16,6 +16,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider/LocalizationProvider'
 import dayjs from 'dayjs'
 import { Button } from '../common/button/button'
+import { createEvent } from '@/app/api/event'
 
 type ObjectInput = InferInput<typeof ObjectSchema>
 
@@ -100,33 +101,36 @@ const CalendarForm = () => {
         }
 
         const newData = {
-            name: data.name,
-            start: data.start,
-            end: data.end,
-            date: data.date,
+            event_name: data.name,
+            event_date_start: new Date(`${data.date}T${data.start}:00Z`).toISOString(),
+            event_date_end: new Date(`${data.date}T${data.end}:00Z`).toISOString(),
         }
 
         console.log('data', newData)
-        // try {
-        //     let response
-        //     if (actionType === 'update' && id) {
-        //         response = await updateStudent(id, newData)
-        //     } else if (actionType === 'create') {
-        //         response = await createStudent(newData)
-        //     }
-        //     if (response?.status === 200) {
-        //         alert(
-        //             actionType === 'update'
-        //                 ? 'Student updated successfully'
-        //                 : 'Student created successfully'
-        //         )
-        //     } else {
-        //         alert('Failed to create student')
-        //     }
-        // } catch (error) {
-        //     console.error('API request error', error)
-        //     alert('Failed to create student')
-        // }
+        try {
+            let response
+            if (actionType === 'update' && id) {
+                response = await createEvent(newData)
+                console.log(response)
+
+            } else if (actionType === 'create') {
+                response = await createEvent(newData)
+                console.log(response)
+            }
+            if (response?.status === 200) {
+                alert(
+                    actionType === 'update'
+                        ? 'Student updated successfully'
+                        : 'Student created successfully'
+                )
+            } else {
+                console.log(response)
+                alert('Failed to create student')
+            }
+        } catch (error) {
+            console.error('API request error', error)
+            alert('Failed to create student')
+        }
     }
 
     return (

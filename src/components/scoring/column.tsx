@@ -109,12 +109,34 @@ export const columnDataScoringForm = (control: any): GridColDef[] => [
                     <Controller
                         name={`${params.row.StudentID}`}
                         control={control}
+                        rules={{
+                            required: 'Score is required',
+                            min: {
+                                value: 0,
+                                message: 'Score cannot be less than 0',
+                            },
+                            max: {
+                                value: 100,
+                                message: 'Score cannot be more than 100',
+                            },
+                        }}
                         render={({ field }) => (
                             <input
                                 {...field}
                                 id={`${params.row.id}`}
                                 className="m-0 h-1/2 bg-transparent  p-1 outline outline-1 focus:bg-none"
                                 type={'number'}
+                                min={0}
+                                max={100}
+                                onBlur={(e) => {
+                                    const value = Number(e.target.value)
+                                    if (value < 0) {
+                                        alert('Score cannot be less than 0')
+                                    } else if (value > 100) {
+                                        alert('Score cannot be more than 100')
+                                    }
+                                    field.onBlur()
+                                }}
                             />
                         )}
                     />
@@ -138,7 +160,7 @@ export const columnDataSummary = (
             const matchedScore = scoringData.find(
                 (scoreItem: any) => scoreItem.SubjectName === item
             )
-            
+
             return <Typography>{matchedScore.Score}</Typography>
         },
     }))
