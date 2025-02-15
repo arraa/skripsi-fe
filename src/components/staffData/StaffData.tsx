@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react'
 import Delete from '../common/dialog/Delete'
 import { useRouter } from 'next/navigation'
 import { StaffDataProps } from './types/types'
+import { deleteStaff, getStaff } from '@/app/api/staff'
 // import { deleteStaff, getStaff } from '@/app/api/staff'
 
 const StaffData = () => {
@@ -46,48 +47,52 @@ const StaffData = () => {
         setSearchValue(value)
     }
 
-    // useEffect(() => {
-    //     const fetchData = async () => {
-    //         try {
-    //             const result = await getStaff()
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const result = await getStaff()
 
-    //             const rowsWithId = result.data.staffs.map(
-    //                 (row: any, index: number) => ({
-    //                     id: index,
-    //                     staff_id: row.StaffID,
-    //                     user_id: row.id_user,
-    //                     ...row,
-    //                 })
-    //             )
-    //             setData(rowsWithId)
-    //         } catch (error) {
-    //             console.error('API request error', error)
-    //         }
-    //     }
-    //     fetchData()
-    // }, [])
+                console.log('result', result.data.staff)
 
-    // const deletedStaff = async () => {
-    //     console.log('deletedStaff clicked', selectedStaffId)
-    //     if (selectedStaffId) {
-    //         try {
-    //             const deleted = await deleteStaff(selectedStaffId)
-    //             setSelectedStaffId(null)
-    //             return deleted
-    //         } catch (error) {
-    //             console.error('API request error', error)
-    //         }
-    //     }
-    // }
+                const rowsWithId = result.data.staff.map(
+                    (row: any, index: number) => ({
+                        id: index,
+                        staff_id: row.StaffID,
+                        user_id: row.id_user,
+                        ...row,
+                    })
+                )
+
+                setData(rowsWithId)
+            } catch (error) {
+                console.error('API request error', error)
+            }
+        }
+        fetchData()
+    }, [])
+
+
+    const deletedStaff = async () => {
+        console.log('deletedStaff clicked', selectedStaffId)
+        if (selectedStaffId) {
+            try {
+                const deleted = await deleteStaff(selectedStaffId)
+                setSelectedStaffId(null)
+                return deleted
+            } catch (error) {
+                console.error('API request error', error)
+            }
+        }
+    }
 
     return (
         <Box sx={{ paddingY: 3, px: 2, paddingLeft: 0, width: '85vw' }}>
-            {/* <Delete
+            <Delete
                 setOpen={handleClose}
                 name={'Staff'}
                 onDelete={deletedStaff}
                 open={open}
-            /> */}
+            />
             <h1 className="my-8 text-3xl font-bold text-[#0C4177]">
                 Staff Personal Data
             </h1>

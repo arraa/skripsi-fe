@@ -31,6 +31,7 @@ import {
 } from '@mui/material'
 import { formatDate } from '../../lib/formatData'
 import { getAllSubject } from '@/app/api/subject'
+import { createStaff, getStaff, getStaffById, updateStaff } from '@/app/api/staff'
 
 type ObjectInput = InferInput<typeof ObjectSchema>
 
@@ -56,6 +57,8 @@ const StaffForm = () => {
     // const [subjectList, setSubjectList] = useState<subjectListProps[]>([])
     const [selectedSubject, setSelectedSubject] = useState<number[]>([])
 
+    console.log('data', data)
+
     const {
         handleSubmit,
         control,
@@ -79,6 +82,28 @@ const StaffForm = () => {
     const handleDialog = () => {
         setOpen(!open)
     }
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                if (!id) return
+
+                const result = await getStaffById(id)
+
+                console.log('result', result)
+
+                const formatResult = {
+                    ...result.data.staff,
+                    date_of_birth: formatDate(result.data.staff.date_of_birth),
+                }
+
+                setData(formatResult)
+            } catch (error) {
+                console.error('API request error', error)
+            }
+        }
+        fetchData()
+    }, [])
 
     useEffect(() => {
         if (data) {
@@ -148,7 +173,6 @@ const StaffForm = () => {
 
     const onSubmit = async (data: ObjectInput) => {
         const newStaffData: StaffDataProps = {
-            id: Number(id),
             name: data.name || '',
             gender: data.gender || '',
             place_of_birth: data.place_of_birth || '',
@@ -160,21 +184,23 @@ const StaffForm = () => {
             position: data.position || '',
         }
 
-        // try {
-        //     if (actionType === 'update' && id) {
-        //         await updateStaff(id, newStaffData)
-        //     } else if (actionType === 'create') {
-        //         console.log('Creating new staff')
-        //         await createStaff(newStaffData)
-        //     }
-        //     alert(
-        //         actionType === 'update'
-        //             ? 'Staff updated successfully'
-        //             : 'Staff created successfully'
-        //     )
-        // } catch (error) {
-        //     console.error('API request error', error)
-        // }
+        console.log('newStaffData', newStaffData)
+
+        try {
+            if (actionType === 'update' && id) {
+                await updateStaff(id, newStaffData)
+            } else if (actionType === 'create') {
+                console.log('Creating new staff')
+                await createStaff(newStaffData)
+            }
+            alert(
+                actionType === 'update'
+                    ? 'Staff updated successfully'
+                    : 'Staff created successfully'
+            )
+        } catch (error) {
+            console.error('API request error', error)
+        }
     }
 
     return (

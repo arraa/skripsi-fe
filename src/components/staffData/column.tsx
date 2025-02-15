@@ -1,13 +1,22 @@
-import { Box, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material'
 import {
     GridActionsCellItem,
     GridColDef,
     GridRenderCellParams,
-} from '@mui/x-data-grid';
-import Image from 'next/image';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { StaffDataProps } from './types/types';
+} from '@mui/x-data-grid'
+import Image from 'next/image'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import { StaffDataProps } from './types/types'
+
+const formatDate = (isoString: string) => {
+    const date = new Date(isoString)
+    return date.toLocaleString('id-ID', {
+        day: '2-digit',
+        year: '2-digit',
+        month: '2-digit',
+    })
+}
 
 export const columnData = (
     handleClickOpen: (id: number) => void,
@@ -21,8 +30,8 @@ export const columnData = (
         cellClassName: 'actions',
         renderCell: (params: GridRenderCellParams<StaffDataProps>) => (
             <Box
-                display='flex'
-                flexDirection='row'
+                display="flex"
+                flexDirection="row"
                 alignItems={'center'}
                 justifyContent={'center'}
                 gap={2}
@@ -42,13 +51,13 @@ export const columnData = (
                         key={'edit'}
                         icon={
                             <Image
-                                src='/icon/icon-edit.svg'
-                                alt='edit icon'
+                                src="/icon/icon-edit.svg"
+                                alt="edit icon"
                                 width={18}
                                 height={18}
                             />
                         }
-                        label='edit'
+                        label="edit"
                     />
                 </div>
                 <GridActionsCellItem
@@ -56,16 +65,14 @@ export const columnData = (
                     key={'delete'}
                     icon={
                         <Image
-                            src='/icon/icon-delete.svg'
-                            alt='delete icon'
+                            src="/icon/icon-delete.svg"
+                            alt="delete icon"
                             width={18}
                             height={18}
                         />
                     }
-                    label='Delete'
-                    onClick={() =>
-                        handleClickOpen(Number(params.row.staff_id))
-                    }
+                    label="Delete"
+                    onClick={() => handleClickOpen(Number(params.row.staff_id))}
                 />
             </Box>
         ),
@@ -75,7 +82,7 @@ export const columnData = (
         headerName: 'Full Name',
         width: 250,
         renderCell: (params: GridRenderCellParams) => (
-            <Typography>{params.row.User.name}</Typography>
+            <Typography>{params.row.name}</Typography>
         ),
     },
     {
@@ -83,15 +90,17 @@ export const columnData = (
         headerName: 'Sex',
         width: 100,
         renderCell: (params: GridRenderCellParams) => (
-            <Typography>{params.row.User.gender}</Typography>
+            <Typography>{params.row.gender}</Typography>
         ),
     },
     {
         field: 'place_of_birth',
         headerName: 'Place & Date of Birth',
-        width: 180,
+        width: 200,
         renderCell: (params: GridRenderCellParams) => (
-            <Typography>{params.row.User.place_of_birth}</Typography>
+            <Typography>
+                {params.row.place_of_birth}, {formatDate(params.row.date_of_birth)}
+            </Typography>
         ),
     },
     {
@@ -99,7 +108,7 @@ export const columnData = (
         headerName: 'Address',
         width: 300,
         renderCell: (params: GridRenderCellParams) => (
-            <Typography>{params.row.User.address}</Typography>
+            <Typography>{params.row.address}</Typography>
         ),
     },
     {
@@ -107,7 +116,7 @@ export const columnData = (
         headerName: 'Phone Number',
         width: 200,
         renderCell: (params: GridRenderCellParams) => (
-            <Typography>{params.row.User.num_phone}</Typography>
+            <Typography>{params.row.num_phone}</Typography>
         ),
     },
     {
@@ -115,12 +124,15 @@ export const columnData = (
         headerName: 'Email',
         width: 200,
         renderCell: (params: GridRenderCellParams) => (
-            <Typography>{params.row.User.email}</Typography>
+            <Typography>{params.row.email}</Typography>
         ),
     },
     {
         field: 'position',
         headerName: 'Position',
         width: 160,
+        renderCell: (params: GridRenderCellParams) => (
+            <Typography>{params.row.position}</Typography>
+        ),
     },
-];
+]

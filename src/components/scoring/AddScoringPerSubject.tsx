@@ -18,6 +18,7 @@ import { AttendanceListFormProps } from '../attendance/type/types'
 import { validateCreateOrGetAsgType } from '@/app/api/scoring'
 import { getSubjectClassNameById } from '@/app/api/subject'
 import { createStudentsScoreByClassAndSubject } from '@/app/api/score'
+import ConfirmationDialog from './ConfirmationDialog'
 
 const ObjectSchema = array(
     object({
@@ -32,6 +33,7 @@ const ScoringSubjectForm = () => {
     const classID = Number(searchParams.get('class_id'))
     const subjectID = Number(searchParams.get('subject_id'))
 
+    const [openConfirmationDialog, setOpenConfirmationDialog] = useState(false)
     const [selectedOption, setSelectedOption] = useState('')
     const [customOption, setCustomOption] = useState('')
     const [showCustomInput, setShowCustomInput] = useState(false)
@@ -40,6 +42,10 @@ const ScoringSubjectForm = () => {
         grade_class_name: string
         subject_name: string
     }>()
+
+    const [dataForm, setDataForm] = useState<
+        { StudentID: number; Scores: number; StudentName: string }[]
+    >([])
     const [studentScorings, setStudentScorings] = useState<
         StudentScoringFormProps[]
     >([])
@@ -109,32 +115,67 @@ const ScoringSubjectForm = () => {
         defaultValues: {},
     })
 
-    const onSubmit = (data: StudentScoringPerSubject) => {
-        console.log('data', data, assignmentID)
-        if (assignmentID !== 0 && !Object.values(data).includes(undefined)) {
-            const studentsScore: { studentID: number; score: number }[] =
-                Object.entries(data).map(([StudentID, Score]) => ({
-                    studentID: Number(StudentID),
-                    score: Number(Score),
-                }))
-            createStudentsScoreByClassAndSubject(
-                classID,
-                subjectID,
-                assignmentID,
-                studentsScore
-            )
-                .then((res) => {
-                    console.log('response', res)
-                    window.location.href = '/scoring/subject'
-                })
-                .catch((error) => {
-                    alert('Failed to submit score data')
-                })
-        } else if (assignmentID === 0) {
+    const handleOpenDialog = (data: StudentScoringPerSubject) => {
+        if (assignmentID === 0) {
             alert('Please select assignment type')
-        } else if (Object.values(data).includes(undefined)) {
-            alert('Please input the score')
+            return
         }
+
+        if (Object.values(data).includes(undefined)) {
+            alert('Please input the score')
+            return
+        }
+
+        const studentsScore: {
+            StudentID: number
+            Scores: number
+            StudentName: string
+        }[] = Object.entries(data).map(([StudentID, Score]) => ({
+            StudentID: Number(StudentID),
+            Scores: Number(Score),
+            StudentName: '',
+        }))
+
+        // Assuming studentScorings is an array of objects with studentID and name
+        studentsScore.forEach((student) => {
+            const matchingStudent = studentScorings.find(
+                (s) => s.StudentID === student.StudentID
+            )
+            if (matchingStudent) {
+                student.StudentName = matchingStudent.StudentName // Assign the name
+            }
+        })
+
+        setDataForm(studentsScore)
+        setOpenConfirmationDialog(true)
+    }
+
+    const handleConfirmSubmit = () => {
+        if (assignmentID === 0) return
+
+        const studentsScore = Object.entries(dataForm).map(
+            ([StudentID, Scores]) => ({
+                studentID: Scores.StudentID,
+                score: Scores.Scores ,
+            })
+        )
+
+
+
+        console.log(studentsScore)
+
+        createStudentsScoreByClassAndSubject(
+            classID,
+            subjectID,
+            assignmentID,
+            studentsScore
+        )
+            .then(() => {
+                window.location.href = '/scoring/subject'
+            })
+            .catch(() => {
+                alert('Failed to submit score data')
+            })
     }
     const rows = columnDataScoringForm(control)
 
@@ -149,7 +190,7 @@ const ScoringSubjectForm = () => {
             {/* <div className=' h-[80vh] bg-white'> */}
             <div className="flex flex-col gap-4 rounded-3xl bg-white p-5 text-[#0c427770] shadow-md">
                 <form
-                    onSubmit={handleSubmit(onSubmit)}
+                    onSubmit={handleSubmit(handleOpenDialog)}
                     className="text-[#353535]"
                 >
                     <div className=" flex w-full justify-start text-base  text-[#0c42777a] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2  ">
@@ -239,12 +280,17 @@ const ScoringSubjectForm = () => {
                     />
 
                     <div className="mb-4 flex justify-end">
-                        <Button type="submit" size={'submit'}>
-                            Submit
-                        </Button>
+                        <Button size={'submit'}>Submit</Button>
                     </div>
                 </form>
             </div>
+
+            <ConfirmationDialog
+                open={openConfirmationDialog}
+                data={dataForm}
+                onConfirm={handleConfirmSubmit}
+                onCancel={() => setOpenConfirmationDialog(false)}
+            />
         </Box>
     )
 }

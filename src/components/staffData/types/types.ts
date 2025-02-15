@@ -1,5 +1,5 @@
 export interface StaffDataProps {
-    id: number
+    id?: number
     staff_id?: number
     user_id?: number
     name: string
