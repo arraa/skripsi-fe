@@ -13,58 +13,58 @@ export const columnData = (
 ): GridColDef[] => {
     // Define all columns
     const columns: GridColDef[] = [
-        // {
-        //     field: 'actions',
-        //     type: 'actions',
-        //     headerName: 'Actions',
-        //     width: 150,
-        //     cellClassName: 'actions',
-        //     renderCell: (params: GridRenderCellParams) => (
-        //         <Box
-        //             display="flex"
-        //             flexDirection="row"
-        //             alignItems={'center'}
-        //             justifyContent={'center'}
-        //             gap={2}
-        //         >
-        //             <div onClick={() => handleUpdate(params.row.StudentID)}>
-        //                 <GridActionsCellItem
-        //                     sx={{
-        //                         boxShadow: 3,
-        //                         borderRadius: 1,
-        //                         padding: '5px',
-        //                     }}
-        //                     key={'edit'}
-        //                     icon={
-        //                         <Image
-        //                             src="/icon/icon-edit.svg"
-        //                             alt="edit icon"
-        //                             width={18}
-        //                             height={18}
-        //                         />
-        //                     }
-        //                     label="edit"
-        //                 />
-        //             </div>
-        //             <GridActionsCellItem
-        //                 sx={{ boxShadow: 3, borderRadius: 1, padding: '5px' }}
-        //                 key={'delete'}
-        //                 icon={
-        //                     <Image
-        //                         src="/icon/icon-delete.svg"
-        //                         alt="delete icon"
-        //                         width={18}
-        //                         height={18}
-        //                     />
-        //                 }
-        //                 label="Delete"
-        //                 onClick={() =>
-        //                     handleClickOpen(Number(params.row.StudentID))
-        //                 }
-        //             />
-        //         </Box>
-        //     ),
-        // },
+        {
+            field: 'actions',
+            type: 'actions',
+            headerName: 'Actions',
+            width: 150,
+            cellClassName: 'actions',
+            renderCell: (params: GridRenderCellParams) => (
+                <Box
+                    display="flex"
+                    flexDirection="row"
+                    alignItems={'center'}
+                    justifyContent={'center'}
+                    gap={2}
+                >
+                    <div onClick={() => handleUpdate(params.row.StudentID)}>
+                        <GridActionsCellItem
+                            sx={{
+                                boxShadow: 3,
+                                borderRadius: 1,
+                                padding: '5px',
+                            }}
+                            key={'edit'}
+                            icon={
+                                <Image
+                                    src="/icon/icon-edit.svg"
+                                    alt="edit icon"
+                                    width={18}
+                                    height={18}
+                                />
+                            }
+                            label="edit"
+                        />
+                    </div>
+                    <GridActionsCellItem
+                        sx={{ boxShadow: 3, borderRadius: 1, padding: '5px' }}
+                        key={'delete'}
+                        icon={
+                            <Image
+                                src="/icon/icon-delete.svg"
+                                alt="delete icon"
+                                width={18}
+                                height={18}
+                            />
+                        }
+                        label="Delete"
+                        onClick={() =>
+                            handleClickOpen(Number(params.row.StudentID))
+                        }
+                    />
+                </Box>
+            ),
+        },
         {
             // base on your types
             field: 'name',
