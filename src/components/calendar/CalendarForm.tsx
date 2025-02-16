@@ -102,8 +102,12 @@ const CalendarForm = () => {
 
         const newData = {
             event_name: data.name,
-            event_date_start: new Date(`${data.date}T${data.start}:00Z`).toISOString(),
-            event_date_end: new Date(`${data.date}T${data.end}:00Z`).toISOString(),
+            event_date_start: new Date(
+                `${data.date}T${data.start}:00Z`
+            ).toISOString(),
+            event_date_end: new Date(
+                `${data.date}T${data.end}:00Z`
+            ).toISOString(),
         }
 
         console.log('data', newData, actionType)
@@ -112,17 +116,17 @@ const CalendarForm = () => {
             if (actionType === 'update' && id) {
                 response = await createEvent(newData)
                 console.log(response)
-
             } else if (actionType === 'create') {
                 response = await createEvent(newData)
                 console.log(response)
             }
-            if (response?.status === 201) {
+            if (response) {
                 alert(
                     actionType === 'update'
                         ? 'Event updated successfully'
                         : 'Event created successfully'
                 )
+                window.location.href = '/calendar'
             } else {
                 console.log(response)
                 alert('Failed to create event')
