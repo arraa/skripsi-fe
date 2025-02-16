@@ -78,4 +78,9 @@ export const SIDEBAR = [
         link: '/calendar',
         img: '/icon/icon-calendar.svg',
     },
+    {
+        name: 'Archive',
+        link: '/archive',
+        img: '/icon/icon-archive.svg',
+    },
 ];
