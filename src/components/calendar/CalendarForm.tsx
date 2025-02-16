@@ -106,7 +106,7 @@ const CalendarForm = () => {
             event_date_end: new Date(`${data.date}T${data.end}:00Z`).toISOString(),
         }
 
-        console.log('data', newData)
+        console.log('data', newData, actionType)
         try {
             let response
             if (actionType === 'update' && id) {
@@ -117,19 +117,19 @@ const CalendarForm = () => {
                 response = await createEvent(newData)
                 console.log(response)
             }
-            if (response?.status === 200) {
+            if (response?.status === 201) {
                 alert(
                     actionType === 'update'
-                        ? 'Student updated successfully'
-                        : 'Student created successfully'
+                        ? 'Event updated successfully'
+                        : 'Event created successfully'
                 )
             } else {
                 console.log(response)
-                alert('Failed to create student')
+                alert('Failed to create event')
             }
         } catch (error) {
             console.error('API request error', error)
-            alert('Failed to create student')
+            alert('Failed to create event')
         }
     }
 

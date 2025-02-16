@@ -131,7 +131,7 @@ const Calendar = (props: any) => {
 
         // setEvents((prevEvents) => [...prevEvents, { title, start, end }])
 
-        router.push('/calendar/calendar-form')
+        router.push('/calendar/calendar-form?action=create')
     }
 
     const handleRemoveEvent = (eventTitle: string) => {
