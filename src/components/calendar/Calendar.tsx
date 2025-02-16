@@ -167,7 +167,7 @@ const Calendar = (props: any) => {
     }
 
     const headerToolbar =
-        roles === 'staff' || roles === 'admin'
+        roles.includes('staff') || roles.includes('admin')
             ? {
                 start: 'addEventButton', // Show 'Add Event' button for staff/admin
                 center: 'title', // Calendar title
