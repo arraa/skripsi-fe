@@ -1,12 +1,46 @@
-import React from 'react'
+'use client'
+import React, { useEffect } from 'react'
 import { Box, Typography, Grid, Button, Card, CardContent } from '@mui/material'
 
-const ArchivePage: React.FC = () => {
-    const yearOptions = ['2022/2023', '2021/2022', '2020/2021']
+import { getAcademicYear } from '@/app/api/archive'
+import { useRouter } from 'next/navigation'
+
+const StudentData = () => {
+    // const yearOptions = ['2022/2023', '2021/2022', '2020/2021']
+    const router = useRouter()
+
+    const [yearOptions, setYearOptions] = React.useState<string[]>([])
+
+    const menuItems = [
+        { name: 'Student Personal Data', link: '/personal-data/student' },
+        { name: 'Student Attendance', link: '/attendance/summary' },
+        { name: 'Student Score', link: '/student-score' },
+        { name: 'Class', link: '/generator/class/finalize' },
+        { name: 'Schedule', link: '/schedule' },
+        { name: 'Calendar', link: '/calendar' },
+    ]
+
+    useEffect(() => {
+        const fetchData = async () => {
+            getAcademicYear()
+                .then((result) => {
+                    console.log(result.data['academic-year'])
+
+                    setYearOptions(result.data['academic-year'].map((item: any) => item.academic_year))
+                })
+                .catch((error) => {
+                    console.error('API request error', error)
+                })
+        }
+        fetchData()
+    }, [])
+
+    const handleRedirect = (link: string) => {
+        router.push(`${link}?archive=true&ac=${yearOptions[0]}`)
+    }
 
     return (
         <Box sx={{ padding: '2rem', minHeight: '100vh', width: '100%' }}>
-           
             <Box
                 sx={{
                     display: 'flex',
@@ -34,15 +68,8 @@ const ArchivePage: React.FC = () => {
                 </Button>
             </Box>
             <Grid container spacing={2} sx={{ marginTop: '2rem' }}>
-                {[
-                    'Student Personal Data',
-                    'Student Attendance',
-                    'Student Score',
-                    'Class',
-                    'Schedule',
-                    'Calendar',
-                ].map((item, index) => (
-                    <Grid item xs={12} sm={6} key={index}>
+                {menuItems.map((item, index) => (
+                    <Grid item xs={12} sm={6} key={index} sx={{ cursor: 'pointer' }} >
                         <Card
                             sx={{
                                 borderRadius: '12px',
@@ -52,6 +79,7 @@ const ArchivePage: React.FC = () => {
                                         '0px 6px 15px rgba(0, 0, 0, 0.15)',
                                 },
                             }}
+                            onClick={() => handleRedirect(item.link)}
                         >
                             <CardContent>
                                 <Typography
@@ -61,7 +89,7 @@ const ArchivePage: React.FC = () => {
                                         color: '#1A3365',
                                     }}
                                 >
-                                    {item}
+                                    {item.name}
                                 </Typography>
                             </CardContent>
                         </Card>
@@ -72,4 +100,4 @@ const ArchivePage: React.FC = () => {
     )
 }
 
-export default ArchivePage
+export default StudentData

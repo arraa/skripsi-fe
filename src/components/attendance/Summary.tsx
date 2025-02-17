@@ -13,7 +13,10 @@ import { columnDataSummary } from './column'
 import {
     getAllSummaryAttendanceByClassIDAndYear,
     SummaryAttendanceByClassIDAndYearApiProps,
+    SummaryAttendanceByClassIDAndYearProps,
 } from '@/app/api/attendance'
+import { useSearchParams } from 'next/navigation'
+import { getAttendance } from '@/app/api/archive'
 
 const AttendanceSummary = () => {
     const [classData, setClassData] = useState<classDataProps[]>([])
@@ -21,6 +24,11 @@ const AttendanceSummary = () => {
     const [attendanceData, setAttendanceData] = useState<
         SummaryAttendanceShowProps[]
     >([])
+
+    const searchParams = useSearchParams()
+
+    const archive = searchParams.get('archive')
+    const academicYear = searchParams.get('ac')
 
     const handleClassChange = (value: number) => {
         setSelectedClass(value)
@@ -45,22 +53,47 @@ const AttendanceSummary = () => {
     useEffect(() => {
         const fetchData = async () => {
             if (selectedClass !== undefined) {
-                getAllSummaryAttendanceByClassIDAndYear(selectedClass)
-                    .then((res: SummaryAttendanceByClassIDAndYearApiProps) => {
-                        setAttendanceData(
-                            res.attendance.map((item) => ({
-                                id: item.student_id,
-                                name: item.student_name,
-                                hadir: item.present_total,
-                                sakit: item.sick_total,
-                                izin: item.leave_total,
-                                alfa: item.absent_total,
-                            }))
+                if (archive === 'true') {
+                    getAttendance(academicYear as string, selectedClass)
+                        .then((res) => {
+                            setAttendanceData(
+                                (res.data as { 'student-attendance': SummaryAttendanceByClassIDAndYearProps[] })[
+                                    'student-attendance'
+                                ].map((item :SummaryAttendanceByClassIDAndYearProps) => ({
+                                    id: item.student_id,
+                                    name: item.student_name,
+                                    hadir: item.present_total,
+                                    sakit: item.sick_total,
+                                    izin: item.leave_total,
+                                    alfa: item.absent_total,
+                                }))
+                            )
+                        })
+                        .catch(() => {
+                            setAttendanceData([])
+                        })
+                } else {
+                    getAllSummaryAttendanceByClassIDAndYear(selectedClass)
+                        .then(
+                            (
+                                res: SummaryAttendanceByClassIDAndYearApiProps
+                            ) => {
+                                setAttendanceData(
+                                    res.attendance.map((item) => ({
+                                        id: item.student_id,
+                                        name: item.student_name,
+                                        hadir: item.present_total,
+                                        sakit: item.sick_total,
+                                        izin: item.leave_total,
+                                        alfa: item.absent_total,
+                                    }))
+                                )
+                            }
                         )
-                    })
-                    .catch(() => {
-                        setAttendanceData([])
-                    })
+                        .catch(() => {
+                            setAttendanceData([])
+                        })
+                }
             }
         }
         fetchData()

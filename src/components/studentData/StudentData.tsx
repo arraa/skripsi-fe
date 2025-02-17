@@ -8,11 +8,11 @@ import { StudentDataProps } from '@/components/studentData/types/types'
 import { Box } from '@mui/material'
 import { useEffect, useState } from 'react'
 import Delete from '../common/dialog/Delete'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { getStudent } from '@/app/api/student'
 import { formatStudentData } from '@/lib/formatData'
 import { classDataProps } from '../classGenerator/types/types'
-import { includes } from 'valibot'
+import { getStudentArchive } from '@/app/api/archive'
 
 const StudentData = () => {
     const [data, setData] = useState<StudentDataProps[]>([])
@@ -36,6 +36,11 @@ const StudentData = () => {
     )
     const router = useRouter()
 
+    const searchParams = useSearchParams()
+
+    const archive = searchParams.get('archive')
+    const academicYear = searchParams.get('ac')
+
     const handleClickOpen = (studentId: number) => {
         setSelectedStudentId(studentId.toString())
         console.log('handleClickOpen clicked', studentId)
@@ -52,7 +57,12 @@ const StudentData = () => {
         )
     }
 
-    const columns = columnData(handleClickOpen, handleUpdate, roles)
+    const columns = columnData(
+        handleClickOpen,
+        handleUpdate,
+        roles,
+        archive as string
+    )
 
     const handleClose = () => {
         setOpen(false)
@@ -69,27 +79,52 @@ const StudentData = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            getStudent()
-                .then((result) => {
-                    const data = formatStudentData(result.data.students)
-                    setData(data)
+            if (archive === 'true') {
+                getStudentArchive(academicYear as string)
+                    .then((res) => {
+                        const data = formatStudentData(res.data['student-personal-data'])
+                        setData(data)
 
-                    const uniqueClassNames = Array.from(
-                        new Map(
-                            data.map((student: StudentDataProps) => [
-                                `${student.ClassName.name}-${student.ClassName.Grade.grade}`, // Combine name and grade as the key
-                                student.ClassName,
-                            ])
-                        ).values()
-                    )
+                        console.log('masukkkkkk',res.data['student-personal-data'], data)
+                        const uniqueClassNames = Array.from(
+                            new Map(
+                                data.map((student: StudentDataProps) => [
+                                    `${student.ClassName.name}-${student.ClassName.Grade.grade}`, 
+                                    student.ClassName,
+                                ])
+                            ).values()
+                        )
 
-                    console.log(data)
+                        console.log(data)
 
-                    setClassData(uniqueClassNames as classDataProps[])
-                })
-                .catch((error) => {
-                    console.error('API request error', error)
-                })
+                        setClassData(uniqueClassNames as classDataProps[])
+                    })
+                    .catch((error) => {
+                        console.error('API request error', error)
+                    })
+            } else {
+                getStudent()
+                    .then((result) => {
+                        const data = formatStudentData(result.data.students)
+                        setData(data)
+
+                        const uniqueClassNames = Array.from(
+                            new Map(
+                                data.map((student: StudentDataProps) => [
+                                    `${student.ClassName.name}-${student.ClassName.Grade.grade}`, 
+                                    student.ClassName,
+                                ])
+                            ).values()
+                        )
+
+                        console.log(data)
+
+                        setClassData(uniqueClassNames as classDataProps[])
+                    })
+                    .catch((error) => {
+                        console.error('API request error', error)
+                    })
+            }
         }
         fetchData()
     }, [])
@@ -160,17 +195,19 @@ const StudentData = () => {
                         </div>
                     </div>
 
-                    {(roles.includes('admin') || roles.includes('staff')) && (
-                        <button
-                            onClick={handleAddStudent}
-                            className="flex bg-[#31426E] px-5 pb-2 pt-3 text-white sm:rounded-md"
-                        >
-                            &#43;{' '}
-                            <span className="hidden pl-3 sm:flex">
-                                Add Student
-                            </span>
-                        </button>
-                    )}
+                    {roles.includes('admin') ||
+                        roles.includes('staff') ||
+                        (archive !== 'true' && (
+                            <button
+                                onClick={handleAddStudent}
+                                className="flex bg-[#31426E] px-5 pb-2 pt-3 text-white sm:rounded-md"
+                            >
+                                &#43;{' '}
+                                <span className="hidden pl-3 sm:flex">
+                                    Add Student
+                                </span>
+                            </button>
+                        ))}
                 </div>
                 <div className="flex items-center justify-between">
                     <Table

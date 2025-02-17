@@ -9,7 +9,8 @@ import Image from 'next/image'
 export const columnData = (
     handleClickOpen: (id: number) => void,
     handleUpdate: (id: string) => void,
-    roles: string
+    roles: string,
+    archive:string
 ): GridColDef[] => {
     // Define all columns
     const columns: GridColDef[] = [
@@ -162,6 +163,13 @@ export const columnData = (
                 col.field !== 'accepted_date' &&
                 col.field !== 'school_origin'&&
                 col.field !== 'accepted_date'
+        )
+    }
+
+    if(archive === 'true'){
+        return columns.filter(
+            (col) =>
+                col.field !== 'actions'
         )
     }
 

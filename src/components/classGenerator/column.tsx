@@ -186,3 +186,35 @@ export const columnDataSiswa = (
         },
     },
 ]
+
+
+export const columnDataSiswaArchive = (
+    control: any,
+    setValue: any,
+    studentData: classGeneratorStudentProps[],
+    setStudentData: React.Dispatch<
+        React.SetStateAction<classGeneratorStudentProps[]>
+    >
+): GridColDef[] => [
+    {
+        field: 'id',
+        headerName: 'No.',
+        width: 300,
+    },
+    {
+        field: 'name',
+        headerName: 'Full Name',
+        width: 300,
+    },
+    {
+        field: 'gender',
+        headerName: 'Gander',
+        width: 300,
+    },
+    {
+        field: 'class',
+        headerName: 'Class',
+        width: 150,
+     
+    },
+]

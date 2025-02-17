@@ -113,7 +113,7 @@ export const updateAttendance = async ({
     }
 }
 
-interface SummaryAttendanceByClassIDAndYearProps {
+export interface SummaryAttendanceByClassIDAndYearProps {
     student_id: number
     student_name: string
     present_total: number
@@ -125,6 +125,8 @@ interface SummaryAttendanceByClassIDAndYearProps {
 export interface SummaryAttendanceByClassIDAndYearApiProps {
     attendance: SummaryAttendanceByClassIDAndYearProps[]
 }
+
+
 
 export const getAllSummaryAttendanceByClassIDAndYear = async (
     classID: number
