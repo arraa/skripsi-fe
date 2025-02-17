@@ -1,9 +1,12 @@
-import Class from '@/components/classGenerator/class'
+import Class from '@/components/classGenerator/Class'
+import { Suspense } from 'react'
 
 export default function calendar() {
     return (
         <>
-            <Class />
+            <Suspense fallback={<div>Loading...</div>}>
+                <Class />
+            </Suspense>
         </>
     )
 }
