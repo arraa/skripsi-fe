@@ -103,10 +103,10 @@ const CalendarForm = () => {
         const newData = {
             event_name: data.name,
             event_date_start: new Date(
-                `${data.date}T${data.start}:00Z`
+                `${data.date}T${data.start}:00+07:00`
             ).toISOString(),
             event_date_end: new Date(
-                `${data.date}T${data.end}:00Z`
+                `${data.date}T${data.end}:00+07:00`
             ).toISOString(),
         }
 

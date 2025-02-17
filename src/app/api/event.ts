@@ -49,8 +49,8 @@ export const createEvent = async (props: calenderProps) => {
     console.log(props)
 
     try {
-        const response = await api.post(`${routeEvent}`, props)
-        console.log('Update response:', response.data) // Log the response
+        const response = await api.post(routeEvent, props)
+        console.log('create response:', response.data) // Log the response
         return response.data // Ensure to return the response data
     } catch (error: any) {
         console.error('Update error:', error)

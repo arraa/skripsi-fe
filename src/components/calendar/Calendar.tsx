@@ -13,97 +13,44 @@ import timeGridPlugin from '@fullcalendar/timegrid'
 import { Box } from '@mui/material'
 import interactionPlugin from '@fullcalendar/interaction'
 import { useRouter } from 'next/navigation'
+import { getEvent } from '@/app/api/event'
+import { calenderDataProps } from './types/types'
 
 const Calendar = (props: any) => {
     const [calendarLoaded, setCalendarLoaded] = useState(false)
     const [fullCalendarInstance, setFullCalendarInstance] = useState<any>(null)
-    const [events, setEvents] = useState([
-        // Monday
-        {
-            title: '7A - Math',
-            start: '2024-12-02T08:00:00',
-            end: '2024-12-02T09:00:00',
-        },
-        {
-            title: '8A - Chemistry',
-            start: '2024-12-02T09:30:00',
-            end: '2024-12-02T10:30:00',
-        },
-        {
-            title: '9A - Physics',
-            start: '2024-12-02T11:00:00',
-            end: '2024-12-02T12:00:00',
-        },
+    const [events, setEvents] = useState<calenderDataProps[]>([])
 
-        // Tuesday
-        {
-            title: '7B - Math',
-            start: '2024-12-04T08:00:00',
-            end: '2024-12-04T09:00:00',
-        },
-        {
-            title: '8B - Chemistry',
-            start: '2024-12-04T09:30:00',
-            end: '2024-12-04T10:30:00',
-        },
-        {
-            title: '9B - Physics',
-            start: '2024-12-04T11:00:00',
-            end: '2024-12-04T12:00:00',
-        },
-
-        // Wednesday
-        {
-            title: '7C - Math',
-            start: '2024-12-05T08:00:00',
-            end: '2024-12-05T09:00:00',
-        },
-        {
-            title: '8C - Chemistry',
-            start: '2024-12-05T09:30:00',
-            end: '2024-12-05T10:30:00',
-        },
-        {
-            title: '9C - Physics',
-            start: '2024-12-05T11:00:00',
-            end: '2024-12-05T12:00:00',
-        },
-
-        // Thursday
-        {
-            title: '7D - Math',
-            start: '2024-12-06T08:00:00',
-            end: '2024-12-06T09:00:00',
-        },
-        {
-            title: '8D - Chemistry',
-            start: '2024-12-06T09:30:00',
-            end: '2024-12-06T10:30:00',
-        },
-        {
-            title: '9D - Physics',
-            start: '2024-12-06T11:00:00',
-            end: '2024-12-06T12:00:00',
-        },
-
-        {
-            title: '7D - Math',
-            start: '2024-12-03T08:00:00',
-            end: '2024-12-03T09:00:00',
-        },
-        {
-            title: '8D - Chemistry',
-            start: '2024-12-03T09:30:00',
-            end: '2024-12-03T10:30:00',
-        },
-        {
-            title: '9D - Physics',
-            start: '2024-12-03T11:00:00',
-            end: '2024-12-03T12:00:00',
-        },
-    ])
-
+    console.log(events, 'eventseventseventsevents')
     const [roles, setRoles] = useState<string>('')
+
+    useEffect(() => {
+        const fetchData = async () => {
+            getEvent()
+                .then((result) => {
+                    const formatedData = result.data['event'].map(
+                        (item: {
+                            EventScheduleID: any
+                            event_name: any
+                            schedule_date_start: any
+                            schedule_date_end: any
+                        }) => ({
+                            id: item.EventScheduleID,
+                            title: item.event_name,
+                            start: item.schedule_date_start,
+                            end: item.schedule_date_end,
+                        })
+                    )
+                    console.log(result.data['event'])
+
+                    setEvents(formatedData)
+                })
+                .catch((error) => {
+                    console.error('API request error', error)
+                })
+        }
+        fetchData()
+    }, [])
 
     useEffect(() => {
         const storedRoles = sessionStorage.getItem('role')
@@ -199,6 +146,38 @@ const Calendar = (props: any) => {
                         meridiem: 'short', // Ensures "am/pm" is displayed fully
                     }}
                     dayMaxEvents={3}
+                    displayEventTime={true}
+                    eventContent={(arg) => {
+                        const startTime = arg.event.start
+                            ? new Date(arg.event.start).toLocaleTimeString(
+                                'id-ID',
+                                {
+                                    hour: '2-digit',
+                                    minute: '2-digit',
+
+                                    hour12: true, // Use 24-hour format
+                                }
+                            )
+                            : ''
+
+                        const endTime = arg.event.end
+                            ? new Date(arg.event.end).toLocaleTimeString(
+                                'id-ID',
+                                {
+                                    hour: '2-digit',
+                                    minute: '2-digit',
+
+                                    hour12: true, // Use 24-hour format
+                                }
+                            )
+                            : ''
+
+                        return (
+                            <div className='text-[#0c4177] p-2 rounded-md ml-2 text-xs'>
+                                {startTime} - {endTime} <br/> {arg.event.title}
+                            </div>
+                        )
+                    }}
                     events={events} // Pass the events to FullCalendar
                     ref={handleCalendarMounted}
                     dateClick={handleDateClick}
