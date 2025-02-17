@@ -24,7 +24,7 @@ export const createClass = async (
     data: ObjectInput
 ): Promise<AxiosResponse> => {
     try {
-        const response = await api.post('/class/', data);
+        const response = await api.post('/class', data);
         if (response.status !== 201) {
             throw new Error('Error creating student data');
         }
