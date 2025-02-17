@@ -88,7 +88,7 @@ const ObjectSchema = array(
 
 type ObjectInput = InferInput<typeof ObjectSchema>
 
-const Class = () => {
+const ClassData = () => {
     const [selectedGrade, setSelectedGrade] = useState<number>(7)
     const [classData, setClassData] = useState<{ id: string; name: string }[]>(
         []
@@ -388,4 +388,4 @@ const Class = () => {
     )
 }
 
-export default Class
+export default ClassData
